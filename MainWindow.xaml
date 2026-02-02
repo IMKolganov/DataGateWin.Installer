@@ -16,6 +16,12 @@
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
         </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        </Style>
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
@@ -123,6 +129,24 @@
                               Checked="PolicyCheckBox_Changed" Unchecked="PolicyCheckBox_Changed"/>
                 </StackPanel>
 
+                <StackPanel Name="PathPanel" Visibility="Collapsed">
+                    <TextBlock Text="Choose Install Location" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <TextBlock Text="Select where DataGateWin should be installed."
+                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,12"/>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Install folder:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Name="InstallPathTextBox" Height="28"
+                                 TextChanged="InstallPathTextBox_TextChanged"/>
+                        <Button Grid.Column="2" Name="BrowseButton" Content="Browse..." Width="110" Height="28"
+                                Margin="10,0,0,0" Click="BrowseButton_Click" Style="{StaticResource SecondaryButton}"/>
+                    </Grid>
+                </StackPanel>
+
                 <StackPanel Name="InstallPanel" Visibility="Collapsed">
                     <TextBlock Name="InstallTitleTextBlock" Text="Installing" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
 
@@ -133,18 +157,6 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Download URL:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <TextBox Grid.Column="1" Name="UrlTextBox" Height="28" IsReadOnly="True" Text=""/>
-                    </Grid>
-
-                    <Grid Margin="0,0,0,16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Install folder:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Name="InstallPathTextBox" Height="28"/>
-                        <Button Grid.Column="2" Name="BrowseButton" Content="Browse..." Width="110" Height="28"
-                                Margin="10,0,0,0" Click="BrowseButton_Click" Style="{StaticResource SecondaryButton}"/>
                     </Grid>
 
                     <TextBlock Text="Downloading" FontWeight="SemiBold" Margin="0,0,0,6"/>

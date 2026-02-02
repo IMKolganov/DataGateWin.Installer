@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     private enum WizardStep
     {
         Policy,
+        Path,
         Install,
         Finish
     }
@@ -101,6 +102,11 @@ public partial class MainWindow : Window
         UpdateNextButtonState();
     }
 
+    private void InstallPathTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        UpdateNextButtonState();
+    }
+
     private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
     {
         if (_suppressThemeChange)
@@ -116,6 +122,12 @@ public partial class MainWindow : Window
         {
             case WizardStep.Policy:
                 if (PolicyCheckBox.IsChecked != true)
+                    return;
+                _currentStep = WizardStep.Path;
+                UpdateWizardUI();
+                break;
+            case WizardStep.Path:
+                if (string.IsNullOrWhiteSpace(InstallPathTextBox.Text))
                     return;
                 _currentStep = WizardStep.Install;
                 UpdateWizardUI();
@@ -140,12 +152,16 @@ public partial class MainWindow : Window
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
-        Close();
+        var result = MessageBox.Show("Are you sure you want to cancel setup?", ProductName,
+            MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
+            Close();
     }
 
     private void UpdateWizardUI()
     {
         PolicyPanel.Visibility = _currentStep == WizardStep.Policy ? Visibility.Visible : Visibility.Collapsed;
+        PathPanel.Visibility = _currentStep == WizardStep.Path ? Visibility.Visible : Visibility.Collapsed;
         InstallPanel.Visibility = _currentStep == WizardStep.Install ? Visibility.Visible : Visibility.Collapsed;
         FinishPanel.Visibility = _currentStep == WizardStep.Finish ? Visibility.Visible : Visibility.Collapsed;
 
@@ -160,9 +176,10 @@ public partial class MainWindow : Window
         NextButton.Content = _currentStep == WizardStep.Finish ? "Finish" : "Next";
         StepTextBlock.Text = _currentStep switch
         {
-            WizardStep.Policy => "Step 1 of 3",
-            WizardStep.Install => "Step 2 of 3",
-            WizardStep.Finish => "Step 3 of 3",
+            WizardStep.Policy => "Step 1 of 4",
+            WizardStep.Path => "Step 2 of 4",
+            WizardStep.Install => "Step 3 of 4",
+            WizardStep.Finish => "Step 4 of 4",
             _ => string.Empty
         };
         UpdateNextButtonState();
@@ -173,6 +190,7 @@ public partial class MainWindow : Window
         NextButton.IsEnabled = _currentStep switch
         {
             WizardStep.Policy => PolicyCheckBox.IsChecked == true,
+            WizardStep.Path => !string.IsNullOrWhiteSpace(InstallPathTextBox.Text),
             WizardStep.Install => _installCompleted,
             WizardStep.Finish => true,
             _ => false
@@ -517,7 +535,14 @@ public partial class MainWindow : Window
     {
         if (Resources[key] is SolidColorBrush brush)
         {
-            brush.Color = color;
+            if (brush.IsFrozen)
+            {
+                Resources[key] = new SolidColorBrush(color);
+            }
+            else
+            {
+                brush.Color = color;
+            }
         }
         else
         {
