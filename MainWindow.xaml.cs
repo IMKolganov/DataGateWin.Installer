@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Windows;
+using System.Windows.Media;
 using Microsoft.Win32;
 using MessageBox = System.Windows.MessageBox;
 
@@ -14,18 +15,69 @@ public partial class MainWindow : Window
     private const string ProductName = "DataGate OpenVPN 3";
     private const string Publisher = "DataGate";
     private const string ExeName = "DataGateWin.exe";
+    private const string LatestZipUrl = "https://github.com/IMKolganov/DataGateWin/releases/latest/download/DataGate.v1.0.0.zip";
 
     private const string UninstallRegKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\DataGateOpenVPN3";
     private const string AppPathsRegKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\DataGateWin.exe";
 
     private CancellationTokenSource? _cts;
+    private readonly bool _isUpdateMode;
+    private readonly string _installerDir;
+    private WizardStep _currentStep;
+    private bool _installCompleted;
+    private string? _lastInstalledExePath;
+    private bool _suppressThemeChange;
+
+    private enum WizardStep
+    {
+        Policy,
+        Install,
+        Finish
+    }
+
+    private enum AppTheme
+    {
+        Light,
+        Dark
+    }
 
     public MainWindow()
     {
         InitializeComponent();
 
+        var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
+        _installerDir = Path.GetDirectoryName(installerExe) ?? Environment.CurrentDirectory;
+
+        var args = Environment.GetCommandLineArgs();
+        _isUpdateMode = args.Any(a =>
+            string.Equals(a, "update", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(a, "--update", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(a, "/update", StringComparison.OrdinalIgnoreCase));
+
         var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
         InstallPathTextBox.Text = Path.Combine(programFiles, "DataGate");
+        UrlTextBox.Text = LatestZipUrl;
+
+        var systemTheme = GetSystemTheme();
+        ApplyTheme(systemTheme);
+        _suppressThemeChange = true;
+        LightThemeRadioButton.IsChecked = systemTheme == AppTheme.Light;
+        DarkThemeRadioButton.IsChecked = systemTheme == AppTheme.Dark;
+        _suppressThemeChange = false;
+
+        _currentStep = _isUpdateMode ? WizardStep.Install : WizardStep.Policy;
+        UpdateWizardUI();
+    }
+
+    protected override async void OnContentRendered(EventArgs e)
+    {
+        base.OnContentRendered(e);
+
+        if (_isUpdateMode)
+        {
+            InstallPathTextBox.Text = _installerDir;
+            await StartInstallAsync(isUpdate: true);
+        }
     }
 
     private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -44,13 +96,97 @@ public partial class MainWindow : Window
         }
     }
 
-    private async void InstallButton_Click(object sender, RoutedEventArgs e)
+    private void PolicyCheckBox_Changed(object sender, RoutedEventArgs e)
     {
-        InstallButton.IsEnabled = false;
-        UninstallButton.IsEnabled = false;
-        BrowseButton.IsEnabled = false;
+        UpdateNextButtonState();
+    }
 
-        ProgressBar.Value = 0;
+    private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
+    {
+        if (_suppressThemeChange)
+            return;
+
+        var theme = LightThemeRadioButton.IsChecked == true ? AppTheme.Light : AppTheme.Dark;
+        ApplyTheme(theme);
+    }
+
+    private async void NextButton_Click(object sender, RoutedEventArgs e)
+    {
+        switch (_currentStep)
+        {
+            case WizardStep.Policy:
+                if (PolicyCheckBox.IsChecked != true)
+                    return;
+                _currentStep = WizardStep.Install;
+                UpdateWizardUI();
+                await StartInstallAsync(isUpdate: false);
+                break;
+            case WizardStep.Install:
+                if (!_installCompleted)
+                    return;
+                _currentStep = WizardStep.Finish;
+                UpdateWizardUI();
+                break;
+            case WizardStep.Finish:
+                if (LaunchCheckBox.IsChecked == true && !string.IsNullOrWhiteSpace(_lastInstalledExePath))
+                {
+                    if (File.Exists(_lastInstalledExePath))
+                        Process.Start(new ProcessStartInfo(_lastInstalledExePath) { UseShellExecute = true });
+                }
+                Close();
+                break;
+        }
+    }
+
+    private void CancelButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void UpdateWizardUI()
+    {
+        PolicyPanel.Visibility = _currentStep == WizardStep.Policy ? Visibility.Visible : Visibility.Collapsed;
+        InstallPanel.Visibility = _currentStep == WizardStep.Install ? Visibility.Visible : Visibility.Collapsed;
+        FinishPanel.Visibility = _currentStep == WizardStep.Finish ? Visibility.Visible : Visibility.Collapsed;
+
+        InstallTitleTextBlock.Text = _isUpdateMode ? "Updating" : "Installing";
+        FinishStatusTextBlock.Text = _isUpdateMode
+            ? "DataGateWin has been updated on your computer."
+            : "DataGateWin has been installed on your computer.";
+
+        InstallPathTextBox.IsEnabled = !_isUpdateMode;
+        BrowseButton.IsEnabled = !_isUpdateMode;
+
+        NextButton.Content = _currentStep == WizardStep.Finish ? "Finish" : "Next";
+        StepTextBlock.Text = _currentStep switch
+        {
+            WizardStep.Policy => "Step 1 of 3",
+            WizardStep.Install => "Step 2 of 3",
+            WizardStep.Finish => "Step 3 of 3",
+            _ => string.Empty
+        };
+        UpdateNextButtonState();
+    }
+
+    private void UpdateNextButtonState()
+    {
+        NextButton.IsEnabled = _currentStep switch
+        {
+            WizardStep.Policy => PolicyCheckBox.IsChecked == true,
+            WizardStep.Install => _installCompleted,
+            WizardStep.Finish => true,
+            _ => false
+        };
+    }
+
+    private async Task StartInstallAsync(bool isUpdate)
+    {
+        _installCompleted = false;
+        UpdateNextButtonState();
+        CancelButton.IsEnabled = false;
+
+        DownloadProgressBar.Value = 0;
+        InstallProgressBar.Value = 0;
         LogTextBox.Clear();
 
         _cts = new CancellationTokenSource();
@@ -61,11 +197,18 @@ public partial class MainWindow : Window
             if (string.IsNullOrWhiteSpace(url))
                 throw new InvalidOperationException("Zip URL is empty.");
 
-            var installDir = InstallPathTextBox.Text?.Trim();
+            var installDir = isUpdate ? _installerDir : (InstallPathTextBox.Text?.Trim() ?? string.Empty);
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
-            Log($"Installing to: {installDir}");
+            if (isUpdate)
+            {
+                var targetExe = Path.Combine(installDir, ExeName);
+                if (!File.Exists(targetExe))
+                    throw new FileNotFoundException("DataGateWin.exe was not found next to the installer.", targetExe);
+            }
+
+            Log($"{(isUpdate ? "Updating" : "Installing")} to: {installDir}");
             Directory.CreateDirectory(installDir);
 
             var tempRoot = Path.Combine(Path.GetTempPath(), "DataGateInstaller", Guid.NewGuid().ToString("N"));
@@ -76,38 +219,47 @@ public partial class MainWindow : Window
 
             try
             {
-                await DownloadFileAsync(url, zipPath, new Progress<double>(p => ProgressBar.Value = p), _cts.Token);
+                await DownloadFileAsync(url, zipPath, new Progress<double>(p => DownloadProgressBar.Value = p), _cts.Token);
 
                 Log("Extracting zip...");
                 Directory.CreateDirectory(extractDir);
                 ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true);
+                ReportInstallProgress(10);
+
+                var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
+                var installerExePath = installerExe != null ? Path.GetFullPath(installerExe) : string.Empty;
 
                 Log("Deploying files...");
-                CopyDirectory(extractDir, installDir);
+                CopyDirectoryWithProgress(
+                    extractDir,
+                    installDir,
+                    dest => !string.IsNullOrWhiteSpace(installerExePath) &&
+                            string.Equals(Path.GetFullPath(dest), installerExePath, StringComparison.OrdinalIgnoreCase),
+                    new Progress<double>(p => ReportInstallProgress(10 + (p * 0.9))),
+                    _cts.Token);
 
                 var exePath = Path.Combine(installDir, ExeName);
                 if (!File.Exists(exePath))
                     throw new FileNotFoundException("Main executable was not found after extraction.", exePath);
 
-                Log("Creating Start Menu shortcut...");
-                CreateStartMenuShortcut(installDir, exePath);
-
-                Log("Registering Apps & Features entry...");
-                RegisterUninstallEntry(installDir);
-
-                Log("Registering App Paths...");
-                RegisterAppPaths(exePath, installDir);
-
-                ProgressBar.Value = 100;
-                Log("Done.");
-
-                var launch = MessageBox.Show("Installed successfully. Launch application now?", ProductName,
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (launch == MessageBoxResult.Yes)
+                if (!isUpdate)
                 {
-                    Process.Start(new ProcessStartInfo(exePath) { UseShellExecute = true });
+                    Log("Creating Start Menu shortcut...");
+                    CreateStartMenuShortcut(installDir, exePath);
+
+                    Log("Registering Apps & Features entry...");
+                    RegisterUninstallEntry(installDir);
+
+                    Log("Registering App Paths...");
+                    RegisterAppPaths(exePath, installDir);
                 }
+
+                ReportInstallProgress(100);
+                _lastInstalledExePath = exePath;
+                _installCompleted = true;
+                UpdateNextButtonState();
+
+                Log("Done.");
             }
             finally
             {
@@ -117,14 +269,13 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             Log($"ERROR: {ex.Message}");
-            MessageBox.Show(ex.ToString(), "Install failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.ToString(), isUpdate ? "Update failed" : "Install failed",
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
-            InstallButton.IsEnabled = true;
-            UninstallButton.IsEnabled = true;
-            BrowseButton.IsEnabled = true;
-            _cts.Dispose();
+            CancelButton.IsEnabled = true;
+            _cts?.Dispose();
             _cts = null;
         }
     }
@@ -197,7 +348,7 @@ public partial class MainWindow : Window
             progress.Report(100.0);
     }
 
-    private static void CopyDirectory(string sourceDir, string destinationDir)
+    private static void CopyDirectory(string sourceDir, string destinationDir, Func<string, bool>? skipDestination = null)
     {
         Directory.CreateDirectory(destinationDir);
 
@@ -205,6 +356,9 @@ public partial class MainWindow : Window
         {
             var relative = Path.GetRelativePath(sourceDir, file);
             var destFile = Path.Combine(destinationDir, relative);
+
+            if (skipDestination?.Invoke(destFile) == true)
+                continue;
 
             Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
             File.Copy(file, destFile, overwrite: true);
@@ -312,5 +466,101 @@ public partial class MainWindow : Window
         var line = $"[{DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture)}] {message}";
         LogTextBox.AppendText(line + Environment.NewLine);
         LogTextBox.ScrollToEnd();
+    }
+
+    private void ReportInstallProgress(double value)
+    {
+        InstallProgressBar.Value = Math.Clamp(value, 0, 100);
+    }
+
+    private AppTheme GetSystemTheme()
+    {
+        try
+        {
+            var value = Registry.GetValue(
+                @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+                "AppsUseLightTheme",
+                1);
+            return value is int v && v == 0 ? AppTheme.Dark : AppTheme.Light;
+        }
+        catch
+        {
+            return AppTheme.Light;
+        }
+    }
+
+    private void ApplyTheme(AppTheme mode)
+    {
+        if (mode == AppTheme.Dark)
+        {
+            SetBrush("WindowBackgroundBrush", System.Windows.Media.Color.FromRgb(17, 24, 39));
+            SetBrush("CardBackgroundBrush", System.Windows.Media.Color.FromRgb(31, 41, 55));
+            SetBrush("PrimaryTextBrush", System.Windows.Media.Color.FromRgb(243, 244, 246));
+            SetBrush("SecondaryTextBrush", System.Windows.Media.Color.FromRgb(156, 163, 175));
+            SetBrush("BorderBrushStrong", System.Windows.Media.Color.FromRgb(55, 65, 81));
+            SetBrush("AccentBrush", System.Windows.Media.Color.FromRgb(59, 130, 246));
+            SetBrush("AccentBrushHover", System.Windows.Media.Color.FromRgb(37, 99, 235));
+        }
+        else
+        {
+            SetBrush("WindowBackgroundBrush", System.Windows.Media.Color.FromRgb(245, 246, 248));
+            SetBrush("CardBackgroundBrush", System.Windows.Media.Color.FromRgb(255, 255, 255));
+            SetBrush("PrimaryTextBrush", System.Windows.Media.Color.FromRgb(17, 24, 39));
+            SetBrush("SecondaryTextBrush", System.Windows.Media.Color.FromRgb(107, 114, 128));
+            SetBrush("BorderBrushStrong", System.Windows.Media.Color.FromRgb(209, 213, 219));
+            SetBrush("AccentBrush", System.Windows.Media.Color.FromRgb(37, 99, 235));
+            SetBrush("AccentBrushHover", System.Windows.Media.Color.FromRgb(29, 78, 216));
+        }
+    }
+
+    private void SetBrush(string key, System.Windows.Media.Color color)
+    {
+        if (Resources[key] is SolidColorBrush brush)
+        {
+            brush.Color = color;
+        }
+        else
+        {
+            Resources[key] = new SolidColorBrush(color);
+        }
+    }
+
+    private static void CopyDirectoryWithProgress(
+        string sourceDir,
+        string destinationDir,
+        Func<string, bool>? skipDestination,
+        IProgress<double> progress,
+        CancellationToken ct)
+    {
+        Directory.CreateDirectory(destinationDir);
+
+        var files = Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories);
+        var copyList = new List<(string Source, string Destination)>();
+
+        foreach (var file in files)
+        {
+            var relative = Path.GetRelativePath(sourceDir, file);
+            var destFile = Path.Combine(destinationDir, relative);
+
+            if (skipDestination?.Invoke(destFile) == true)
+                continue;
+
+            copyList.Add((file, destFile));
+        }
+
+        if (copyList.Count == 0)
+        {
+            progress.Report(100);
+            return;
+        }
+
+        for (var i = 0; i < copyList.Count; i++)
+        {
+            ct.ThrowIfCancellationRequested();
+            var (source, dest) = copyList[i];
+            Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+            File.Copy(source, dest, overwrite: true);
+            progress.Report((i + 1) * 100.0 / copyList.Count);
+        }
     }
 }
