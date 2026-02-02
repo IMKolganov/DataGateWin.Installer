@@ -35,8 +35,8 @@ dotnet build .\DataGateWin.Installer.csproj -c Release
 3. Choose the install path.
 4. Wait for the installation to finish.
 
-By default, the release ZIP is downloaded from GitHub Releases:
-`https://github.com/IMKolganov/DataGateWin/releases/latest/download/DataGate.v1.0.0.zip`
+By default, the installer queries GitHub for the latest release and downloads
+the asset that matches `DataGateWin.v*.zip`.
 
 The ZIP must contain `DataGateWin.exe`. Optionally, it can include `favicon.ico`
 (used as the shortcut icon).

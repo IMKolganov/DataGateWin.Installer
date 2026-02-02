@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -15,7 +16,9 @@ public partial class MainWindow : Window
     private const string ProductName = "DataGate OpenVPN 3";
     private const string Publisher = "DataGate";
     private const string ExeName = "DataGateWin.exe";
-    private const string LatestZipUrl = "https://github.com/IMKolganov/DataGateWin/releases/latest/download/DataGate.v1.0.0.zip";
+    private const string LatestReleaseApiUrl = "https://api.github.com/repos/IMKolganov/DataGateWin/releases/latest";
+    private const string AssetNamePrefix = "DataGateWin.v";
+    private const string AssetNameSuffix = ".zip";
 
     private const string UninstallRegKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\DataGateOpenVPN3";
     private const string AppPathsRegKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\DataGateWin.exe";
@@ -57,7 +60,7 @@ public partial class MainWindow : Window
 
         var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
         InstallPathTextBox.Text = Path.Combine(programFiles, "DataGate");
-        UrlTextBox.Text = LatestZipUrl;
+        UrlTextBox.Text = "latest (auto)";
 
         var systemTheme = GetSystemTheme();
         ApplyTheme(systemTheme);
@@ -238,15 +241,18 @@ public partial class MainWindow : Window
 
         _cts = new CancellationTokenSource();
 
+        string? url = null;
         try
         {
-            var url = UrlTextBox.Text.Trim();
-            if (string.IsNullOrWhiteSpace(url))
-                throw new InvalidOperationException("Zip URL is empty.");
+            url = await ResolveLatestReleaseZipUrlAsync(_cts.Token);
+            UrlTextBox.Text = url;
+            Log($"Using release asset: {url}");
 
             var installDir = isUpdate ? _installerDir : InstallPathTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
+
+            EnsureAppProcessesStopped();
 
             if (isUpdate)
             {
@@ -322,6 +328,8 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
+            if (!string.IsNullOrWhiteSpace(url))
+                Log($"ERROR: failed to download from: {url}");
             Log($"ERROR: {ex.Message}");
             MessageBox.Show(ex.ToString(), isUpdate ? "Update failed" : "Install failed",
                 MessageBoxButton.OK, MessageBoxImage.Error);
@@ -341,6 +349,8 @@ public partial class MainWindow : Window
             var installDir = InstallPathTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
+
+            EnsureAppProcessesStopped();
 
             LogTextBox.Clear();
             Log($"Uninstalling from: {installDir}");
@@ -400,6 +410,94 @@ public partial class MainWindow : Window
 
         if (!total.HasValue)
             progress.Report(100.0);
+    }
+
+    private static async Task<string> ResolveLatestReleaseZipUrlAsync(CancellationToken ct)
+    {
+        using var http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("DataGateWin.Installer");
+
+        using var response = await http.GetAsync(LatestReleaseApiUrl, ct);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(ct);
+        using var doc = await JsonDocument.ParseAsync(stream, cancellationToken: ct);
+
+        if (!doc.RootElement.TryGetProperty("assets", out var assets) || assets.ValueKind != JsonValueKind.Array)
+            throw new InvalidOperationException("GitHub latest release response does not contain assets.");
+
+        foreach (var asset in assets.EnumerateArray())
+        {
+            if (!asset.TryGetProperty("name", out var nameProp) || nameProp.ValueKind != JsonValueKind.String)
+                continue;
+            var name = nameProp.GetString() ?? string.Empty;
+            if (!name.StartsWith(AssetNamePrefix, StringComparison.OrdinalIgnoreCase) ||
+                !name.EndsWith(AssetNameSuffix, StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            if (asset.TryGetProperty("browser_download_url", out var urlProp) &&
+                urlProp.ValueKind == JsonValueKind.String)
+            {
+                var url = urlProp.GetString();
+                if (!string.IsNullOrWhiteSpace(url))
+                    return url;
+            }
+        }
+
+        throw new InvalidOperationException($"No ZIP asset found matching {AssetNamePrefix}*{AssetNameSuffix}.");
+    }
+
+    private void EnsureAppProcessesStopped()
+    {
+        var processes = new[]
+        {
+            ("DataGateWin", "DataGateWin.exe"),
+            ("engine", "engine.exe")
+        };
+
+        var running = new List<Process>();
+        foreach (var (processName, _) in processes)
+        {
+            try
+            {
+                running.AddRange(Process.GetProcessesByName(processName));
+            }
+            catch (Exception ex)
+            {
+                Log($"WARN: failed to enumerate process {processName}: {ex.Message}");
+            }
+        }
+
+        if (running.Count == 0)
+            return;
+
+        var names = string.Join(", ", running
+            .Select(p => $"{p.ProcessName}.exe")
+            .Distinct(StringComparer.OrdinalIgnoreCase));
+        var result = MessageBox.Show(
+            $"Detected running processes: {names}.{Environment.NewLine}Do you want to close them now?",
+            ProductName,
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+            throw new InvalidOperationException("Installation cancelled because the app is still running.");
+
+        foreach (var proc in running.DistinctBy(p => p.Id))
+        {
+            try
+            {
+                if (proc.HasExited)
+                    continue;
+                Log($"Stopping {proc.ProcessName} (PID {proc.Id})...");
+                proc.Kill(entireProcessTree: true);
+                proc.WaitForExit(5000);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to stop {proc.ProcessName} (PID {proc.Id}): {ex.Message}");
+            }
+        }
     }
 
     private static void CopyDirectory(string sourceDir, string destinationDir, Func<string, bool>? skipDestination = null)
