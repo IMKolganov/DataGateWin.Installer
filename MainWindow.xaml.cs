@@ -252,6 +252,8 @@ public partial class MainWindow : Window
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
+            EnsureAppProcessesStopped();
+
             if (isUpdate)
             {
                 var targetExe = Path.Combine(installDir, ExeName);
@@ -348,6 +350,8 @@ public partial class MainWindow : Window
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
+            EnsureAppProcessesStopped();
+
             LogTextBox.Clear();
             Log($"Uninstalling from: {installDir}");
 
@@ -441,6 +445,59 @@ public partial class MainWindow : Window
         }
 
         throw new InvalidOperationException($"No ZIP asset found matching {AssetNamePrefix}*{AssetNameSuffix}.");
+    }
+
+    private void EnsureAppProcessesStopped()
+    {
+        var processes = new[]
+        {
+            ("DataGateWin", "DataGateWin.exe"),
+            ("engine", "engine.exe")
+        };
+
+        var running = new List<Process>();
+        foreach (var (processName, _) in processes)
+        {
+            try
+            {
+                running.AddRange(Process.GetProcessesByName(processName));
+            }
+            catch (Exception ex)
+            {
+                Log($"WARN: failed to enumerate process {processName}: {ex.Message}");
+            }
+        }
+
+        if (running.Count == 0)
+            return;
+
+        var names = string.Join(", ", running
+            .Select(p => $"{p.ProcessName}.exe")
+            .Distinct(StringComparer.OrdinalIgnoreCase));
+        var result = MessageBox.Show(
+            $"Detected running processes: {names}.{Environment.NewLine}Do you want to close them now?",
+            ProductName,
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+            throw new InvalidOperationException("Installation cancelled because the app is still running.");
+
+        foreach (var proc in running.DistinctBy(p => p.Id))
+        {
+            try
+            {
+                if (proc.HasExited)
+                    continue;
+                Log($"Stopping {proc.ProcessName} (PID {proc.Id})...");
+                proc.Kill(entireProcessTree: true);
+                proc.WaitForExit(5000);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to stop {proc.ProcessName} (PID {proc.Id}): {ex.Message}");
+            }
+        }
     }
 
     private static void CopyDirectory(string sourceDir, string destinationDir, Func<string, bool>? skipDestination = null)
