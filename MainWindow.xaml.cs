@@ -256,9 +256,8 @@ public partial class MainWindow : Window
 
             if (isUpdate)
             {
-                var targetExe = Path.Combine(installDir, ExeName);
-                if (!File.Exists(targetExe))
-                    throw new FileNotFoundException("DataGateWin.exe was not found next to the installer.", targetExe);
+                installDir = ResolveUpdateInstallDir(installDir);
+                InstallPathTextBox.Text = installDir;
             }
 
             Log($"{(isUpdate ? "Updating" : "Installing")} to: {installDir}");
@@ -498,6 +497,37 @@ public partial class MainWindow : Window
                 throw new InvalidOperationException($"Failed to stop {proc.ProcessName} (PID {proc.Id}): {ex.Message}");
             }
         }
+    }
+
+    private string ResolveUpdateInstallDir(string startDir)
+    {
+        var current = startDir;
+        var checkedDirs = new List<string>();
+
+        for (var depth = 0; depth < 6 && !string.IsNullOrWhiteSpace(current); depth++)
+        {
+            checkedDirs.Add(current);
+            var candidateExe = Path.Combine(current, ExeName);
+            if (File.Exists(candidateExe))
+            {
+                Log($"Update mode: resolved install folder: {current}");
+                return current;
+            }
+
+            var parent = Directory.GetParent(current)?.FullName;
+            if (string.IsNullOrWhiteSpace(parent) ||
+                string.Equals(parent, current, StringComparison.OrdinalIgnoreCase))
+            {
+                break;
+            }
+
+            current = parent;
+        }
+
+        var attempts = string.Join(Environment.NewLine, checkedDirs.Select(d => $" - {d}"));
+        throw new FileNotFoundException(
+            $"DataGateWin.exe was not found near the installer. Checked:{Environment.NewLine}{attempts}",
+            Path.Combine(startDir, ExeName));
     }
 
     private static void CopyDirectory(string sourceDir, string destinationDir, Func<string, bool>? skipDestination = null)
