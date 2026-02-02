@@ -26,7 +26,7 @@ public partial class MainWindow : Window
     private WizardStep _currentStep;
     private bool _installCompleted;
     private string? _lastInstalledExePath;
-    private bool _suppressThemeChange;
+    private readonly bool _suppressThemeChange;
 
     private enum WizardStep
     {
@@ -67,23 +67,31 @@ public partial class MainWindow : Window
         _suppressThemeChange = false;
 
         _currentStep = _isUpdateMode ? WizardStep.Install : WizardStep.Policy;
-        UpdateWizardUI();
+        UpdateWizardUi();
     }
 
     protected override async void OnContentRendered(EventArgs e)
     {
         base.OnContentRendered(e);
 
-        if (_isUpdateMode)
+        if (!_isUpdateMode)
+            return;
+
+        try
         {
             InstallPathTextBox.Text = _installerDir;
             await StartInstallAsync(isUpdate: true);
+        }
+        catch (Exception ex)
+        {
+            Log($"ERROR: {ex.Message}");
+            MessageBox.Show(ex.ToString(), "Update failed", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
     private void BrowseButton_Click(object sender, RoutedEventArgs e)
     {
-        var dlg = new System.Windows.Forms.FolderBrowserDialog
+        var dlg = new FolderBrowserDialog
         {
             Description = "Select installation folder",
             UseDescriptionForTitle = true,
@@ -124,20 +132,20 @@ public partial class MainWindow : Window
                 if (PolicyCheckBox.IsChecked != true)
                     return;
                 _currentStep = WizardStep.Path;
-                UpdateWizardUI();
+                UpdateWizardUi();
                 break;
             case WizardStep.Path:
                 if (string.IsNullOrWhiteSpace(InstallPathTextBox.Text))
                     return;
                 _currentStep = WizardStep.Install;
-                UpdateWizardUI();
+                UpdateWizardUi();
                 await StartInstallAsync(isUpdate: false);
                 break;
             case WizardStep.Install:
                 if (!_installCompleted)
                     return;
                 _currentStep = WizardStep.Finish;
-                UpdateWizardUI();
+                UpdateWizardUi();
                 break;
             case WizardStep.Finish:
                 if (LaunchCheckBox.IsChecked == true && !string.IsNullOrWhiteSpace(_lastInstalledExePath))
@@ -158,7 +166,28 @@ public partial class MainWindow : Window
             Close();
     }
 
-    private void UpdateWizardUI()
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        CancelButton_Click(sender, e);
+    }
+
+    private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (e.ClickCount == 2)
+        {
+            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            return;
+        }
+
+        DragMove();
+    }
+
+    private void UpdateWizardUi()
     {
         PolicyPanel.Visibility = _currentStep == WizardStep.Policy ? Visibility.Visible : Visibility.Collapsed;
         PathPanel.Visibility = _currentStep == WizardStep.Path ? Visibility.Visible : Visibility.Collapsed;
@@ -211,11 +240,11 @@ public partial class MainWindow : Window
 
         try
         {
-            var url = UrlTextBox.Text?.Trim();
+            var url = UrlTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(url))
                 throw new InvalidOperationException("Zip URL is empty.");
 
-            var installDir = isUpdate ? _installerDir : (InstallPathTextBox.Text?.Trim() ?? string.Empty);
+            var installDir = isUpdate ? _installerDir : InstallPathTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
@@ -281,7 +310,14 @@ public partial class MainWindow : Window
             }
             finally
             {
-                try { Directory.Delete(tempRoot, recursive: true); } catch { }
+                try
+                {
+                    Directory.Delete(tempRoot, recursive: true);
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
             }
         }
         catch (Exception ex)
@@ -302,7 +338,7 @@ public partial class MainWindow : Window
     {
         try
         {
-            var installDir = InstallPathTextBox.Text?.Trim();
+            var installDir = InstallPathTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
@@ -453,7 +489,10 @@ public partial class MainWindow : Window
     private static void UnregisterUninstallEntry()
     {
         try { Registry.LocalMachine.DeleteSubKeyTree(UninstallRegKeyPath, throwOnMissingSubKey: false); }
-        catch { }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
     }
 
     private static void RegisterAppPaths(string exePath, string installDir)
@@ -469,7 +508,10 @@ public partial class MainWindow : Window
     private static void UnregisterAppPaths()
     {
         try { Registry.LocalMachine.DeleteSubKeyTree(AppPathsRegKeyPath, throwOnMissingSubKey: false); }
-        catch { }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
     }
 
     private static string? GetInstallerVersion()
