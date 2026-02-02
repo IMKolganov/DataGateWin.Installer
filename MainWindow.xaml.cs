@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
@@ -13,6 +14,7 @@ namespace DataGateWin.Installer;
 
 public partial class MainWindow : Window
 {
+    private const uint SnapshotProcess = 0x00000002;
     private const string ProductName = "DataGate OpenVPN 3";
     private const string Publisher = "DataGate";
     private const string ExeName = "DataGateWin.exe";
@@ -252,7 +254,7 @@ public partial class MainWindow : Window
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
-            EnsureAppProcessesStopped();
+            await EnsureAppProcessesStoppedAsync();
 
             if (isUpdate)
             {
@@ -341,7 +343,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void UninstallButton_Click(object sender, RoutedEventArgs e)
+    private async void UninstallButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -349,7 +351,7 @@ public partial class MainWindow : Window
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
-            EnsureAppProcessesStopped();
+            await EnsureAppProcessesStoppedAsync();
 
             LogTextBox.Clear();
             Log($"Uninstalling from: {installDir}");
@@ -446,8 +448,10 @@ public partial class MainWindow : Window
         throw new InvalidOperationException($"No ZIP asset found matching {AssetNamePrefix}*{AssetNameSuffix}.");
     }
 
-    private void EnsureAppProcessesStopped()
+    private async Task EnsureAppProcessesStoppedAsync()
     {
+        await Task.Delay(500);
+        var parentPid = GetParentProcessId();
         var processes = new[]
         {
             ("DataGateWin", "DataGateWin.exe"),
@@ -470,6 +474,11 @@ public partial class MainWindow : Window
         if (running.Count == 0)
             return;
 
+        await Task.Delay(500);
+        var parentProcess = parentPid > 0
+            ? running.FirstOrDefault(p => p.Id == parentPid)
+            : null;
+
         var names = string.Join(", ", running
             .Select(p => $"{p.ProcessName}.exe")
             .Distinct(StringComparer.OrdinalIgnoreCase));
@@ -488,16 +497,125 @@ public partial class MainWindow : Window
             {
                 if (proc.HasExited)
                     continue;
+                if (parentProcess != null && proc.Id == parentProcess.Id)
+                {
+                    Log($"WARN: {proc.ProcessName} (PID {proc.Id}) started the installer; close it manually.");
+                    continue;
+                }
                 Log($"Stopping {proc.ProcessName} (PID {proc.Id})...");
                 proc.Kill(entireProcessTree: true);
                 proc.WaitForExit(5000);
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Failed to stop {proc.ProcessName} (PID {proc.Id}): {ex.Message}");
+                Log($"WARN: failed to stop {proc.ProcessName} (PID {proc.Id}): {ex.Message}");
             }
         }
+
+        await Task.Delay(500);
+        var stillRunning = new List<Process>();
+        foreach (var (processName, _) in processes)
+        {
+            try
+            {
+                stillRunning.AddRange(Process.GetProcessesByName(processName));
+            }
+            catch (Exception ex)
+            {
+                Log($"WARN: failed to enumerate process {processName}: {ex.Message}");
+            }
+        }
+
+        if (stillRunning.Count > 0)
+        {
+            if (parentProcess != null && stillRunning.Any(p => p.Id == parentProcess.Id))
+            {
+                await Task.Delay(1500);
+                var refreshed = new List<Process>();
+                foreach (var (processName, _) in processes)
+                {
+                    try
+                    {
+                        refreshed.AddRange(Process.GetProcessesByName(processName));
+                    }
+                    catch (Exception ex)
+                    {
+                        Log($"WARN: failed to enumerate process {processName}: {ex.Message}");
+                    }
+                }
+
+                stillRunning = refreshed;
+                var parentStillRunning = stillRunning.Any(p => p.Id == parentProcess.Id);
+                if (parentStillRunning)
+                    throw new InvalidOperationException(
+                        $"Installer was started by {parentProcess.ProcessName}. Please close it manually and retry.");
+            }
+
+            if (stillRunning.Count == 0)
+                return;
+
+            var stillNames = string.Join(", ", stillRunning
+                .Select(p => $"{p.ProcessName}.exe")
+                .Distinct(StringComparer.OrdinalIgnoreCase));
+            throw new InvalidOperationException($"Processes are still running: {stillNames}");
+        }
     }
+
+    private static int GetParentProcessId()
+    {
+        var currentId = Environment.ProcessId;
+        var snapshot = CreateToolhelp32Snapshot(SnapshotProcess, 0);
+        if (snapshot == IntPtr.Zero || snapshot == (IntPtr)(-1))
+            return 0;
+
+        try
+        {
+            var entry = new ProcessEntry32 { Size = (uint)Marshal.SizeOf<ProcessEntry32>() };
+            if (!Process32First(snapshot, ref entry))
+                return 0;
+
+            do
+            {
+                if (entry.ProcessId == currentId)
+                    return (int)entry.ParentProcessId;
+            }
+            while (Process32Next(snapshot, ref entry));
+
+            return 0;
+        }
+        finally
+        {
+            CloseHandle(snapshot);
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct ProcessEntry32
+    {
+        public uint Size;
+        public uint Usage;
+        public uint ProcessId;
+        public IntPtr DefaultHeapId;
+        public uint ModuleId;
+        public uint ThreadCount;
+        public uint ParentProcessId;
+        public int PriorityClassBase;
+        public uint Flags;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+        public string ExeFile;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr CreateToolhelp32Snapshot(uint flags, uint processId);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool Process32First(IntPtr snapshot, ref ProcessEntry32 entry);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool Process32Next(IntPtr snapshot, ref ProcessEntry32 entry);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr handle);
 
     private string ResolveUpdateInstallDir(string startDir)
     {
