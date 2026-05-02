@@ -18,4 +18,13 @@
         <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Compile Include="..\DataGateWin.UI\Localization\UiLocale.cs" Link="Localization\UiLocale.cs"/>
+        <Compile Include="..\DataGateWin.UI\Localization\CultureMapping.cs" Link="Localization\CultureMapping.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Page Include="..\DataGateWin.UI\Localization\Strings.*.xaml" Link="Localization\%(Filename)%(Extension)"/>
+    </ItemGroup>
+
 </Project>

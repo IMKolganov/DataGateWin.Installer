@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
-        Title="DataGate Installer" Height="640" Width="920"
+        Title="{DynamicResource Install_WindowTitle}" Height="640" Width="1000" MinWidth="860"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="CanResize"
@@ -117,22 +117,35 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="DataGate Windows Installer"
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Install_HeaderSubtitle}"
                            FontSize="22" FontWeight="SemiBold"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Name="StepTextBlock" Text="Step 1 of 4"
+                <TextBlock Grid.Row="1" Grid.Column="0" Name="StepTextBlock" Text=""
                            Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,4,0,0"/>
 
-                <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Orientation="Horizontal"
+                <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                            VerticalAlignment="Center" Margin="12,0,12,0" MinWidth="220">
+                    <TextBlock Text="{DynamicResource Install_LanguageLabel}"
+                               Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                    <TextBlock Text="{DynamicResource Install_LanguageHint}"
+                               Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11" Opacity="0.85"
+                               TextWrapping="Wrap" MaxWidth="260" Margin="0,2,0,0"/>
+                    <ComboBox Name="InstallerLanguageCombo" Margin="0,8,0,0" MinWidth="220" MaxWidth="320"
+                              HorizontalAlignment="Left"
+                              SelectionChanged="InstallerLanguageCombo_OnSelectionChanged"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="0,0,12,0">
-                    <TextBlock Text="Appearance" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,12,0"/>
-                    <RadioButton Name="LightThemeRadioButton" Content="Light" GroupName="Theme"
+                    <TextBlock Text="{DynamicResource Install_Appearance}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,12,0"/>
+                    <RadioButton Name="LightThemeRadioButton" Content="{DynamicResource Install_ThemeLight}" GroupName="Theme"
                                  Margin="0,0,10,0" Checked="ThemeRadioButton_Checked"/>
-                    <RadioButton Name="DarkThemeRadioButton" Content="Dark" GroupName="Theme"
+                    <RadioButton Name="DarkThemeRadioButton" Content="{DynamicResource Install_ThemeDark}" GroupName="Theme"
                                  Checked="ThemeRadioButton_Checked"/>
                 </StackPanel>
-                <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Orientation="Horizontal"
+                <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" Orientation="Horizontal"
                             VerticalAlignment="Center">
                     <Button Name="MinimizeButton" Content="—" Width="36" Height="28"
                             Click="MinimizeButton_Click" Style="{StaticResource SecondaryButton}" Margin="0,0,6,0"/>
@@ -145,25 +158,20 @@
                 BorderThickness="1" CornerRadius="10" Padding="20">
             <Grid>
                 <StackPanel Name="PolicyPanel" Visibility="Collapsed">
-                    <TextBlock Text="License Agreement" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{DynamicResource Install_LicenseTitle}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
                     <Border BorderBrush="{DynamicResource BorderBrushStrong}" BorderThickness="1" CornerRadius="6" Padding="12"
                             Background="{DynamicResource WindowBackgroundBrush}">
                         <ScrollViewer Height="300" VerticalScrollBarVisibility="Auto">
-                            <TextBlock TextWrapping="Wrap">
-                                By installing and using DataGateWin, you agree to the terms of this software policy.
-                                The software is provided &quot;as is&quot;, without warranty of any kind. You are responsible
-                                for ensuring compliance with applicable laws and regulations. If you do not agree to
-                                these terms, do not install or use this software.
-                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Text="{DynamicResource Install_PolicyBody}"/>
                         </ScrollViewer>
                     </Border>
-                    <CheckBox Name="PolicyCheckBox" Content="I accept the policy" Margin="0,12,0,0"
+                    <CheckBox Name="PolicyCheckBox" Content="{DynamicResource Install_AcceptPolicy}" Margin="0,12,0,0"
                               Checked="PolicyCheckBox_Changed" Unchecked="PolicyCheckBox_Changed"/>
                 </StackPanel>
 
                 <StackPanel Name="PathPanel" Visibility="Collapsed">
-                    <TextBlock Text="Choose Install Location" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                    <TextBlock Text="Select where DataGateWin should be installed."
+                    <TextBlock Text="{DynamicResource Install_ChooseLocationTitle}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{DynamicResource Install_ChooseLocationHint}"
                                Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,12"/>
                     <Grid Margin="0,0,0,16">
                         <Grid.ColumnDefinitions>
@@ -171,16 +179,24 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Install folder:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource Install_FolderLabel}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <TextBox Grid.Column="1" Name="InstallPathTextBox" Height="28"
                                  TextChanged="InstallPathTextBox_TextChanged"/>
-                        <Button Grid.Column="2" Name="BrowseButton" Content="Browse..." Width="110" Height="28"
+                        <Button Grid.Column="2" Name="BrowseButton" Content="{DynamicResource Install_Browse}" Width="110" Height="28"
                                 Margin="10,0,0,0" Click="BrowseButton_Click" Style="{StaticResource SecondaryButton}"/>
                     </Grid>
+
+                    <TextBlock Text="{DynamicResource Install_ShortcutsTitle}" FontWeight="SemiBold" Margin="0,8,0,8"/>
+                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,10"
+                               Text="{DynamicResource Install_ShortcutsHint}"/>
+                    <CheckBox Name="StartMenuShortcutCheckBox" Content="{DynamicResource Install_StartMenuShortcut}"
+                              IsChecked="True" Margin="0,0,0,6"/>
+                    <CheckBox Name="DesktopShortcutCheckBox" Content="{DynamicResource Install_DesktopShortcut}"
+                              IsChecked="True"/>
                 </StackPanel>
 
                 <StackPanel Name="InstallPanel" Visibility="Collapsed">
-                    <TextBlock Name="InstallTitleTextBlock" Text="Installing" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <TextBlock Name="InstallTitleTextBlock" Text="" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
 
                     <Grid Margin="0,0,0,0" Visibility="Collapsed">
                         <Grid.ColumnDefinitions>
@@ -191,10 +207,10 @@
                         <TextBox Grid.Column="1" Name="UrlTextBox" Height="28" IsReadOnly="True" Text=""/>
                     </Grid>
 
-                    <TextBlock Text="Downloading" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <TextBlock Text="{DynamicResource Install_Downloading}" FontWeight="SemiBold" Margin="0,0,0,6"/>
                     <ProgressBar Name="DownloadProgressBar" Height="22" Minimum="0" Maximum="100" Value="0" Margin="0,0,0,12"/>
 
-                    <TextBlock Text="Installing" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <TextBlock Text="{DynamicResource Install_Installing}" FontWeight="SemiBold" Margin="0,0,0,6"/>
                     <ProgressBar Name="InstallProgressBar" Height="22" Minimum="0" Maximum="100" Value="0" Margin="0,0,0,12"/>
 
                     <TextBox Name="LogTextBox" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
@@ -202,10 +218,10 @@
                 </StackPanel>
 
                 <StackPanel Name="FinishPanel" Visibility="Collapsed">
-                    <TextBlock Text="Setup Complete" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                    <TextBlock Name="FinishStatusTextBlock" Text="DataGateWin has been installed on your computer."
+                    <TextBlock Text="{DynamicResource Install_FinishTitle}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <TextBlock Name="FinishStatusTextBlock" Text=""
                                TextWrapping="Wrap" Margin="0,0,0,12"/>
-                    <CheckBox Name="LaunchCheckBox" Content="Launch application now" IsChecked="True"/>
+                    <CheckBox Name="LaunchCheckBox" Content="{DynamicResource Install_LaunchNow}" IsChecked="True"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -215,11 +231,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" Text="© DataGate"/>
-            <Button Grid.Column="1" Name="CancelButton" Content="Cancel" Width="120" Height="32"
+            <TextBlock Grid.Column="0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" Text="{DynamicResource Install_FooterCopyright}"/>
+            <Button Grid.Column="1" Name="UninstallButton" Content="{DynamicResource Install_Uninstall}" Width="120" Height="32"
+                    Margin="0,0,10,0" Click="UninstallButton_Click" Style="{StaticResource SecondaryButton}"/>
+            <Button Grid.Column="2" Name="CancelButton" Content="{DynamicResource Install_Cancel}" Width="120" Height="32"
                     Margin="0,0,10,0" Click="CancelButton_Click" Style="{StaticResource SecondaryButton}"/>
-            <Button Grid.Column="2" Name="NextButton" Content="Next" Width="120" Height="32"
+            <Button Grid.Column="3" Name="NextButton" Width="120" Height="32"
                     Click="NextButton_Click" Style="{StaticResource PrimaryButton}"/>
             </Grid>
         </Grid>
