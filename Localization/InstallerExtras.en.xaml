@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <sys:String x:Key="Install_WindowTitle">DataGate Installer</sys:String>
+    <sys:String x:Key="Install_HeaderSubtitle">DataGate Windows Installer</sys:String>
+    <sys:String x:Key="Install_StepFmt">Step {0} of 4</sys:String>
+    <sys:String x:Key="Install_TitleInstalling">Installing</sys:String>
+    <sys:String x:Key="Install_TitleUpdating">Updating</sys:String>
+    <sys:String x:Key="Install_UpdateFailedTitle">Update failed</sys:String>
+    <sys:String x:Key="Install_InstallFailedTitle">Install failed</sys:String>
+    <sys:String x:Key="Install_UninstallFailedTitle">Uninstall failed</sys:String>
+    <sys:String x:Key="Install_UninstallSuccessBody">Uninstalled successfully.</sys:String>
+    <sys:String x:Key="Install_AlreadyInstalledTitle">Already installed</sys:String>
+    <sys:String x:Key="Install_AlreadyInstalledBody">This version of DataGate is already installed.&#x0a;&#x0a;Yes — Launch DataGate now.&#x0a;No — Continue setup to reinstall application files.&#x0a;Cancel — Exit the installer.</sys:String>
+    <sys:String x:Key="Install_Appearance">Appearance</sys:String>
+    <sys:String x:Key="Install_ThemeLight">Light</sys:String>
+    <sys:String x:Key="Install_ThemeDark">Dark</sys:String>
+    <sys:String x:Key="Install_LicenseTitle">License Agreement</sys:String>
+    <sys:String x:Key="Install_PolicyBody">By installing and using DataGateWin, you agree to the terms of this software policy. The software is provided &quot;as is&quot;, without warranty of any kind. You are responsible for ensuring compliance with applicable laws and regulations. If you do not agree to these terms, do not install or use this software.</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">I accept the policy</sys:String>
+    <sys:String x:Key="Install_ChooseLocationTitle">Choose Install Location</sys:String>
+    <sys:String x:Key="Install_ChooseLocationHint">Select where DataGateWin should be installed.</sys:String>
+    <sys:String x:Key="Install_FolderLabel">Install folder:</sys:String>
+    <sys:String x:Key="Install_Browse">Browse…</sys:String>
+    <sys:String x:Key="Install_ShortcutsTitle">Shortcuts</sys:String>
+    <sys:String x:Key="Install_ShortcutsHint">Creates a Start Menu folder (Programs » DataGate) and optionally a shortcut on the shared desktop. Turn off either option if you do not want it.</sys:String>
+    <sys:String x:Key="Install_StartMenuShortcut">Add shortcut to Start Menu (recommended)</sys:String>
+    <sys:String x:Key="Install_DesktopShortcut">Add shortcut to Desktop (recommended)</sys:String>
+    <sys:String x:Key="Install_Downloading">Downloading</sys:String>
+    <sys:String x:Key="Install_Installing">Installing</sys:String>
+    <sys:String x:Key="Install_FinishTitle">Setup Complete</sys:String>
+    <sys:String x:Key="Install_FinishBodyInstalled">DataGateWin has been installed on your computer.</sys:String>
+    <sys:String x:Key="Install_FinishBodyUpdated">DataGateWin has been updated on your computer.</sys:String>
+    <sys:String x:Key="Install_LaunchNow">Launch application now</sys:String>
+    <sys:String x:Key="Install_FooterCopyright">© DataGate</sys:String>
+    <sys:String x:Key="Install_Cancel">Cancel</sys:String>
+    <sys:String x:Key="Install_Next">Next</sys:String>
+    <sys:String x:Key="Install_Finish">Finish</sys:String>
+    <sys:String x:Key="Install_Uninstall">Uninstall</sys:String>
+    <sys:String x:Key="Install_CancelSetupPrompt">Are you sure you want to cancel setup?</sys:String>
+    <sys:String x:Key="Install_ConfirmUninstallFmt">Remove {0} from this computer? Installed files and registry entries will be deleted.</sys:String>
+    <sys:String x:Key="Install_ConfirmUninstallTitle">Confirm uninstall</sys:String>
+    <sys:String x:Key="Install_SelectFolderTitle">Select installation folder</sys:String>
+    <sys:String x:Key="Install_LanguageLabel">Installer language</sys:String>
+    <sys:String x:Key="Install_LanguageHint">Uses the same list as the DataGate app. Default follows Windows.</sys:String>
+</ResourceDictionary>

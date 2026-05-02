@@ -2,11 +2,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using DataGateWin.Installer.Localization;
+using DataGateWin.Localization;
 using Microsoft.Win32;
 using MessageBox = System.Windows.MessageBox;
 
@@ -14,16 +17,9 @@ namespace DataGateWin.Installer;
 
 public partial class MainWindow : Window
 {
-    private const uint SnapshotProcess = 0x00000002;
-    private const string ProductName = "DataGate OpenVPN 3";
-    private const string Publisher = "DataGate";
-    private const string ExeName = "DataGateWin.exe";
     private const string LatestReleaseApiUrl = "https://api.github.com/repos/IMKolganov/DataGateWin/releases/latest";
     private const string AssetNamePrefix = "DataGateWin.v";
     private const string AssetNameSuffix = ".zip";
-
-    private const string UninstallRegKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\DataGateOpenVPN3";
-    private const string AppPathsRegKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\DataGateWin.exe";
 
     private CancellationTokenSource? _cts;
     private readonly bool _isUpdateMode;
@@ -32,6 +28,8 @@ public partial class MainWindow : Window
     private bool _installCompleted;
     private string? _lastInstalledExePath;
     private readonly bool _suppressThemeChange;
+    private bool _suppressInstallerLanguageCombo;
+    private EventHandler? _installerLanguageChangedHandler;
 
     private enum WizardStep
     {
@@ -61,7 +59,10 @@ public partial class MainWindow : Window
             string.Equals(a, "/update", StringComparison.OrdinalIgnoreCase));
 
         var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-        InstallPathTextBox.Text = Path.Combine(programFiles, "DataGate");
+        var registered = InstallRegistry.TryGetInstallLocation()?.Trim();
+        InstallPathTextBox.Text = !string.IsNullOrWhiteSpace(registered)
+            ? registered
+            : Path.Combine(programFiles, "DataGate");
         UrlTextBox.Text = "latest (auto)";
 
         var systemTheme = GetSystemTheme();
@@ -72,7 +73,114 @@ public partial class MainWindow : Window
         _suppressThemeChange = false;
 
         _currentStep = _isUpdateMode ? WizardStep.Install : WizardStep.Policy;
+
+        _installerLanguageChangedHandler = (_, _) => Dispatcher.Invoke(PopulateInstallerLanguageCombo);
+        InstallerLanguageService.LanguageChanged += _installerLanguageChangedHandler;
+        Unloaded += (_, _) =>
+        {
+            if (_installerLanguageChangedHandler is not null)
+                InstallerLanguageService.LanguageChanged -= _installerLanguageChangedHandler;
+        };
+
+        PopulateInstallerLanguageCombo();
         UpdateWizardUi();
+    }
+
+    private void PopulateInstallerLanguageCombo()
+    {
+        var pref = InstallerPreferenceStore.ReadUiLanguagePreference();
+        var normalized = InstallerLanguageService.NormalizePreference(
+            string.IsNullOrWhiteSpace(pref) ? InstallerLanguageService.SystemPreference : pref);
+
+        _suppressInstallerLanguageCombo = true;
+        InstallerLanguageCombo.Items.Clear();
+        InstallerLanguageCombo.Items.Add(new ComboBoxItem
+        {
+            Tag = InstallerLanguageService.SystemPreference,
+            Content = InstallerLanguageService.GetLanguageDisplayName(InstallerLanguageService.SystemPreference),
+        });
+        foreach (var code in UiLocale.GetLanguagePickerCodes())
+        {
+            InstallerLanguageCombo.Items.Add(new ComboBoxItem
+            {
+                Tag = code,
+                Content = InstallerLanguageService.GetLanguageDisplayName(code),
+            });
+        }
+
+        ComboBoxItem? match = null;
+        foreach (ComboBoxItem item in InstallerLanguageCombo.Items)
+        {
+            if (item.Tag is string t && string.Equals(t, normalized, StringComparison.OrdinalIgnoreCase))
+            {
+                match = item;
+                break;
+            }
+        }
+
+        InstallerLanguageCombo.SelectedItem = match ?? InstallerLanguageCombo.Items[0] as ComboBoxItem;
+        _suppressInstallerLanguageCombo = false;
+    }
+
+    private void InstallerLanguageCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_suppressInstallerLanguageCombo)
+            return;
+
+        if (InstallerLanguageCombo.SelectedItem is not ComboBoxItem { Tag: string code })
+            return;
+
+        InstallerPreferenceStore.WriteUiLanguagePreference(code);
+        InstallerLanguageService.Apply(code);
+    }
+
+    /// <summary>
+    /// If this installer matches the installed build, asks launch vs continue vs exit.
+    /// Returns true if the wizard should stop (launch or exit).
+    /// </summary>
+    private bool TryInterruptWizardForSameVersionInstalled()
+    {
+        var dir = InstallRegistry.TryGetInstallLocation()?.Trim();
+        if (string.IsNullOrWhiteSpace(dir))
+            return false;
+
+        var exePath = Path.Combine(dir, InstallerConstants.ExeName);
+        if (!File.Exists(exePath) || !InstalledBuild.IsSameAsInstaller(exePath))
+            return false;
+
+        var r = MessageBox.Show(
+            InstallerLoc.T("Install_AlreadyInstalledBody"),
+            InstallerLoc.T("Install_AlreadyInstalledTitle"),
+            MessageBoxButton.YesNoCancel,
+            MessageBoxImage.Question);
+
+        switch (r)
+        {
+            case MessageBoxResult.Yes:
+                try
+                {
+                    Process.Start(new ProcessStartInfo(exePath) { UseShellExecute = true });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        ex.Message,
+                        InstallerLoc.T("Msg_ErrorTitle"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    return false;
+                }
+
+                System.Windows.Application.Current.Shutdown();
+                return true;
+
+            case MessageBoxResult.Cancel:
+                System.Windows.Application.Current.Shutdown();
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     protected override async void OnContentRendered(EventArgs e)
@@ -90,7 +198,7 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             Log($"ERROR: {ex.Message}");
-            MessageBox.Show(ex.ToString(), "Update failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.ToString(), InstallerLoc.T("Install_UpdateFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -98,7 +206,7 @@ public partial class MainWindow : Window
     {
         var dlg = new FolderBrowserDialog
         {
-            Description = "Select installation folder",
+            Description = InstallerLoc.T("Install_SelectFolderTitle"),
             UseDescriptionForTitle = true,
             ShowNewFolderButton = true
         };
@@ -136,6 +244,8 @@ public partial class MainWindow : Window
             case WizardStep.Policy:
                 if (PolicyCheckBox.IsChecked != true)
                     return;
+                if (TryInterruptWizardForSameVersionInstalled())
+                    return;
                 _currentStep = WizardStep.Path;
                 UpdateWizardUi();
                 break;
@@ -165,8 +275,11 @@ public partial class MainWindow : Window
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
-        var result = MessageBox.Show("Are you sure you want to cancel setup?", ProductName,
-            MessageBoxButton.YesNo, MessageBoxImage.Question);
+        var result = MessageBox.Show(
+            InstallerLoc.T("Install_CancelSetupPrompt"),
+            InstallerLoc.T("Install_WindowTitle"),
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
             Close();
     }
@@ -199,21 +312,25 @@ public partial class MainWindow : Window
         InstallPanel.Visibility = _currentStep == WizardStep.Install ? Visibility.Visible : Visibility.Collapsed;
         FinishPanel.Visibility = _currentStep == WizardStep.Finish ? Visibility.Visible : Visibility.Collapsed;
 
-        InstallTitleTextBlock.Text = _isUpdateMode ? "Updating" : "Installing";
+        InstallTitleTextBlock.Text = _isUpdateMode
+            ? InstallerLoc.T("Install_TitleUpdating")
+            : InstallerLoc.T("Install_TitleInstalling");
         FinishStatusTextBlock.Text = _isUpdateMode
-            ? "DataGateWin has been updated on your computer."
-            : "DataGateWin has been installed on your computer.";
+            ? InstallerLoc.T("Install_FinishBodyUpdated")
+            : InstallerLoc.T("Install_FinishBodyInstalled");
 
         InstallPathTextBox.IsEnabled = !_isUpdateMode;
         BrowseButton.IsEnabled = !_isUpdateMode;
 
-        NextButton.Content = _currentStep == WizardStep.Finish ? "Finish" : "Next";
+        NextButton.Content = _currentStep == WizardStep.Finish
+            ? InstallerLoc.T("Install_Finish")
+            : InstallerLoc.T("Install_Next");
         StepTextBlock.Text = _currentStep switch
         {
-            WizardStep.Policy => "Step 1 of 4",
-            WizardStep.Path => "Step 2 of 4",
-            WizardStep.Install => "Step 3 of 4",
-            WizardStep.Finish => "Step 4 of 4",
+            WizardStep.Policy => InstallerLoc.T("Install_StepFmt", 1),
+            WizardStep.Path => InstallerLoc.T("Install_StepFmt", 2),
+            WizardStep.Install => InstallerLoc.T("Install_StepFmt", 3),
+            WizardStep.Finish => InstallerLoc.T("Install_StepFmt", 4),
             _ => string.Empty
         };
         UpdateNextButtonState();
@@ -236,6 +353,7 @@ public partial class MainWindow : Window
         _installCompleted = false;
         UpdateNextButtonState();
         CancelButton.IsEnabled = false;
+        UninstallButton.IsEnabled = false;
 
         DownloadProgressBar.Value = 0;
         InstallProgressBar.Value = 0;
@@ -254,7 +372,7 @@ public partial class MainWindow : Window
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
-            await EnsureAppProcessesStoppedAsync();
+            await ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(true, Log).ConfigureAwait(true);
 
             if (isUpdate)
             {
@@ -292,20 +410,29 @@ public partial class MainWindow : Window
                     new Progress<double>(p => ReportInstallProgress(10 + (p * 0.9))),
                     _cts.Token);
 
-                var exePath = Path.Combine(installDir, ExeName);
+                var exePath = Path.Combine(installDir, InstallerConstants.ExeName);
                 if (!File.Exists(exePath))
                     throw new FileNotFoundException("Main executable was not found after extraction.", exePath);
 
                 if (!isUpdate)
                 {
-                    Log("Creating Start Menu shortcut...");
-                    CreateStartMenuShortcut(installDir, exePath);
+                    if (StartMenuShortcutCheckBox.IsChecked == true)
+                    {
+                        Log("Creating Start Menu shortcut...");
+                        ShortcutHelper.CreateStartMenuShortcut(installDir, exePath);
+                    }
+
+                    if (DesktopShortcutCheckBox.IsChecked == true)
+                    {
+                        Log("Creating Desktop shortcut...");
+                        ShortcutHelper.CreateDesktopShortcut(installDir, exePath);
+                    }
 
                     Log("Registering Apps & Features entry...");
-                    RegisterUninstallEntry(installDir);
+                    InstallRegistry.RegisterUninstallEntry(installDir);
 
                     Log("Registering App Paths...");
-                    RegisterAppPaths(exePath, installDir);
+                    InstallRegistry.RegisterAppPaths(exePath, installDir);
                 }
 
                 ReportInstallProgress(100);
@@ -332,12 +459,16 @@ public partial class MainWindow : Window
             if (!string.IsNullOrWhiteSpace(url))
                 Log($"ERROR: failed to download from: {url}");
             Log($"ERROR: {ex.Message}");
-            MessageBox.Show(ex.ToString(), isUpdate ? "Update failed" : "Install failed",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(
+                ex.ToString(),
+                isUpdate ? InstallerLoc.T("Install_UpdateFailedTitle") : InstallerLoc.T("Install_InstallFailedTitle"),
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
         finally
         {
             CancelButton.IsEnabled = true;
+            UninstallButton.IsEnabled = true;
             _cts?.Dispose();
             _cts = null;
         }
@@ -345,37 +476,28 @@ public partial class MainWindow : Window
 
     private async void UninstallButton_Click(object sender, RoutedEventArgs e)
     {
+        var confirm = MessageBox.Show(
+            InstallerLoc.T("Install_ConfirmUninstallFmt", InstallerConstants.ProductName),
+            InstallerLoc.T("Install_ConfirmUninstallTitle"),
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+        if (confirm != MessageBoxResult.Yes)
+            return;
+
         try
         {
-            var installDir = InstallPathTextBox.Text.Trim();
-            if (string.IsNullOrWhiteSpace(installDir))
-                throw new InvalidOperationException("Install folder is empty.");
-
-            await EnsureAppProcessesStoppedAsync();
-
             LogTextBox.Clear();
-            Log($"Uninstalling from: {installDir}");
+            var regDir = InstallRegistry.TryGetInstallLocation()?.Trim();
+            var fallbackDir = InstallPathTextBox.Text.Trim();
+            var labelDir = !string.IsNullOrWhiteSpace(regDir) ? regDir : fallbackDir;
+            Log($"Uninstalling from: {labelDir}");
 
-            Log("Removing Start Menu shortcut...");
-            RemoveStartMenuShortcut();
-
-            Log("Removing registry entries...");
-            UnregisterUninstallEntry();
-            UnregisterAppPaths();
-
-            if (Directory.Exists(installDir))
-            {
-                Log("Deleting files...");
-                Directory.Delete(installDir, recursive: true);
-            }
-
-            Log("Done.");
-            MessageBox.Show("Uninstalled successfully.", ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+            await UninstallRunner.ExecuteAsync(false, fallbackDir, Log).ConfigureAwait(true);
         }
         catch (Exception ex)
         {
             Log($"ERROR: {ex.Message}");
-            MessageBox.Show(ex.ToString(), "Uninstall failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.ToString(), InstallerLoc.T("Install_UninstallFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -448,175 +570,6 @@ public partial class MainWindow : Window
         throw new InvalidOperationException($"No ZIP asset found matching {AssetNamePrefix}*{AssetNameSuffix}.");
     }
 
-    private async Task EnsureAppProcessesStoppedAsync()
-    {
-        await Task.Delay(500);
-        var parentPid = GetParentProcessId();
-        var processes = new[]
-        {
-            ("DataGateWin", "DataGateWin.exe"),
-            ("engine", "engine.exe")
-        };
-
-        var running = new List<Process>();
-        foreach (var (processName, _) in processes)
-        {
-            try
-            {
-                running.AddRange(Process.GetProcessesByName(processName));
-            }
-            catch (Exception ex)
-            {
-                Log($"WARN: failed to enumerate process {processName}: {ex.Message}");
-            }
-        }
-
-        if (running.Count == 0)
-            return;
-
-        await Task.Delay(500);
-        var parentProcess = parentPid > 0
-            ? running.FirstOrDefault(p => p.Id == parentPid)
-            : null;
-
-        var names = string.Join(", ", running
-            .Select(p => $"{p.ProcessName}.exe")
-            .Distinct(StringComparer.OrdinalIgnoreCase));
-        var result = MessageBox.Show(
-            $"Detected running processes: {names}.{Environment.NewLine}Do you want to close them now?",
-            ProductName,
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Warning);
-
-        if (result != MessageBoxResult.Yes)
-            throw new InvalidOperationException("Installation cancelled because the app is still running.");
-
-        foreach (var proc in running.DistinctBy(p => p.Id))
-        {
-            try
-            {
-                if (proc.HasExited)
-                    continue;
-                if (parentProcess != null && proc.Id == parentProcess.Id)
-                {
-                    Log($"WARN: {proc.ProcessName} (PID {proc.Id}) started the installer; close it manually.");
-                    continue;
-                }
-                Log($"Stopping {proc.ProcessName} (PID {proc.Id})...");
-                proc.Kill(entireProcessTree: true);
-                proc.WaitForExit(5000);
-            }
-            catch (Exception ex)
-            {
-                Log($"WARN: failed to stop {proc.ProcessName} (PID {proc.Id}): {ex.Message}");
-            }
-        }
-
-        await Task.Delay(500);
-        var stillRunning = new List<Process>();
-        foreach (var (processName, _) in processes)
-        {
-            try
-            {
-                stillRunning.AddRange(Process.GetProcessesByName(processName));
-            }
-            catch (Exception ex)
-            {
-                Log($"WARN: failed to enumerate process {processName}: {ex.Message}");
-            }
-        }
-
-        if (stillRunning.Count > 0)
-        {
-            if (parentProcess != null && stillRunning.Any(p => p.Id == parentProcess.Id))
-            {
-                await Task.Delay(1500);
-                var refreshed = new List<Process>();
-                foreach (var (processName, _) in processes)
-                {
-                    try
-                    {
-                        refreshed.AddRange(Process.GetProcessesByName(processName));
-                    }
-                    catch (Exception ex)
-                    {
-                        Log($"WARN: failed to enumerate process {processName}: {ex.Message}");
-                    }
-                }
-
-                stillRunning = refreshed;
-                var parentStillRunning = stillRunning.Any(p => p.Id == parentProcess.Id);
-                if (parentStillRunning)
-                    throw new InvalidOperationException(
-                        $"Installer was started by {parentProcess.ProcessName}. Please close it manually and retry.");
-            }
-
-            if (stillRunning.Count == 0)
-                return;
-
-            var stillNames = string.Join(", ", stillRunning
-                .Select(p => $"{p.ProcessName}.exe")
-                .Distinct(StringComparer.OrdinalIgnoreCase));
-            throw new InvalidOperationException($"Processes are still running: {stillNames}");
-        }
-    }
-
-    private static int GetParentProcessId()
-    {
-        var currentId = Environment.ProcessId;
-        var snapshot = CreateToolhelp32Snapshot(SnapshotProcess, 0);
-        if (snapshot == IntPtr.Zero || snapshot == (IntPtr)(-1))
-            return 0;
-
-        try
-        {
-            var entry = new ProcessEntry32 { Size = (uint)Marshal.SizeOf<ProcessEntry32>() };
-            if (!Process32First(snapshot, ref entry))
-                return 0;
-
-            do
-            {
-                if (entry.ProcessId == currentId)
-                    return (int)entry.ParentProcessId;
-            }
-            while (Process32Next(snapshot, ref entry));
-
-            return 0;
-        }
-        finally
-        {
-            CloseHandle(snapshot);
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    private struct ProcessEntry32
-    {
-        public uint Size;
-        public uint Usage;
-        public uint ProcessId;
-        public IntPtr DefaultHeapId;
-        public uint ModuleId;
-        public uint ThreadCount;
-        public uint ParentProcessId;
-        public int PriorityClassBase;
-        public uint Flags;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-        public string ExeFile;
-    }
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern IntPtr CreateToolhelp32Snapshot(uint flags, uint processId);
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool Process32First(IntPtr snapshot, ref ProcessEntry32 entry);
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool Process32Next(IntPtr snapshot, ref ProcessEntry32 entry);
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool CloseHandle(IntPtr handle);
-
     private string ResolveUpdateInstallDir(string startDir)
     {
         var current = startDir;
@@ -625,7 +578,7 @@ public partial class MainWindow : Window
         for (var depth = 0; depth < 6 && !string.IsNullOrWhiteSpace(current); depth++)
         {
             checkedDirs.Add(current);
-            var candidateExe = Path.Combine(current, ExeName);
+            var candidateExe = Path.Combine(current, InstallerConstants.ExeName);
             if (File.Exists(candidateExe))
             {
                 Log($"Update mode: resolved install folder: {current}");
@@ -645,126 +598,7 @@ public partial class MainWindow : Window
         var attempts = string.Join(Environment.NewLine, checkedDirs.Select(d => $" - {d}"));
         throw new FileNotFoundException(
             $"DataGateWin.exe was not found near the installer. Checked:{Environment.NewLine}{attempts}",
-            Path.Combine(startDir, ExeName));
-    }
-
-    private static void CopyDirectory(string sourceDir, string destinationDir, Func<string, bool>? skipDestination = null)
-    {
-        Directory.CreateDirectory(destinationDir);
-
-        foreach (var file in Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories))
-        {
-            var relative = Path.GetRelativePath(sourceDir, file);
-            var destFile = Path.Combine(destinationDir, relative);
-
-            if (skipDestination?.Invoke(destFile) == true)
-                continue;
-
-            Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
-            File.Copy(file, destFile, overwrite: true);
-        }
-    }
-
-    private static string GetStartMenuFolder()
-    {
-        var programs = Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms);
-        return Path.Combine(programs, "DataGate");
-    }
-
-    private static void CreateStartMenuShortcut(string installDir, string exePath)
-    {
-        var folder = GetStartMenuFolder();
-        Directory.CreateDirectory(folder);
-
-        var shortcutPath = Path.Combine(folder, $"{ProductName}.lnk");
-
-        // Uses WScript.Shell COM. Add COM reference:
-        // "Windows Script Host Object Model" (IWshRuntimeLibrary)
-        var shellType = Type.GetTypeFromProgID("WScript.Shell")!;
-        dynamic shell = Activator.CreateInstance(shellType)!;
-        dynamic shortcut = shell.CreateShortcut(shortcutPath);
-        shortcut.TargetPath = exePath;
-        shortcut.WorkingDirectory = installDir;
-        shortcut.WindowStyle = 1;
-        shortcut.Description = ProductName;
-
-        var iconPath = Path.Combine(installDir, "favicon.ico");
-        if (File.Exists(iconPath))
-            shortcut.IconLocation = iconPath;
-
-        shortcut.Save();
-    }
-
-    private static void RemoveStartMenuShortcut()
-    {
-        var folder = GetStartMenuFolder();
-        var shortcutPath = Path.Combine(folder, $"{ProductName}.lnk");
-
-        if (File.Exists(shortcutPath))
-            File.Delete(shortcutPath);
-
-        if (Directory.Exists(folder) && Directory.GetFiles(folder).Length == 0 && Directory.GetDirectories(folder).Length == 0)
-            Directory.Delete(folder);
-    }
-
-    private void RegisterUninstallEntry(string installDir)
-    {
-        var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
-        if (string.IsNullOrWhiteSpace(installerExe))
-            throw new InvalidOperationException("Cannot resolve installer path.");
-
-        using var key = Registry.LocalMachine.CreateSubKey(UninstallRegKeyPath, writable: true);
-        if (key == null)
-            throw new InvalidOperationException("Failed to open HKLM uninstall key. Run as administrator.");
-
-        key.SetValue("DisplayName", ProductName, RegistryValueKind.String);
-        key.SetValue("Publisher", Publisher, RegistryValueKind.String);
-        key.SetValue("InstallLocation", installDir, RegistryValueKind.String);
-
-        var version = GetInstallerVersion();
-        if (!string.IsNullOrWhiteSpace(version))
-            key.SetValue("DisplayVersion", version, RegistryValueKind.String);
-
-        key.SetValue("UninstallString", $"\"{installerExe}\" --uninstall", RegistryValueKind.String);
-        key.SetValue("QuietUninstallString", $"\"{installerExe}\" --uninstall --quiet", RegistryValueKind.String);
-
-        key.SetValue("NoModify", 1, RegistryValueKind.DWord);
-        key.SetValue("NoRepair", 1, RegistryValueKind.DWord);
-    }
-
-    private static void UnregisterUninstallEntry()
-    {
-        try { Registry.LocalMachine.DeleteSubKeyTree(UninstallRegKeyPath, throwOnMissingSubKey: false); }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
-    }
-
-    private static void RegisterAppPaths(string exePath, string installDir)
-    {
-        using var key = Registry.LocalMachine.CreateSubKey(AppPathsRegKeyPath, writable: true);
-        if (key == null)
-            throw new InvalidOperationException("Failed to open HKLM App Paths key. Run as administrator.");
-
-        key.SetValue(string.Empty, exePath, RegistryValueKind.String);
-        key.SetValue("Path", installDir, RegistryValueKind.String);
-    }
-
-    private static void UnregisterAppPaths()
-    {
-        try { Registry.LocalMachine.DeleteSubKeyTree(AppPathsRegKeyPath, throwOnMissingSubKey: false); }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
-    }
-
-    private static string? GetInstallerVersion()
-    {
-        var asm = typeof(MainWindow).Assembly;
-        var v = asm.GetName().Version;
-        return v?.ToString();
+            Path.Combine(startDir, InstallerConstants.ExeName));
     }
 
     private void Log(string message)
