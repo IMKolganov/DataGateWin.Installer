@@ -2,12 +2,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using DataGateWin.CrashReporting;
 using DataGateWin.Installer.Localization;
 using DataGateWin.Localization;
 using Microsoft.Win32;
@@ -24,20 +23,12 @@ public partial class MainWindow : Window
     private CancellationTokenSource? _cts;
     private readonly bool _isUpdateMode;
     private readonly string _installerDir;
-    private WizardStep _currentStep;
+    private InstallerWizardStep _currentStep;
     private bool _installCompleted;
     private string? _lastInstalledExePath;
     private readonly bool _suppressThemeChange;
     private bool _suppressInstallerLanguageCombo;
     private EventHandler? _installerLanguageChangedHandler;
-
-    private enum WizardStep
-    {
-        Policy,
-        Path,
-        Install,
-        Finish
-    }
 
     private enum AppTheme
     {
@@ -52,11 +43,8 @@ public partial class MainWindow : Window
         var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
         _installerDir = Path.GetDirectoryName(installerExe) ?? Environment.CurrentDirectory;
 
-        var args = Environment.GetCommandLineArgs();
-        _isUpdateMode = args.Any(a =>
-            string.Equals(a, "update", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(a, "--update", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(a, "/update", StringComparison.OrdinalIgnoreCase));
+        var options = InstallerCommandLine.Parse(Environment.GetCommandLineArgs());
+        _isUpdateMode = options.IsUpdateMode;
 
         var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
         var registered = InstallRegistry.TryGetInstallLocation()?.Trim();
@@ -72,7 +60,7 @@ public partial class MainWindow : Window
         DarkThemeRadioButton.IsChecked = systemTheme == AppTheme.Dark;
         _suppressThemeChange = false;
 
-        _currentStep = _isUpdateMode ? WizardStep.Install : WizardStep.Policy;
+        _currentStep = InstallerWizardRules.GetInitialStep(_isUpdateMode);
 
         _installerLanguageChangedHandler = (_, _) => Dispatcher.Invoke(PopulateInstallerLanguageCombo);
         InstallerLanguageService.LanguageChanged += _installerLanguageChangedHandler;
@@ -163,6 +151,7 @@ public partial class MainWindow : Window
                 }
                 catch (Exception ex)
                 {
+                    CrashReporter.ReportNonFatal(ex, "Installer.LaunchInstalledApp");
                     MessageBox.Show(
                         ex.Message,
                         InstallerLoc.T("Msg_ErrorTitle"),
@@ -197,6 +186,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
+            CrashReporter.ReportNonFatal(ex, "Installer.UpdateModeStart");
             Log($"ERROR: {ex.Message}");
             MessageBox.Show(ex.ToString(), InstallerLoc.T("Install_UpdateFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -241,28 +231,28 @@ public partial class MainWindow : Window
     {
         switch (_currentStep)
         {
-            case WizardStep.Policy:
+            case InstallerWizardStep.Policy:
                 if (PolicyCheckBox.IsChecked != true)
                     return;
                 if (TryInterruptWizardForSameVersionInstalled())
                     return;
-                _currentStep = WizardStep.Path;
+                _currentStep = InstallerWizardStep.Path;
                 UpdateWizardUi();
                 break;
-            case WizardStep.Path:
+            case InstallerWizardStep.Path:
                 if (string.IsNullOrWhiteSpace(InstallPathTextBox.Text))
                     return;
-                _currentStep = WizardStep.Install;
+                _currentStep = InstallerWizardStep.Install;
                 UpdateWizardUi();
                 await StartInstallAsync(isUpdate: false);
                 break;
-            case WizardStep.Install:
+            case InstallerWizardStep.Install:
                 if (!_installCompleted)
                     return;
-                _currentStep = WizardStep.Finish;
+                _currentStep = InstallerWizardStep.Finish;
                 UpdateWizardUi();
                 break;
-            case WizardStep.Finish:
+            case InstallerWizardStep.Finish:
                 if (LaunchCheckBox.IsChecked == true && !string.IsNullOrWhiteSpace(_lastInstalledExePath))
                 {
                     if (File.Exists(_lastInstalledExePath))
@@ -307,10 +297,10 @@ public partial class MainWindow : Window
 
     private void UpdateWizardUi()
     {
-        PolicyPanel.Visibility = _currentStep == WizardStep.Policy ? Visibility.Visible : Visibility.Collapsed;
-        PathPanel.Visibility = _currentStep == WizardStep.Path ? Visibility.Visible : Visibility.Collapsed;
-        InstallPanel.Visibility = _currentStep == WizardStep.Install ? Visibility.Visible : Visibility.Collapsed;
-        FinishPanel.Visibility = _currentStep == WizardStep.Finish ? Visibility.Visible : Visibility.Collapsed;
+        PolicyPanel.Visibility = _currentStep == InstallerWizardStep.Policy ? Visibility.Visible : Visibility.Collapsed;
+        PathPanel.Visibility = _currentStep == InstallerWizardStep.Path ? Visibility.Visible : Visibility.Collapsed;
+        InstallPanel.Visibility = _currentStep == InstallerWizardStep.Install ? Visibility.Visible : Visibility.Collapsed;
+        FinishPanel.Visibility = _currentStep == InstallerWizardStep.Finish ? Visibility.Visible : Visibility.Collapsed;
 
         InstallTitleTextBlock.Text = _isUpdateMode
             ? InstallerLoc.T("Install_TitleUpdating")
@@ -322,15 +312,15 @@ public partial class MainWindow : Window
         InstallPathTextBox.IsEnabled = !_isUpdateMode;
         BrowseButton.IsEnabled = !_isUpdateMode;
 
-        NextButton.Content = _currentStep == WizardStep.Finish
+        NextButton.Content = _currentStep == InstallerWizardStep.Finish
             ? InstallerLoc.T("Install_Finish")
             : InstallerLoc.T("Install_Next");
         StepTextBlock.Text = _currentStep switch
         {
-            WizardStep.Policy => InstallerLoc.T("Install_StepFmt", 1),
-            WizardStep.Path => InstallerLoc.T("Install_StepFmt", 2),
-            WizardStep.Install => InstallerLoc.T("Install_StepFmt", 3),
-            WizardStep.Finish => InstallerLoc.T("Install_StepFmt", 4),
+            InstallerWizardStep.Policy => InstallerLoc.T("Install_StepFmt", 1),
+            InstallerWizardStep.Path => InstallerLoc.T("Install_StepFmt", 2),
+            InstallerWizardStep.Install => InstallerLoc.T("Install_StepFmt", 3),
+            InstallerWizardStep.Finish => InstallerLoc.T("Install_StepFmt", 4),
             _ => string.Empty
         };
         UpdateNextButtonState();
@@ -338,14 +328,11 @@ public partial class MainWindow : Window
 
     private void UpdateNextButtonState()
     {
-        NextButton.IsEnabled = _currentStep switch
-        {
-            WizardStep.Policy => PolicyCheckBox.IsChecked == true,
-            WizardStep.Path => !string.IsNullOrWhiteSpace(InstallPathTextBox.Text),
-            WizardStep.Install => _installCompleted,
-            WizardStep.Finish => true,
-            _ => false
-        };
+        NextButton.IsEnabled = InstallerWizardRules.IsNextEnabled(
+            _currentStep,
+            PolicyCheckBox.IsChecked == true,
+            InstallPathTextBox.Text,
+            _installCompleted);
     }
 
     private async Task StartInstallAsync(bool isUpdate)
@@ -376,7 +363,7 @@ public partial class MainWindow : Window
 
             if (isUpdate)
             {
-                installDir = ResolveUpdateInstallDir(installDir);
+                installDir = InstallerOperations.ResolveUpdateInstallDir(installDir, InstallerConstants.ExeName, Log);
                 InstallPathTextBox.Text = installDir;
             }
 
@@ -402,7 +389,7 @@ public partial class MainWindow : Window
                 var installerExePath = installerExe != null ? Path.GetFullPath(installerExe) : string.Empty;
 
                 Log("Deploying files...");
-                CopyDirectoryWithProgress(
+                InstallerOperations.CopyDirectoryWithProgress(
                     extractDir,
                     installDir,
                     dest => !string.IsNullOrWhiteSpace(installerExePath) &&
@@ -448,14 +435,17 @@ public partial class MainWindow : Window
                 {
                     Directory.Delete(tempRoot, recursive: true);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
+                    CrashReporter.ReportNonFatal(ex, "Installer.CleanupTempRoot");
                     Debug.WriteLine(ex);
                 }
             }
         }
         catch (Exception ex)
         {
+            CrashReporter.ReportNonFatal(ex, isUpdate ? "Installer.UpdateFailed" : "Installer.InstallFailed");
+
             if (!string.IsNullOrWhiteSpace(url))
                 Log($"ERROR: failed to download from: {url}");
             Log($"ERROR: {ex.Message}");
@@ -496,6 +486,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
+            CrashReporter.ReportNonFatal(ex, "Installer.UninstallButton");
             Log($"ERROR: {ex.Message}");
             MessageBox.Show(ex.ToString(), InstallerLoc.T("Install_UninstallFailedTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -504,101 +495,18 @@ public partial class MainWindow : Window
     private static async Task DownloadFileAsync(string url, string destinationPath, IProgress<double> progress, CancellationToken ct)
     {
         using var http = new HttpClient();
-        using var response = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
-        response.EnsureSuccessStatusCode();
-
-        var total = response.Content.Headers.ContentLength;
-
-        await using var input = await response.Content.ReadAsStreamAsync(ct);
-        await using var output = File.Create(destinationPath);
-
-        var buffer = new byte[81920];
-        long readTotal = 0;
-
-        while (true)
-        {
-            var read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), ct);
-            if (read == 0)
-                break;
-
-            await output.WriteAsync(buffer.AsMemory(0, read), ct);
-            readTotal += read;
-
-            if (total.HasValue && total.Value > 0)
-            {
-                var pct = (double)readTotal / total.Value * 100.0;
-                progress.Report(Math.Min(100.0, pct));
-            }
-        }
-
-        if (!total.HasValue)
-            progress.Report(100.0);
+        await InstallerDownloader.DownloadFileAsync(http, url, destinationPath, progress, ct);
     }
 
     private static async Task<string> ResolveLatestReleaseZipUrlAsync(CancellationToken ct)
     {
-        using var http = new HttpClient();
-        http.DefaultRequestHeaders.UserAgent.ParseAdd("DataGateWin.Installer");
-
-        using var response = await http.GetAsync(LatestReleaseApiUrl, ct);
-        response.EnsureSuccessStatusCode();
-
-        await using var stream = await response.Content.ReadAsStreamAsync(ct);
-        using var doc = await JsonDocument.ParseAsync(stream, cancellationToken: ct);
-
-        if (!doc.RootElement.TryGetProperty("assets", out var assets) || assets.ValueKind != JsonValueKind.Array)
-            throw new InvalidOperationException("GitHub latest release response does not contain assets.");
-
-        foreach (var asset in assets.EnumerateArray())
-        {
-            if (!asset.TryGetProperty("name", out var nameProp) || nameProp.ValueKind != JsonValueKind.String)
-                continue;
-            var name = nameProp.GetString() ?? string.Empty;
-            if (!name.StartsWith(AssetNamePrefix, StringComparison.OrdinalIgnoreCase) ||
-                !name.EndsWith(AssetNameSuffix, StringComparison.OrdinalIgnoreCase))
-                continue;
-
-            if (asset.TryGetProperty("browser_download_url", out var urlProp) &&
-                urlProp.ValueKind == JsonValueKind.String)
-            {
-                var url = urlProp.GetString();
-                if (!string.IsNullOrWhiteSpace(url))
-                    return url;
-            }
-        }
-
-        throw new InvalidOperationException($"No ZIP asset found matching {AssetNamePrefix}*{AssetNameSuffix}.");
-    }
-
-    private string ResolveUpdateInstallDir(string startDir)
-    {
-        var current = startDir;
-        var checkedDirs = new List<string>();
-
-        for (var depth = 0; depth < 6 && !string.IsNullOrWhiteSpace(current); depth++)
-        {
-            checkedDirs.Add(current);
-            var candidateExe = Path.Combine(current, InstallerConstants.ExeName);
-            if (File.Exists(candidateExe))
-            {
-                Log($"Update mode: resolved install folder: {current}");
-                return current;
-            }
-
-            var parent = Directory.GetParent(current)?.FullName;
-            if (string.IsNullOrWhiteSpace(parent) ||
-                string.Equals(parent, current, StringComparison.OrdinalIgnoreCase))
-            {
-                break;
-            }
-
-            current = parent;
-        }
-
-        var attempts = string.Join(Environment.NewLine, checkedDirs.Select(d => $" - {d}"));
-        throw new FileNotFoundException(
-            $"DataGateWin.exe was not found near the installer. Checked:{Environment.NewLine}{attempts}",
-            Path.Combine(startDir, InstallerConstants.ExeName));
+        using var http = InstallerDownloader.CreateGitHubHttpClient();
+        return await InstallerDownloader.ResolveLatestReleaseZipUrlAsync(
+            http,
+            LatestReleaseApiUrl,
+            AssetNamePrefix,
+            AssetNameSuffix,
+            ct);
     }
 
     private void Log(string message)
@@ -672,42 +580,4 @@ public partial class MainWindow : Window
         }
     }
 
-    private static void CopyDirectoryWithProgress(
-        string sourceDir,
-        string destinationDir,
-        Func<string, bool>? skipDestination,
-        IProgress<double> progress,
-        CancellationToken ct)
-    {
-        Directory.CreateDirectory(destinationDir);
-
-        var files = Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories);
-        var copyList = new List<(string Source, string Destination)>();
-
-        foreach (var file in files)
-        {
-            var relative = Path.GetRelativePath(sourceDir, file);
-            var destFile = Path.Combine(destinationDir, relative);
-
-            if (skipDestination?.Invoke(destFile) == true)
-                continue;
-
-            copyList.Add((file, destFile));
-        }
-
-        if (copyList.Count == 0)
-        {
-            progress.Report(100);
-            return;
-        }
-
-        for (var i = 0; i < copyList.Count; i++)
-        {
-            ct.ThrowIfCancellationRequested();
-            var (source, dest) = copyList[i];
-            Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-            File.Copy(source, dest, overwrite: true);
-            progress.Report((i + 1) * 100.0 / copyList.Count);
-        }
-    }
 }

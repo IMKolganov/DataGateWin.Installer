@@ -8,8 +8,8 @@
         <UseWPF>true</UseWPF>
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>Images\favicon.ico</ApplicationIcon>
-        <AssemblyVersion>1.0.6</AssemblyVersion>
-        <FileVersion>1.0.6</FileVersion>
+        <AssemblyVersion>1.0.7</AssemblyVersion>
+        <FileVersion>1.0.7</FileVersion>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
@@ -21,6 +21,10 @@
     <ItemGroup>
         <Compile Include="..\DataGateWin.UI\Localization\UiLocale.cs" Link="Localization\UiLocale.cs"/>
         <Compile Include="..\DataGateWin.UI\Localization\CultureMapping.cs" Link="Localization\CultureMapping.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DataGateWin.CrashReporting\DataGateWin.CrashReporting.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

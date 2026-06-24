@@ -14,38 +14,15 @@ internal static class UninstallRunner
     /// </summary>
     public static async Task ExecuteAsync(bool quiet, string? installDirectoryFallback = null, Action<string>? log = null)
     {
-        var installDir = InstallRegistry.TryGetInstallLocation()?.Trim();
-        if (string.IsNullOrWhiteSpace(installDir))
-            installDir = installDirectoryFallback?.Trim();
-
-        if (string.IsNullOrWhiteSpace(installDir))
-        {
-            throw new InvalidOperationException(
-                "Could not determine the installation folder. If the app was moved manually, uninstall from the installer UI or delete files yourself.");
-        }
-
         void DefaultLog(string m) => Debug.WriteLine("[Uninstall] " + m);
+        var logger = log ?? DefaultLog;
 
-        await ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(
-                interactivePrompts: !quiet,
-                log: log ?? DefaultLog)
+        await InstallerUninstaller.ExecuteAsync(
+                new DefaultInstallerUninstallSystem(),
+                quiet,
+                installDirectoryFallback,
+                logger)
             .ConfigureAwait(false);
-
-        log?.Invoke("Removing shortcuts...");
-        ShortcutHelper.RemoveStartMenuShortcut();
-        ShortcutHelper.RemoveDesktopShortcut();
-
-        log?.Invoke("Removing registry entries...");
-        InstallRegistry.UnregisterUninstallEntry();
-        InstallRegistry.UnregisterAppPaths();
-
-        if (Directory.Exists(installDir))
-        {
-            log?.Invoke("Deleting files...");
-            Directory.Delete(installDir, recursive: true);
-        }
-
-        log?.Invoke("Done.");
 
         if (!quiet)
         {
