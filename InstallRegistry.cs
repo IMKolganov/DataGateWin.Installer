@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using Microsoft.Win32;
 
@@ -33,19 +34,39 @@ internal static class InstallRegistry
         InstallerConstants.LegacyUninstallRegKeyPath,
     ];
 
+    /// <summary>
+    /// Prefer the installer copied into the install folder so Windows uninstall keeps working
+    /// after the original download (Desktop, Temp, etc.) is deleted.
+    /// </summary>
+    internal static string ResolveUninstallExecutable(string installDir)
+    {
+        var bundledInstaller = Path.Combine(installDir, InstallerConstants.BundledInstallerRelativePath);
+        if (File.Exists(bundledInstaller))
+            return bundledInstaller;
+
+        var processPath = Environment.ProcessPath;
+        if (string.IsNullOrWhiteSpace(processPath))
+            throw new InvalidOperationException("Cannot resolve installer path.");
+
+        return processPath;
+    }
+
     public static void RegisterUninstallEntry(string installDir)
     {
-        var installerExe = Environment.ProcessPath;
-        if (string.IsNullOrWhiteSpace(installerExe))
-            throw new InvalidOperationException("Cannot resolve installer path.");
+        var installerExe = ResolveUninstallExecutable(installDir);
 
         using var key = Registry.LocalMachine.CreateSubKey(InstallerConstants.UninstallRegKeyPath, writable: true);
         if (key == null)
             throw new InvalidOperationException("Failed to open HKLM uninstall key. Run as administrator.");
 
+        var exePath = Path.Combine(installDir, InstallerConstants.ExeName);
+
         key.SetValue("DisplayName", InstallerConstants.ProductName, RegistryValueKind.String);
         key.SetValue("Publisher", InstallerConstants.Publisher, RegistryValueKind.String);
         key.SetValue("InstallLocation", installDir, RegistryValueKind.String);
+
+        if (File.Exists(exePath))
+            key.SetValue("DisplayIcon", exePath, RegistryValueKind.String);
 
         var version = GetInstallerVersion();
         if (!string.IsNullOrWhiteSpace(version))

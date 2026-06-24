@@ -414,13 +414,13 @@ public partial class MainWindow : Window
                         Log("Creating Desktop shortcut...");
                         ShortcutHelper.CreateDesktopShortcut(installDir, exePath);
                     }
-
-                    Log("Registering Apps & Features entry...");
-                    InstallRegistry.RegisterUninstallEntry(installDir);
-
-                    Log("Registering App Paths...");
-                    InstallRegistry.RegisterAppPaths(exePath, installDir);
                 }
+
+                Log("Registering Apps & Features entry...");
+                InstallRegistry.RegisterUninstallEntry(installDir);
+
+                Log("Registering App Paths...");
+                InstallRegistry.RegisterAppPaths(exePath, installDir);
 
                 ReportInstallProgress(100);
                 _lastInstalledExePath = exePath;
