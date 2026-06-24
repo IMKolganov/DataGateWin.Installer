@@ -4,6 +4,7 @@ internal interface IInstallerUninstallSystem
 {
     string? TryGetInstallLocation();
     Task StopAppProcessesAsync(bool quiet, Action<string> log, CancellationToken cancellationToken);
+    void RecoverStaleDnsSettings(Action<string> log);
     void DeleteShortcuts();
     void RemoveRegistryEntries();
     void DeleteInstallDirectory(string installDirectory);
@@ -27,6 +28,9 @@ internal static class InstallerUninstaller
 
         log("Stopping DataGate processes...");
         await system.StopAppProcessesAsync(quiet, log, cancellationToken).ConfigureAwait(false);
+
+        log("Recovering stale VPN DNS settings...");
+        system.RecoverStaleDnsSettings(log);
 
         log("Removing shortcuts...");
         system.DeleteShortcuts();

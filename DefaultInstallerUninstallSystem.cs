@@ -10,6 +10,9 @@ internal sealed class DefaultInstallerUninstallSystem : IInstallerUninstallSyste
     public Task StopAppProcessesAsync(bool quiet, Action<string> log, CancellationToken cancellationToken) =>
         ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(interactivePrompts: !quiet, log);
 
+    public void RecoverStaleDnsSettings(Action<string> log) =>
+        WindowsDnsRecovery.RecoverStaleDnsState(log);
+
     public void DeleteShortcuts()
     {
         ShortcutHelper.RemoveStartMenuShortcut();
