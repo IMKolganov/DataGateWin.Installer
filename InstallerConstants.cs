@@ -6,6 +6,7 @@ internal static class InstallerConstants
     public const string ProductName = "DataGate";
     public const string Publisher = "DataGate";
     public const string ExeName = "DataGateWin.exe";
+    public const string BundledInstallerRelativePath = @"Installer\DataGateWin.Installer.exe";
 
     public const string UninstallRegKeyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\DataGate";
 

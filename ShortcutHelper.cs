@@ -64,9 +64,11 @@ internal static class ShortcutHelper
         shortcut.WindowStyle = 1;
         shortcut.Description = InstallerConstants.ProductName;
 
-        var iconPath = Path.Combine(installDir, "favicon.ico");
+        var iconPath = Path.Combine(installDir, "Images", "favicon.ico");
         if (File.Exists(iconPath))
             shortcut.IconLocation = iconPath;
+        else if (File.Exists(exePath))
+            shortcut.IconLocation = exePath;
 
         shortcut.Save();
     }
