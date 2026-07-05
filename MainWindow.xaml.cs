@@ -378,7 +378,7 @@ public partial class MainWindow : Window
 
             try
             {
-                await DownloadFileAsync(url, zipPath, new Progress<double>(p => DownloadProgressBar.Value = p), _cts.Token);
+                await DownloadFileAsync(url, zipPath, new Progress<double>(p => SetDownloadProgress(p)), _cts.Token);
 
                 Log("Extracting zip...");
                 Directory.CreateDirectory(extractDir);
@@ -511,14 +511,26 @@ public partial class MainWindow : Window
 
     private void Log(string message)
     {
+        InstallerUiThread.Run(() => AppendLogLine(message));
+    }
+
+    private void AppendLogLine(string message)
+    {
         var line = $"[{DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture)}] {message}";
         LogTextBox.AppendText(line + Environment.NewLine);
         LogTextBox.ScrollToEnd();
     }
 
+    private void SetDownloadProgress(double value)
+    {
+        InstallerUiThread.Run(() =>
+            DownloadProgressBar.Value = Math.Clamp(value, 0, 100));
+    }
+
     private void ReportInstallProgress(double value)
     {
-        InstallProgressBar.Value = Math.Clamp(value, 0, 100);
+        InstallerUiThread.Run(() =>
+            InstallProgressBar.Value = Math.Clamp(value, 0, 100));
     }
 
     private AppTheme GetSystemTheme()

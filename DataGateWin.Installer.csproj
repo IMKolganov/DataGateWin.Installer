@@ -28,6 +28,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="DataGateWin.Tests"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <Page Include="..\DataGateWin.UI\Localization\Strings.*.xaml" Link="Localization\%(Filename)%(Extension)"/>
     </ItemGroup>
 
