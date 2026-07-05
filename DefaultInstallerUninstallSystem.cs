@@ -15,6 +15,7 @@ internal sealed class DefaultInstallerUninstallSystem : IInstallerUninstallSyste
 
     public void DeleteShortcuts()
     {
+        ShortcutHelper.RemoveLegacyShortcuts();
         ShortcutHelper.RemoveStartMenuShortcut();
         ShortcutHelper.RemoveDesktopShortcut();
     }

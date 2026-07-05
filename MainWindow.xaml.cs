@@ -403,17 +403,21 @@ public partial class MainWindow : Window
 
                 if (!isUpdate)
                 {
-                    if (StartMenuShortcutCheckBox.IsChecked == true)
-                    {
-                        Log("Creating Start Menu shortcut...");
-                        ShortcutHelper.CreateStartMenuShortcut(installDir, exePath);
-                    }
-
-                    if (DesktopShortcutCheckBox.IsChecked == true)
-                    {
-                        Log("Creating Desktop shortcut...");
-                        ShortcutHelper.CreateDesktopShortcut(installDir, exePath);
-                    }
+                    Log("Creating shortcuts...");
+                    ShortcutHelper.RefreshShortcuts(
+                        installDir,
+                        exePath,
+                        startMenu: StartMenuShortcutCheckBox.IsChecked == true,
+                        desktop: DesktopShortcutCheckBox.IsChecked == true);
+                }
+                else
+                {
+                    Log("Refreshing shortcuts (update)...");
+                    ShortcutHelper.RefreshShortcuts(
+                        installDir,
+                        exePath,
+                        startMenu: true,
+                        desktop: ShortcutHelper.LegacyOrCurrentDesktopShortcutExists());
                 }
 
                 Log("Registering Apps & Features entry...");
