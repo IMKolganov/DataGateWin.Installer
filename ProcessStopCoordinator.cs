@@ -11,10 +11,7 @@ internal static class ProcessStopCoordinator
 
     public static async Task EnsureAppProcessesStoppedAsync(bool interactivePrompts, Action<string>? log)
     {
-        void L(string m)
-        {
-            log?.Invoke(m);
-        }
+        void L(string m) => log?.Invoke(m);
 
         await Task.Delay(500).ConfigureAwait(false);
         var parentPid = GetParentProcessId();
@@ -24,19 +21,8 @@ internal static class ProcessStopCoordinator
             ("engine", "engine.exe"),
         };
 
-        var running = new List<Process>();
-        foreach (var (processName, _) in processes)
-        {
-            try
-            {
-                running.AddRange(Process.GetProcessesByName(processName));
-            }
-            catch (Exception ex)
-            {
-                L($"WARN: failed to enumerate process {processName}: {ex.Message}");
-            }
-        }
-
+        using var runningScope = CollectProcesses(processes, L);
+        var running = runningScope.Processes;
         if (running.Count == 0)
             return;
 
@@ -47,14 +33,8 @@ internal static class ProcessStopCoordinator
 
         if (interactivePrompts)
         {
-            var names = string.Join(", ", running
-                .Select(p => $"{p.ProcessName}.exe")
-                .Distinct(StringComparer.OrdinalIgnoreCase));
-            var result = MessageBox.Show(
-                $"Detected running processes: {names}.{Environment.NewLine}Do you want to close them now?",
-                InstallerConstants.ProductName,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+            var names = FormatProcessNames(running);
+            var result = PromptCloseProcesses(names);
 
             if (result != MessageBoxResult.Yes)
                 throw new InvalidOperationException("Installation cancelled because the app is still running.");
@@ -83,39 +63,16 @@ internal static class ProcessStopCoordinator
         }
 
         await Task.Delay(500).ConfigureAwait(false);
-        var stillRunning = new List<Process>();
-        foreach (var (processName, _) in processes)
-        {
-            try
-            {
-                stillRunning.AddRange(Process.GetProcessesByName(processName));
-            }
-            catch (Exception ex)
-            {
-                L($"WARN: failed to enumerate process {processName}: {ex.Message}");
-            }
-        }
-
+        using var stillRunningScope = CollectProcesses(processes, L);
+        var stillRunning = stillRunningScope.Processes;
         if (stillRunning.Count == 0)
             return;
 
         if (parentProcess != null && stillRunning.Any(p => p.Id == parentProcess.Id))
         {
             await Task.Delay(1500).ConfigureAwait(false);
-            var refreshed = new List<Process>();
-            foreach (var (processName, _) in processes)
-            {
-                try
-                {
-                    refreshed.AddRange(Process.GetProcessesByName(processName));
-                }
-                catch (Exception ex)
-                {
-                    L($"WARN: failed to enumerate process {processName}: {ex.Message}");
-                }
-            }
-
-            stillRunning = refreshed;
+            using var refreshedScope = CollectProcesses(processes, L);
+            stillRunning = refreshedScope.Processes;
             var parentStillRunning = stillRunning.Any(p => p.Id == parentProcess.Id);
             if (parentStillRunning)
             {
@@ -129,9 +86,7 @@ internal static class ProcessStopCoordinator
 
         if (stillRunning.Count > 0)
         {
-            var stillNames = string.Join(", ", stillRunning
-                .Select(p => $"{p.ProcessName}.exe")
-                .Distinct(StringComparer.OrdinalIgnoreCase));
+            var stillNames = FormatProcessNames(stillRunning);
 
             if (!interactivePrompts)
             {
@@ -152,24 +107,12 @@ internal static class ProcessStopCoordinator
                 }
 
                 await Task.Delay(300).ConfigureAwait(false);
-                stillRunning.Clear();
-                foreach (var (processName, _) in processes)
-                {
-                    try
-                    {
-                        stillRunning.AddRange(Process.GetProcessesByName(processName));
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
+                using var finalScope = CollectProcesses(processes, null);
+                stillRunning = finalScope.Processes;
 
                 if (stillRunning.Count > 0)
                 {
-                    stillNames = string.Join(", ", stillRunning
-                        .Select(p => $"{p.ProcessName}.exe")
-                        .Distinct(StringComparer.OrdinalIgnoreCase));
+                    stillNames = FormatProcessNames(stillRunning);
                     throw new InvalidOperationException($"Processes are still running: {stillNames}");
                 }
 
@@ -177,6 +120,67 @@ internal static class ProcessStopCoordinator
             }
 
             throw new InvalidOperationException($"Processes are still running: {stillNames}");
+        }
+    }
+
+    private static string FormatProcessNames(IEnumerable<Process> processes)
+        => string.Join(", ", processes
+            .Select(p => $"{p.ProcessName}.exe")
+            .Distinct(StringComparer.OrdinalIgnoreCase));
+
+    private static ProcessScope CollectProcesses(
+        (string ProcessName, string FileName)[] processes,
+        Action<string>? log)
+    {
+        var running = new List<Process>();
+        foreach (var (processName, _) in processes)
+        {
+            try
+            {
+                running.AddRange(Process.GetProcessesByName(processName));
+            }
+            catch (Exception ex)
+            {
+                log?.Invoke($"WARN: failed to enumerate process {processName}: {ex.Message}");
+            }
+        }
+
+        return new ProcessScope(running);
+    }
+
+    private static MessageBoxResult PromptCloseProcesses(string names)
+    {
+        MessageBoxResult result = MessageBoxResult.No;
+        InstallerUiThread.Run(() =>
+        {
+            result = MessageBox.Show(
+                $"Detected running processes: {names}.{Environment.NewLine}Do you want to close them now?",
+                InstallerConstants.ProductName,
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+        });
+        return result;
+    }
+
+    private sealed class ProcessScope : IDisposable
+    {
+        public ProcessScope(List<Process> processes) => Processes = processes;
+
+        public List<Process> Processes { get; }
+
+        public void Dispose()
+        {
+            foreach (var process in Processes)
+            {
+                try
+                {
+                    process.Dispose();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
         }
     }
 
