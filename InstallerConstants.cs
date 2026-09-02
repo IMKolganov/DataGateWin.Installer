@@ -16,4 +16,16 @@ internal static class InstallerConstants
 
     /// <summary>Subfolder under the common Start Menu Programs folder.</summary>
     public const string StartMenuRelativeFolder = "DataGate";
+
+    /// <summary>Pre-1.0.7 shortcut names; removed on install/update/uninstall.</summary>
+    public static readonly string[] LegacyShortcutNames =
+    [
+        "DataGate OpenVPN 3.lnk",
+        "DataGateOpenVPN3.lnk",
+    ];
+
+    public static readonly string[] LegacyStartMenuRelativeFolders =
+    [
+        "DataGateOpenVPN3",
+    ];
 }
