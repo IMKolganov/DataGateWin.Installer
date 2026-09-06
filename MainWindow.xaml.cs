@@ -29,6 +29,7 @@ public partial class MainWindow : Window
     private readonly bool _suppressThemeChange;
     private bool _suppressInstallerLanguageCombo;
     private EventHandler? _installerLanguageChangedHandler;
+    private readonly List<string> _logLines = new();
 
     private enum AppTheme
     {
@@ -521,7 +522,12 @@ public partial class MainWindow : Window
     private void AppendLogLine(string message)
     {
         var line = $"[{DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture)}] {message}";
-        LogTextBox.AppendText(line + Environment.NewLine);
+        var dropped = InMemoryLogBudget.AppendLine(_logLines, line);
+        if (dropped)
+            LogTextBox.Text = InMemoryLogBudget.JoinLinesForTextBox(_logLines);
+        else
+            LogTextBox.AppendText(line + Environment.NewLine);
+
         LogTextBox.ScrollToEnd();
     }
 
