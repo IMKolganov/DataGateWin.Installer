@@ -22,11 +22,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="..\DataGateWin.UI\Localization\UiLocale.cs" Link="Localization\UiLocale.cs"/>
-        <Compile Include="..\DataGateWin.UI\Localization\CultureMapping.cs" Link="Localization\CultureMapping.cs"/>
-    </ItemGroup>
-
-    <ItemGroup>
+        <ProjectReference Include="..\DataGateWin.Core\DataGateWin.Core.csproj"/>
         <ProjectReference Include="..\DataGateWin.CrashReporting\DataGateWin.CrashReporting.csproj"/>
     </ItemGroup>
 
@@ -35,6 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- Installer is WPF: keep sys:String dictionaries from legacy UI (WinUI uses x:String). -->
         <Page Include="..\DataGateWin.UI\Localization\Strings.*.xaml" Link="Localization\%(Filename)%(Extension)"/>
     </ItemGroup>
 
