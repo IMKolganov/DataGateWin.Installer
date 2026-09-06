@@ -15,7 +15,7 @@
 
 ## What is this?
 
-**DataGate Installer** is a WPF installer for the Windows VPN app **DataGateWin** (DataGate OpenVPN 3). It downloads a release ZIP, extracts it to the selected folder, and registers the app in the system (Start Menu, Apps & Features, App Paths).
+**DataGate Installer** is a WPF installer for the Windows VPN app **DataGateWin** (unpackaged WinUI 3 shell + native `engine\`). It downloads a release ZIP, extracts it to the selected folder, and registers the app in the system (Start Menu, Apps & Features, App Paths).
 
 ## Features
 
@@ -51,7 +51,7 @@ dotnet build .\DataGateWin.Installer.csproj -c Release
 3. Choose the install path and whether to create Start Menu / Desktop shortcuts (defaults: both enabled). After accepting the policy, if this installer build matches the installed app version, you can launch the app, continue to reinstall files, or exit.
 4. Wait for the installation to finish.
 
-By default, the installer can query GitHub for the latest release and download the asset that matches `DataGateWin.v*.zip`. The ZIP must contain `DataGateWin.exe`. Optionally, it can include `favicon.ico` (used as the shortcut icon).
+By default, the installer can query GitHub for the latest release and download the asset that matches `DataGateWin.v*.zip`. The ZIP must contain `DataGateWin.exe` plus the WinUI unpackaged layout (`DataGateWin.pri`, `Images\`, `engine\`, … — see `docs/WINUI3_PUBLISH_LAYOUT.md`). Shortcuts use `Images\favicon.ico` when present (else the exe icon).
 
 ## Update mode
 
