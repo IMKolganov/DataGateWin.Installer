@@ -8,8 +8,8 @@
         <UseWPF>true</UseWPF>
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>Images\favicon.ico</ApplicationIcon>
-        <AssemblyVersion>1.0.14</AssemblyVersion>
-        <FileVersion>1.0.14</FileVersion>
+        <AssemblyVersion>1.0.15</AssemblyVersion>
+        <FileVersion>1.0.15</FileVersion>
         <Product>DataGate</Product>
         <AssemblyTitle>DataGate</AssemblyTitle>
         <Description>DataGate</Description>
