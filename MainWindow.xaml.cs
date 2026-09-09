@@ -353,7 +353,13 @@ public partial class MainWindow : Window
         string? localBuildDir = null;
         try
         {
-            localBuildDir = LocalBuildPackage.TryFind(_installerDir);
+            // Update-from-ProgramFiles must NEVER use LocalBuildPackage.
+            // Installer lives in {InstallRoot}\Installer\; LocalBuildPackage also searches the parent
+            // (the live install). A leftover DataGateWinBuild* there (or a mismatched offline layout)
+            // would "update" by copying the same/old bits → app version unchanged → prompt forever.
+            if (!isUpdate)
+                localBuildDir = LocalBuildPackage.TryFind(_installerDir);
+
             if (localBuildDir is not null)
             {
                 UrlTextBox.Text = localBuildDir;
@@ -364,7 +370,9 @@ public partial class MainWindow : Window
             {
                 url = await ResolveLatestReleaseZipUrlAsync(_cts.Token);
                 UrlTextBox.Text = url;
-                Log($"Using release asset: {url}");
+                Log(isUpdate
+                    ? $"Update mode: downloading release asset (local DataGateWinBuild* ignored): {url}"
+                    : $"Using release asset: {url}");
             }
 
             var installDir = isUpdate ? _installerDir : InstallPathTextBox.Text.Trim();
