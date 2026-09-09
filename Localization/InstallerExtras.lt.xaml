@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licencijos sutartis</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licencijos sutartis
+2026-09-09
+
+Prieš diegdami DataGate sistemoje Windows perskaitykite šią sutartį. Pažymėdami «Sutinku su licencijos sutartimi» ir diegdami ar naudodami programinę įrangą sutinkate su sąlygomis. Jei nesutinkate, atšaukite diegimą ir nenaudokite programinės įrangos.
+
+1.
+Sutartis taikoma DataGate Windows programai, šiam diegimo įrankiui, pridėtam VPN varikliui ir kitiems failams (kartu «Programinė įranga»). Paskyros, VPN serveriai, API, svetainė ir Telegram botas yra atskira paslauga. Papildomos sąlygos gali būti https://datagateapp.com.
+
+2.
+Suteikiame asmeninę, neišimtinę, neperleidžiamą licenciją įdiegti ir naudoti Programinę įrangą Windows įrenginiuose, kuriuos valdote, tik įgaliotoms DataGate paslaugoms. Negalite nuomoti, parduoti ar sublicencijuoti diegimo įrankio ar kliento kaip savo produkto ir šalinti DataGate prekių ženklų.
+
+3.
+Windows kliento išeities kodas: https://github.com/IMKolganov/DataGateWin. Dalys Programinės įrangos yra pagal atvirąsias licencijas, įskaitant GNU GPL v2. Sutartis neatima teisių, kurias jau turite į atitinkamą išeities kodą.
+
+4.
+Gali prireikti DataGate paskyros (Google prisijungimas ir, jei įjungta, autentifikatoriaus kodas). Esate atsakingi už prisijungimo duomenis ir paskyros veiklą. Planus, kvotas ir serverius teikia DataGate paslauga.
+
+5.
+Programinę įrangą ir VPN turite naudoti pagal teisę. Nenaudokite DataGate nusikaltimams, kenkėjiškoms programoms, atakoms, teisėtos procedūros vengimui ar piktnaudžiavimui. Klientas gali įspėti, jei veikia torrent klientas. Esate atsakingi už visą VPN srautą, net jei jį sukūrė kitas asmuo jūsų įrenginiu ar paskyra.
+
+6.
+Tik jūs esate atsakingi, kas naudoja Programinę įrangą ir VPN jūsų įrenginiuose ir paskyroje, įskaitant vaikus, šeimą, svečius ir darbuotojus. DataGate nėra tėvų kontrolė, amžiaus žymėjimas ar vaikų apsaugos produktas. Jis nefiltruoja svetainių, neblokuoja kenksmingo turinio, netikrina amžiaus ir neprižiūri nepilnamečių. VPN gali palengvinti prieigą prie kitaip ribojamų paslaugų. Nepilnametis DataGate gali naudoti tik su tėvo ar globėjo sutikimu ir nuolatine priežiūra. Prisiimate visą riziką, įskaitant kur vaikas eina ir ką per VPN žiūri, atsisiunčia, sako, perka ar daro. DataGate ir talkininkai neatsako už pretenzijas, nuostolius, tyrimus, baudas ar ginčus dėl tokio naudojimo — taip pat vaiko — ir nėra šalis jūsų santykiuose su vaiku, mokykla, ISP ar institucija.
+
+7.
+Klientui reikia tinklo. Jis gali siųsti gedimų ataskaitas, naujinimų tikrinimus ir paskyros/API užklausas DataGate. Prisijungus VPN srautas eina per pasirinktą serverį. Žr. https://datagateapp.com.
+
+8.
+Programinė įranga gali ieškoti naujesnės versijos (ir per GitHub) ir siūlyti šį diegimo įrankį. Galite atsisakyti. Senesnės versijos gali nebeveikti su paslauga.
+
+9.
+PROGRAMINĖ ĮRANGA TEIKIAMA «TOKS, KOKS YRA», BE GARANTIJOS. Negarantuojame, kad VPN visada prisijungs, slėps tapatybę, apeis apribojimus, veiks be pertrūkių ar apsaugos jus, vaiką ar ką nors nuo turinio, kontaktų ar teisinių pasekmių.
+
+10.
+DIDŽIAUSIU TEISĖS LEIDŽIAMU MASTU DATAGATE IR TALKININKAI NEATSAKO UŽ TIESIOGINĘ AR NETIESIOGINĘ ŽALĄ NEI UŽ DUOMENŲ, PELNO, PRIEIGOS AR REPUTACIJOS PRARADIMĄ. Tai apima svetaines per VPN, turinį, žinutes, atsisiuntimus, jūsų ar kitų (įskaitant nepilnametį) veiksmus, trečiųjų asmenų pretenzijas, tyrimus ir baudas. Savo lėšomis tvarkote bet kokią pretenziją DataGate dėl jūsų naudojimo ar paskyros ar įrenginių naudojimo, taip pat vaiko.
+
+11.
+Licencija baigiasi pažeidus ar pašalinus. 6, 9 ir 10 punktai lieka galioti.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Sutinku su licencijos sutartimi</sys:String>
+</ResourceDictionary>

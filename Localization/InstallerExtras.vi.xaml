@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Thỏa thuận giấy phép</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Thỏa thuận giấy phép
+2026-09-09
+
+Hãy đọc thỏa thuận này trước khi cài DataGate cho Windows. Khi đánh dấu «Tôi chấp nhận thỏa thuận giấy phép» và cài hoặc dùng phần mềm, bạn đồng ý với các điều khoản. Nếu không đồng ý, hãy hủy cài đặt và không dùng phần mềm.
+
+1.
+Thỏa thuận này áp dụng cho ứng dụng DataGate trên Windows, trình cài này, động cơ VPN kèm theo và các tệp khác (gọi chung là «Phần mềm»). Tài khoản, máy chủ VPN, API, trang web và bot Telegram là dịch vụ riêng. Điều khoản bổ sung có thể có tại https://datagateapp.com.
+
+2.
+Chúng tôi cấp cho bạn giấy phép cá nhân, không độc quyền, không chuyển nhượng để cài và dùng Phần mềm trên thiết bị Windows bạn sở hữu hoặc kiểm soát, chỉ để truy cập dịch vụ DataGate được phép. Bạn không được cho thuê, bán hoặc cấp lại giấy phép trình cài hoặc ứng dụng như sản phẩm của mình, cũng không được gỡ nhãn hiệu DataGate.
+
+3.
+Mã nguồn ứng dụng Windows được công bố tại https://github.com/IMKolganov/DataGateWin. Một phần Phần mềm theo giấy phép nguồn mở, gồm GNU GPL v2. Thỏa thuận này không lấy đi quyền bạn đã có đối với mã nguồn tương ứng.
+
+4.
+Bạn có thể cần tài khoản DataGate (đăng nhập Google và, nếu bật, mã xác thực). Bạn chịu trách nhiệm về thông tin đăng nhập và hoạt động tài khoản. Gói, hạn mức và máy chủ do dịch vụ DataGate cung cấp.
+
+5.
+Bạn phải dùng Phần mềm và VPN theo pháp luật. Không dùng DataGate cho tội phạm, phần mềm độc hại, tấn công, né tránh thủ tục hợp pháp hoặc lạm dụng. Ứng dụng có thể cảnh báo nếu có trình torrent. Bạn chịu trách nhiệm mọi lưu lượng VPN, kể cả khi người khác dùng thiết bị hoặc tài khoản của bạn.
+
+6.
+Chỉ bạn chịu trách nhiệm ai dùng Phần mềm và VPN trên thiết bị và tài khoản của bạn, gồm trẻ em, gia đình, khách và nhân viên. DataGate không phải kiểm soát của phụ huynh, xếp hạng độ tuổi hay sản phẩm bảo vệ trẻ em. Nó không lọc trang, không chặn nội dung có hại, không xác minh tuổi và không giám sát trẻ vị thành niên. VPN có thể giúp truy cập dịch vụ vốn bị hạn chế. Trẻ vị thành niên chỉ dùng DataGate với sự đồng ý và giám sát liên tục của cha mẹ hoặc người giám hộ. Bạn chấp nhận mọi rủi ro, gồm trẻ vào đâu và xem, tải, nói, mua hoặc làm gì qua VPN. DataGate và cộng tác viên không chịu trách nhiệm về khiếu nại, tổn thất, điều tra, phạt hay tranh chấp từ việc dùng đó — kể cả bởi trẻ — và không là bên trong quan hệ của bạn với trẻ, trường học, ISP hay cơ quan.
+
+7.
+Ứng dụng cần mạng. Nó có thể gửi báo cáo sự cố, kiểm tra cập nhật và yêu cầu tài khoản/API tới DataGate. Khi kết nối, lưu lượng VPN đi qua máy chủ đã chọn. Xem https://datagateapp.com.
+
+8.
+Phần mềm có thể tìm bản mới hơn (kể cả qua GitHub) và đề xuất trình cài này. Bạn có thể từ chối. Bản cũ có thể ngừng hoạt động với dịch vụ.
+
+9.
+PHẦN MỀM ĐƯỢC CUNG CẤP «NGUYÊN TRẠNG», KHÔNG BẢO ĐẢM. Chúng tôi không bảo đảm VPN luôn kết nối, ẩn danh tính, vượt hạn chế, không gián đoạn, hoặc bảo vệ bạn, trẻ hay bất kỳ ai khỏi nội dung, liên lạc hay hậu quả pháp lý.
+
+10.
+Ở MỨC TỐI ĐA PHÁP LUẬT CHO PHÉP, DATAGATE VÀ CỘNG TÁC VIÊN KHÔNG CHỊU TRÁCH NHIỆM VỀ THIỆT HẠI TRỰC TIẾP HAY GIÁN TIẾP, CŨNG NHƯ MẤT DỮ LIỆU, LỢI NHUẬN, TRUY CẬP HAY UY TÍN. Bao gồm trang qua VPN, nội dung, tin nhắn, tải xuống, hành vi của bạn hoặc người khác (kể cả trẻ vị thành niên), khiếu nại của bên thứ ba, điều tra và phạt. Bạn tự chịu chi phí xử lý mọi khiếu nại đối với DataGate phát sinh từ việc bạn dùng hoặc việc dùng tài khoản hay thiết bị, kể cả bởi trẻ.
+
+11.
+Giấy phép chấm dứt khi vi phạm hoặc gỡ cài. Mục 6, 9 và 10 vẫn có hiệu lực.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Tôi chấp nhận thỏa thuận giấy phép</sys:String>
+</ResourceDictionary>

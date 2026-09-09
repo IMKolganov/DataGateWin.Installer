@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licenční smlouva</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licenční smlouva
+2026-09-09
+
+Před instalací DataGate pro Windows si tuto smlouvu přečtěte. Zaškrtnutím «Přijímám licenční smlouvu» a instalací nebo používáním softwaru tyto podmínky přijímáte. Pokud nesouhlasíte, instalaci zrušte a software nepoužívejte.
+
+1.
+Smlouva se vztahuje na aplikaci DataGate pro Windows, tento instalátor, přiložený VPN engine a další soubory (společně «Software»). Účty, VPN servery, API, web a Telegram bot jsou samostatná služba. Další podmínky mohou platit na https://datagateapp.com.
+
+2.
+Udělujeme vám osobní, nevýhradní, nepřevoditelnou licenci k instalaci a používání Softwaru na zařízeních Windows, která vlastníte nebo ovládáte, pouze k autorizovaným službám DataGate. Instalátor ani klienta nesmíte pronajímat, prodávat ani sublicencovat jako vlastní produkt ani odstraňovat ochranné známky DataGate.
+
+3.
+Zdrojový kód klienta Windows je na https://github.com/IMKolganov/DataGateWin. Části Softwaru jsou pod open-source licencemi včetně GNU GPL v2. Tato smlouva neodebírá práva, která k příslušnému zdrojovému kódu již máte.
+
+4.
+Může být potřeba účet DataGate (přihlášení Google a případně kód autentikátoru). Zodpovídáte za přihlašovací údaje a aktivitu účtu. Tarify, kvóty a servery poskytuje služba DataGate.
+
+5.
+Software a VPN musíte používat v souladu s právem. DataGate nepoužívejte k trestným činům, malwaru, útokům, obcházení zákonného postupu ani zneužití. Klient může varovat, běží-li torrent klient. Zodpovídáte za veškerý VPN provoz, i když ho vytvoří někdo jiný na vašem zařízení nebo účtu.
+
+6.
+Výhradně vy zodpovídáte za to, kdo Software a VPN na vašich zařízeních a účtu používá, včetně dětí, rodiny, hostů a zaměstnanců. DataGate není rodičovská kontrola, věkové hodnocení ani produkt ochrany dětí. Nefiltruje weby, neblokuje škodlivý obsah, neověřuje věk a nedohlíží na nezletilé. VPN může usnadnit přístup ke službám jinak omezeným. Nezletilý smí DataGate používat jen se souhlasem a průběžným dohledem rodiče nebo opatrovníka. Nesete veškeré riziko včetně toho, kam dítě jde a co přes VPN sleduje, stahuje, říká, kupuje nebo dělá. DataGate a přispěvatelé nenesou odpovědnost za nároky, ztráty, šetření, pokuty ani spory z takového užití — i dítětem — a nejsou stranou vašeho vztahu k dítěti, škole, ISP ani úřadu.
+
+7.
+Klient potřebuje síť. Může odesílat hlášení pádů, kontroly aktualizací a požadavky účtu/API na DataGate. Po připojení jde provoz VPN vybraným serverem. Viz https://datagateapp.com.
+
+8.
+Software může hledat novější verzi (i přes GitHub) a nabídnout tento instalátor. Aktualizaci můžete odmítnout. Starší verze nemusí se službou dál fungovat.
+
+9.
+SOFTWARE JE POSKYTOVÁN «JAK STOJÍ A LEŽÍ», BEZ ZÁRUKY. Negarantujeme, že se VPN vždy připojí, skryje identitu, obejde omezení, nepřeruší se, ani že ochrání vás, dítě nebo kohokoli před obsahem, kontakty či právními následky.
+
+10.
+V MAXIMÁLNÍM ROZSAHU POVOLENÉM ZÁKONEM DATAGATE A PŘISPĚVATELÉ NENESOU ODPOVĚDNOST ZA PŘÍMÉ ANI NEPŘÍMÉ ŠKODY ANI ZA ZTRÁTU DAT, ZISKU, PŘÍSTUPU NEBO POVĚSTI. Zahrnuje weby přes VPN, obsah, zprávy, stažení, činy vás nebo jiných (včetně nezletilého), nároky třetích osob, šetření a pokuty. Nárok vůči DataGate z vašeho užití nebo užití účtu či zařízení, i dítětem, řešíte na vlastní náklady.
+
+11.
+Licence končí porušením nebo odinstalací. Články 6, 9 a 10 trvají.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Přijímám licenční smlouvu</sys:String>
+</ResourceDictionary>

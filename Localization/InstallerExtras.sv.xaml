@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licensavtal</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licensavtal
+2026-09-09
+
+Läs detta avtal innan du installerar DataGate för Windows. Genom att kryssa i «Jag godkänner licensavtalet» och installera eller använda programvaran godkänner du villkoren. Om du inte godkänner, avbryt installationen och använd inte programvaran.
+
+1.
+Avtalet gäller DataGate-appen för Windows, detta installationsprogram, den medföljande VPN-motorn och övriga filer (tillsammans «Programvaran»). Konton, VPN-servrar, API, webbplats och Telegram-bot är en separat tjänst. Ytterligare villkor kan gälla på https://datagateapp.com.
+
+2.
+Vi ger dig en personlig, icke-exklusiv, icke överlåtbar licens att installera och använda Programvaran på Windows-enheter som du äger eller styr, endast för auktoriserade DataGate-tjänster. Du får inte hyra ut, sälja eller underlicensiera installationsprogrammet eller klienten som din egen produkt eller ta bort DataGates varumärken.
+
+3.
+Källkoden för Windows-klienten finns på https://github.com/IMKolganov/DataGateWin. Delar av Programvaran är under öppen källkod, inklusive GNU GPL v2. Avtalet tar inte bort rättigheter du redan har till motsvarande källkod.
+
+4.
+Ett DataGate-konto kan krävas (Google-inloggning och ev. autentiseringskod). Du ansvarar för inloggningsuppgifter och kontoaktivitet. Planer, kvoter och servrar tillhandahålls av DataGate-tjänsten.
+
+5.
+Du måste använda Programvaran och VPN i enlighet med tillämplig rätt. Använd inte DataGate för brott, skadlig kod, attacker, kringgående av laglig process eller missbruk. Klienten kan varna om en torrentklient körs. Du ansvarar för all VPN-trafik, även om någon annan använder din enhet eller ditt konto.
+
+6.
+Du är ensam ansvarig för vem som använder Programvaran och VPN på dina enheter och ditt konto, inklusive barn, familj, gäster och anställda. DataGate är inte föräldrakontroll, åldersklassificering eller barnskyddsprodukt. Den filtrerar inte webbplatser, blockerar inte skadligt innehåll, verifierar inte ålder och övervakar inte minderåriga. En VPN kan göra det lättare att nå tjänster som annars är begränsade. En minderårig får bara använda DataGate med samtycke och fortlöpande tillsyn av förälder eller vårdnadshavare. Du tar all risk, inklusive vart barnet går och vad det ser, laddar ner, säger, köper eller gör via VPN. DataGate och medverkande ansvarar inte för krav, förluster, utredningar, böter eller tvister från sådan användning — även av ett barn — och är inte part i din relation till barnet, en skola, en ISP eller en myndighet.
+
+7.
+Klienten behöver nätverk. Den kan skicka kraschrapporter, uppdateringskontroller och konto-/API-begäranden till DataGate. Vid anslutning går VPN-trafik via den valda servern. Se https://datagateapp.com.
+
+8.
+Programvaran kan söka efter en nyare version (även via GitHub) och erbjuda detta installationsprogram. Du kan avböja. Äldre versioner behöver inte fortsätta fungera med tjänsten.
+
+9.
+PROGRAMVARAN TILLHANDAHÅLLS «I BEFINTLIGT SKICK», UTAN GARANTI. Vi garanterar inte att VPN alltid ansluter, döljer identitet, kringgår begränsningar, är oavbruten eller skyddar dig, ett barn eller någon mot innehåll, kontakter eller rättsliga följder.
+
+10.
+I DEN UTSTRÄCKNING LAGEN TILLÅTER ÄR DATAGATE OCH MEDVERKANDE INTE ANSVARIGA FÖR DIREKTA ELLER INDIREKTA SKADOR ELLER FÖR FÖRLUST AV DATA, VINST, ÅTKOMST ELLER ANSEENDE. Detta inkluderar webbplatser via VPN, innehåll, meddelanden, nedladdningar, handlingar av dig eller andra (inklusive en minderårig), tredjepartskrav, utredningar och böter. Du hanterar på egen bekostnad alla krav mot DataGate som uppstår av din användning eller användning av ditt konto eller dina enheter, även av ett barn.
+
+11.
+Licensen upphör vid brott eller avinstallation. Avsnitt 6, 9 och 10 består.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Jag godkänner licensavtalet</sys:String>
+</ResourceDictionary>

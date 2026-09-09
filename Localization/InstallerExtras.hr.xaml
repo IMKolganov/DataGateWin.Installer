@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licencni ugovor</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licencni ugovor
+2026-09-09
+
+Pročitajte ovaj ugovor prije instalacije DataGatea za Windows. Označavanjem «Prihvaćam licencni ugovor» i instalacijom ili uporabom softvera prihvaćate uvjete. Ako se ne slažete, otkažite instalaciju i ne koristite softver.
+
+1.
+Ugovor se odnosi na DataGate Windows aplikaciju, ovaj instalacijski program, uključeni VPN motor i ostale datoteke (zajedno «Softver»). Računi, VPN poslužitelji, API, web i Telegram bot zasebna su usluga. Dodatni uvjeti mogu biti na https://datagateapp.com.
+
+2.
+Dajemo vam osobnu, neisključivu, neprenosivu licencu za instalaciju i uporabu Softvera na Windows uređajima koje posjedujete ili kontrolirate, samo za ovlaštene DataGate usluge. Ne smijete iznajmljivati, prodavati ili sublicencirati instalacijski program ili klijent kao vlastiti proizvod niti uklanjati žigove DataGate.
+
+3.
+Izvorni kod Windowskog klijenta je na https://github.com/IMKolganov/DataGateWin. Dijelovi Softvera su pod otvorenim licencijama, uključujući GNU GPL v2. Ugovor ne oduzima prava koja već imate na odgovarajući izvorni kod.
+
+4.
+Može biti potreban DataGate račun (prijava Googleom i po potrebi authenticator kod). Odgovarate za vjerodajnice i aktivnost računa. Planove, kvote i poslužitelje pruža DataGate usluga.
+
+5.
+Softver i VPN morate koristiti u skladu sa zakonom. Ne koristite DataGate za kaznena djela, zlonamjerni softver, napade, izbjegavanje zakonitog postupka ili zlouporabu. Klijent može upozoriti ako radi torrent klijent. Odgovarate za sav VPN promet, čak i ako netko drugi koristi vaš uređaj ili račun.
+
+6.
+Samo vi odgovarate tko koristi Softver i VPN na vašim uređajima i računu, uključujući djecu, obitelj, goste i zaposlenike. DataGate nije roditeljski nadzor, dobna oznaka niti proizvod zaštite djece. Ne filtrira stranice, ne blokira štetan sadržaj, ne provjerava dob i ne nadzire maloljetnike. VPN može olakšati pristup inače ograničenim uslugama. Maloljetnik smije koristiti DataGate samo uz pristanak i stalni nadzor roditelja ili skrbnika. Prihvaćate sav rizik, uključujući kamo dijete ide i što gleda, preuzima, govori, kupuje ili čini putem VPN-a. DataGate i suradnici nisu odgovorni za potraživanja, gubitke, istrage, kazne ili sporove iz takve uporabe — uključujući od djeteta — i nisu stranka vašeg odnosa s djetetom, školom, ISP-om ili tijelom.
+
+7.
+Klijent treba mrežu. Može slati izvješća o padu, provjere ažuriranja i zahtjeve računa/API-ja DataGateu. Pri povezivanju VPN promet ide odabranim poslužiteljem. Vidi https://datagateapp.com.
+
+8.
+Softver može tražiti noviju verziju (i putem GitHuba) i ponuditi ovaj instalacijski program. Možete odbiti. Starije verzije možda više neće raditi s uslugom.
+
+9.
+SOFTVER SE ISPORUČUJE «KAKAV JEST», BEZ JAMSTVA. Ne jamčimo da se VPN uvijek povezuje, skriva identitet, zaobilazi ograničenja, radi bez prekida ili štiti vas, dijete ili bilo koga od sadržaja, kontakata ili pravnih posljedica.
+
+10.
+U NAJVEĆOJ MJERI DOPUŠTENOJ ZAKONOM DATAGATE I SURADNICI NISU ODGOVORNI ZA IZRAVNU ILI NEIZRAVNU ŠTETU NITI ZA GUBITAK PODATAKA, DOBITI, PRISTUPA ILI UGLEDA. Uključuje stranice putem VPN-a, sadržaj, poruke, preuzimanja, djela vas ili drugih (uključujući maloljetnika), potraživanja trećih, istrage i kazne. O svom trošku rješavate potraživanja prema DataGateu nastala iz vaše uporabe ili uporabe računa ili uređaja, uključujući od djeteta.
+
+11.
+Licenca prestaje povredom ili deinstalacijom. Ostaju točke 6, 9 i 10.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Prihvaćam licencni ugovor</sys:String>
+</ResourceDictionary>

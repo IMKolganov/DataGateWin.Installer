@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Contrato de licença</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Contrato de licença
+2026-09-09
+
+Leia este contrato antes de instalar o DataGate para Windows. Ao marcar «Aceito o contrato de licença» e instalar ou usar o software, você aceita estes termos. Se não concordar, cancele a instalação e não use o software.
+
+1.
+Este contrato se aplica ao aplicativo DataGate para Windows, a este instalador, ao mecanismo VPN incluso e a outros arquivos (em conjunto, o «Software»). Contas, servidores VPN, API, site e bot do Telegram são um serviço separado. Podem valer mais termos em https://datagateapp.com.
+
+2.
+Concedemos a você uma licença pessoal, não exclusiva e intransferível para instalar e usar o Software em dispositivos Windows que você possua ou controle, apenas para serviços DataGate autorizados. Você não pode alugar, vender ou sublicenciar o instalador ou o cliente como produto próprio, nem remover as marcas DataGate.
+
+3.
+O código-fonte do cliente Windows está em https://github.com/IMKolganov/DataGateWin. Partes do Software estão sob licenças de código aberto, incluindo GNU GPL v2. Este contrato não retira direitos que você já tenha sobre o código-fonte correspondente.
+
+4.
+Pode ser necessária uma conta DataGate (login com Google e, se ativo, código do autenticador). Você é responsável pelas credenciais e pela atividade da conta. Planos, cotas e servidores são fornecidos pelo serviço DataGate.
+
+5.
+Você deve usar o Software e a VPN de acordo com a lei. Não use o DataGate para crimes, malware, ataques, contornar um processo legal ou abuso. O cliente pode avisar se houver um cliente torrent. Você continua responsável por todo o tráfego VPN, mesmo se outra pessoa usar seu dispositivo ou conta.
+
+6.
+Você é o único responsável por quem usa o Software e a VPN nos seus dispositivos e conta, incluindo menores, família, convidados e funcionários. O DataGate não é controle dos pais, classificação etária nem produto de proteção infantil. Não filtra sites, não bloqueia conteúdo ilícito, não verifica idade e não supervisiona menores. Uma VPN pode facilitar o acesso a serviços que de outro modo estariam restritos. Um menor só usa o DataGate com consentimento e supervisão contínua de um pai ou responsável. Você assume todo o risco, inclusive para onde o menor vai e o que vê, baixa, diz, compra ou faz pela VPN. O DataGate e os colaboradores não respondem por reclamações, perdas, investigações, multas ou disputas desse uso — inclusive por uma criança — e não são parte da sua relação com o menor, uma escola, um ISP ou uma autoridade.
+
+7.
+O cliente precisa de rede. Pode enviar relatórios de falha, verificações de atualização e pedidos de conta/API ao DataGate. Ao conectar, o tráfego VPN passa pelo servidor escolhido. Veja https://datagateapp.com.
+
+8.
+O Software pode procurar uma versão mais nova (também no GitHub) e oferecer este instalador. Você pode recusar. Versões antigas podem deixar de funcionar com o serviço.
+
+9.
+O SOFTWARE É FORNECIDO «NO ESTADO EM QUE SE ENCONTRA», SEM GARANTIA. Não garantimos que a VPN sempre conecte, oculte a identidade, contorne restrições, não se interrompa ou proteja você, um menor ou alguém de conteúdos, contatos ou consequências legais.
+
+10.
+NA MÁXIMA MEDIDA PERMITIDA POR LEI, O DATAGATE E OS COLABORADORES NÃO RESPONDEM POR DANOS DIRETOS OU INDIRETOS NEM POR PERDA DE DADOS, LUCROS, ACESSO OU REPUTAÇÃO. Inclui sites visitados pela VPN, conteúdos, mensagens, downloads, atos seus ou de terceiros (incluindo um menor), reclamações de terceiros, investigações e multas. Você trata por sua conta qualquer pretensão contra o DataGate decorrente do seu uso ou do uso da conta ou dispositivos, inclusive por um menor.
+
+11.
+Esta licença termina em caso de violação ou desinstalação. Permanecem as seções 6, 9 e 10.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Aceito o contrato de licença</sys:String>
+</ResourceDictionary>
