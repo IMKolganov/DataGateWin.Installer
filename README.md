@@ -22,7 +22,8 @@
 | Feature | Description |
 |--------|-------------|
 | **Wizard flow** | Policy, install path, shortcut options, and progress steps. |
-| **Release download** | Downloads release ZIP by URL and extracts to disk. |
+| **Release download** | Downloads the latest GitHub release ZIP (default). |
+| **Local build folder** | If a folder named `DataGateWinBuild*` (with `DataGateWin.exe`) sits next to the installer or in its parent, that folder is installed and GitHub is skipped. |
 | **Shortcuts** | Optional Start Menu (under **Programs » DataGate**) and **shared (all users) Desktop** shortcuts (both on by default). |
 | **Apps & Features** | Registers under `HKLM\...\Uninstall\DataGate` (older installs used `...\Uninstall\DataGateOpenVPN3`; both removed on uninstall) with `UninstallString` pointing at this installer plus `--uninstall`. |
 | **App Paths** | Run `DataGateWin.exe` via **Win+R**. |

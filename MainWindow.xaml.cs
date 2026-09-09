@@ -350,11 +350,22 @@ public partial class MainWindow : Window
         _cts = new CancellationTokenSource();
 
         string? url = null;
+        string? localBuildDir = null;
         try
         {
-            url = await ResolveLatestReleaseZipUrlAsync(_cts.Token);
-            UrlTextBox.Text = url;
-            Log($"Using release asset: {url}");
+            localBuildDir = LocalBuildPackage.TryFind(_installerDir);
+            if (localBuildDir is not null)
+            {
+                UrlTextBox.Text = localBuildDir;
+                Log($"Using local build folder (skip download): {localBuildDir}");
+                SetDownloadProgress(100);
+            }
+            else
+            {
+                url = await ResolveLatestReleaseZipUrlAsync(_cts.Token);
+                UrlTextBox.Text = url;
+                Log($"Using release asset: {url}");
+            }
 
             var installDir = isUpdate ? _installerDir : InstallPathTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(installDir))
@@ -379,19 +390,29 @@ public partial class MainWindow : Window
 
             try
             {
-                await DownloadFileAsync(url, zipPath, new Progress<double>(p => SetDownloadProgress(p)), _cts.Token);
+                string packageSourceDir;
+                if (localBuildDir is not null)
+                {
+                    packageSourceDir = localBuildDir;
+                    ReportInstallProgress(10);
+                }
+                else
+                {
+                    await DownloadFileAsync(url!, zipPath, new Progress<double>(p => SetDownloadProgress(p)), _cts.Token);
 
-                Log("Extracting zip...");
-                Directory.CreateDirectory(extractDir);
-                ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true);
-                ReportInstallProgress(10);
+                    Log("Extracting zip...");
+                    Directory.CreateDirectory(extractDir);
+                    ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true);
+                    ReportInstallProgress(10);
+                    packageSourceDir = extractDir;
+                }
 
                 var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
                 var installerExePath = installerExe != null ? Path.GetFullPath(installerExe) : string.Empty;
 
                 Log("Deploying files...");
                 InstallerOperations.CopyDirectoryWithProgress(
-                    extractDir,
+                    packageSourceDir,
                     installDir,
                     dest => !string.IsNullOrWhiteSpace(installerExePath) &&
                             string.Equals(Path.GetFullPath(dest), installerExePath, StringComparison.OrdinalIgnoreCase),
@@ -453,6 +474,8 @@ public partial class MainWindow : Window
 
             if (!string.IsNullOrWhiteSpace(url))
                 Log($"ERROR: failed to download from: {url}");
+            else if (!string.IsNullOrWhiteSpace(localBuildDir))
+                Log($"ERROR: failed to install from local build: {localBuildDir}");
             Log($"ERROR: {ex.Message}");
             MessageBox.Show(
                 ex.ToString(),

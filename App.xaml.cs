@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using DataGateWin.CrashReporting;
 using DataGateWin.Installer.Localization;
@@ -19,6 +20,31 @@ public partial class App : System.Windows.Application
         var options = InstallerCommandLine.Parse(e.Args ?? Array.Empty<string>());
         if (!options.IsUninstall)
         {
+            if (options.Quiet)
+            {
+                try
+                {
+                    var installerExe = Environment.ProcessPath
+                        ?? System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+                    var installerDir = Path.GetDirectoryName(installerExe) ?? Environment.CurrentDirectory;
+                    var package = LocalBuildPackage.TryFind(installerDir)
+                        ?? throw new DirectoryNotFoundException(
+                            "Quiet install requires a DataGateWinBuild* folder next to the installer (or its parent) with DataGateWin.exe.");
+                    var installDir = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                        "DataGate");
+                    QuietLocalInstallRunner.Execute(package, installDir);
+                    Shutdown(0);
+                }
+                catch (Exception ex)
+                {
+                    ReportStartupFailureBeforeShutdown(ex);
+                    Shutdown(1);
+                }
+
+                return;
+            }
+
             MainWindow = new MainWindow();
             MainWindow.Show();
             return;

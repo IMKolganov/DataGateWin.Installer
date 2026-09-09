@@ -54,6 +54,11 @@ internal static class InstallerOperations
         foreach (var file in files)
         {
             var relative = Path.GetRelativePath(sourceDir, file);
+            // Offline local packages live as DataGateWinBuild* beside the installer — never nest them.
+            var segments = relative.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (segments.Any(LocalBuildPackage.IsLocalBuildDirectoryName))
+                continue;
+
             var destFile = Path.Combine(destinationDir, relative);
 
             if (skipDestination?.Invoke(destFile) == true)

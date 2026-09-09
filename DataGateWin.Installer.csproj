@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
@@ -8,8 +8,8 @@
         <UseWPF>true</UseWPF>
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>Images\favicon.ico</ApplicationIcon>
-        <AssemblyVersion>1.0.17</AssemblyVersion>
-        <FileVersion>1.0.17</FileVersion>
+        <AssemblyVersion>1.0.18</AssemblyVersion>
+        <FileVersion>1.0.18</FileVersion>
         <Product>DataGate</Product>
         <AssemblyTitle>DataGate</AssemblyTitle>
         <Description>DataGate</Description>
