@@ -9,7 +9,7 @@ namespace DataGateWin.Installer;
 /// </summary>
 internal static class QuietLocalInstallRunner
 {
-    public static void Execute(string packageDirectory, string installDirectory, Action<string>? log = null)
+    public static async Task ExecuteAsync(string packageDirectory, string installDirectory, Action<string>? log = null)
     {
         void L(string m)
         {
@@ -30,7 +30,7 @@ internal static class QuietLocalInstallRunner
         L($"Using local build folder (skip download): {packageDirectory}");
         L($"Installing to: {installDirectory}");
 
-        ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(true, L).GetAwaiter().GetResult();
+        await ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(interactivePrompts: false, log: L);
         Directory.CreateDirectory(installDirectory);
 
         var installerExe = Process.GetCurrentProcess().MainModule?.FileName;

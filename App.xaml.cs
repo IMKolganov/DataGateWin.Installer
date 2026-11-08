@@ -7,7 +7,7 @@ namespace DataGateWin.Installer;
 
 public partial class App : System.Windows.Application
 {
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         ConfigureCrashReporting();
         InstallCrashReportingHandlers();
@@ -22,6 +22,7 @@ public partial class App : System.Windows.Application
         {
             if (options.Quiet)
             {
+                ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 try
                 {
                     var installerExe = Environment.ProcessPath
@@ -33,7 +34,7 @@ public partial class App : System.Windows.Application
                     var installDir = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
                         "DataGate");
-                    QuietLocalInstallRunner.Execute(package, installDir);
+                    await QuietLocalInstallRunner.ExecuteAsync(package, installDir);
                     Shutdown(0);
                 }
                 catch (Exception ex)
