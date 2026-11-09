@@ -30,9 +30,21 @@
         <InternalsVisibleTo Include="DataGateWin.Tests"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <!-- Installer is WPF: keep sys:String dictionaries from legacy UI (WinUI uses x:String). -->
-        <Page Include="..\DataGateWin.UI\Localization\Strings.*.xaml" Link="Localization\%(Filename)%(Extension)"/>
-    </ItemGroup>
+    <!-- Installer is WPF; it shares the UI string dictionaries. The UI files use x:String (WinUI),
+         WPF needs sys:String, so convert them into obj\ at build time. -->
+    <Target Name="GenerateInstallerStrings" BeforeTargets="MarkupCompilePass1">
+        <ItemGroup>
+            <_UiStringsSrc Include="$(MSBuildThisFileDirectory)..\DataGateWin.UI\Localization\Strings.*.xaml"/>
+        </ItemGroup>
+        <MakeDir Directories="$(IntermediateOutputPath)GeneratedStrings"/>
+        <WriteLinesToFile File="$(IntermediateOutputPath)GeneratedStrings\%(_UiStringsSrc.Filename)%(_UiStringsSrc.Extension)"
+                          Lines="$([System.IO.File]::ReadAllText('%(_UiStringsSrc.FullPath)').Replace('&lt;x:String ', '&lt;sys:String ').Replace('&lt;/x:String&gt;', '&lt;/sys:String&gt;').Replace('&lt;ResourceDictionary ', '&lt;ResourceDictionary xmlns:sys=&quot;clr-namespace:System%3Bassembly=System.Runtime&quot; '))"
+                          Overwrite="true" WriteOnlyWhenDifferent="true"/>
+        <ItemGroup>
+            <_GenStrings Include="$(IntermediateOutputPath)GeneratedStrings\Strings.*.xaml"/>
+            <Page Remove="@(_GenStrings)"/>
+            <Page Include="@(_GenStrings)" Link="Localization\%(Filename)%(Extension)"/>
+        </ItemGroup>
+    </Target>
 
 </Project>
