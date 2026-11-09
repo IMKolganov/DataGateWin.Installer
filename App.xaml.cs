@@ -11,7 +11,6 @@ public partial class App : System.Windows.Application
     {
         ConfigureCrashReporting();
         InstallCrashReportingHandlers();
-        _ = CrashReporter.FlushPendingAsync(CancellationToken.None);
 
         base.OnStartup(e);
 
@@ -20,6 +19,21 @@ public partial class App : System.Windows.Application
         var options = InstallerCommandLine.Parse(e.Args ?? Array.Empty<string>());
         if (!options.IsUninstall)
         {
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            var recoveryLog = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "DataGateWin", "installer-network-recovery.log");
+            await Task.Run(() => StartupDnsRecovery.Run(line =>
+            {
+                System.Diagnostics.Debug.WriteLine(line);
+                try
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(recoveryLog)!);
+                    File.AppendAllText(recoveryLog, $"{DateTimeOffset.Now:O} {line}{Environment.NewLine}");
+                }
+                catch { /* logging must not prevent recovery */ }
+            }));
+            _ = CrashReporter.FlushPendingAsync(CancellationToken.None);
             if (options.Quiet)
             {
                 ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -46,6 +60,7 @@ public partial class App : System.Windows.Application
                 return;
             }
 
+            ShutdownMode = ShutdownMode.OnLastWindowClose;
             MainWindow = new MainWindow();
             MainWindow.Show();
             return;
