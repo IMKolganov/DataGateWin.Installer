@@ -100,4 +100,9 @@ Telegram: https://t.me/datagateapp</sys:String>
     <sys:String x:Key="Install_SelectFolderTitle">Select installation folder</sys:String>
     <sys:String x:Key="Install_LanguageLabel">Installer language</sys:String>
     <sys:String x:Key="Install_LanguageHint">Uses the same list as the DataGate app. Default follows Windows.</sys:String>
+    <sys:String x:Key="Install_WelcomeTitle">About the project</sys:String>
+    <sys:String x:Key="Install_WelcomeBody">DataGate is a VPN client for Windows. Connect to DataGate servers and manage your connection in one app. The Windows client source code is available on GitHub.</sys:String>
+    <sys:String x:Key="Install_ProjectLinks">Explore the project</sys:String>
+    <sys:String x:Key="Install_WelcomeNext">Select Next to read the license agreement and choose where to install DataGate.</sys:String>
+    <sys:String x:Key="Install_Back">Back</sys:String>
 </ResourceDictionary>

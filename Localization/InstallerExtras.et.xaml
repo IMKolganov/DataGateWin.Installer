@@ -44,4 +44,5 @@ Litsents lõpeb rikkumisel või eemaldamisel. Punktid 6, 9 ja 10 jäävad kehtim
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Nõustun litsentsilepinguga</sys:String>
+    <sys:String x:Key="Install_Back">Tagasi</sys:String>
 </ResourceDictionary>

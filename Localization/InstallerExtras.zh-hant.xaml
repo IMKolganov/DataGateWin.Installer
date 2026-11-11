@@ -44,4 +44,5 @@ Windows 用戶端原始碼發布於 https://github.com/IMKolganov/DataGateWin。
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">我接受授權合約</sys:String>
+    <sys:String x:Key="Install_Back">返回</sys:String>
 </ResourceDictionary>

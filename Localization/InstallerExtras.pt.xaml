@@ -44,4 +44,5 @@ Esta licença termina em caso de violação ou desinstalação. Subsistem as sec
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Aceito o contrato de licença</sys:String>
+    <sys:String x:Key="Install_Back">Voltar</sys:String>
 </ResourceDictionary>

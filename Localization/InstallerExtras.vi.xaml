@@ -44,4 +44,5 @@ Giấy phép chấm dứt khi vi phạm hoặc gỡ cài. Mục 6, 9 và 10 vẫ
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Tôi chấp nhận thỏa thuận giấy phép</sys:String>
+    <sys:String x:Key="Install_Back">Quay lại</sys:String>
 </ResourceDictionary>

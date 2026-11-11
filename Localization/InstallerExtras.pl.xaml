@@ -44,4 +44,5 @@ Licencja wygasa przy naruszeniu lub odinstalowaniu. Pozostają punkty 6, 9 i 10.
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Akceptuję umowę licencyjną</sys:String>
+    <sys:String x:Key="Install_Back">Wstecz</sys:String>
 </ResourceDictionary>

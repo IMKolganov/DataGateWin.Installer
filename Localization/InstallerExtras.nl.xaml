@@ -44,4 +44,5 @@ Deze licentie eindigt bij schending of de-installatie. Artikelen 6, 9 en 10 blij
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Ik accepteer de licentieovereenkomst</sys:String>
+    <sys:String x:Key="Install_Back">Terug</sys:String>
 </ResourceDictionary>

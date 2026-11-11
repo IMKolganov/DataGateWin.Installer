@@ -44,4 +44,5 @@ La licenza cessa in caso di violazione o disinstallazione. Restano gli articoli 
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Accetto il contratto di licenza</sys:String>
+    <sys:String x:Key="Install_Back">Indietro</sys:String>
 </ResourceDictionary>

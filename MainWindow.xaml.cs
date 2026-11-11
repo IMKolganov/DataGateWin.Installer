@@ -232,6 +232,10 @@ public partial class MainWindow : Window
     {
         switch (_currentStep)
         {
+            case InstallerWizardStep.Welcome:
+                _currentStep = InstallerWizardStep.Policy;
+                UpdateWizardUi();
+                break;
             case InstallerWizardStep.Policy:
                 if (PolicyCheckBox.IsChecked != true)
                     return;
@@ -262,6 +266,30 @@ public partial class MainWindow : Window
                 Close();
                 break;
         }
+    }
+
+    private void ProjectLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+    {
+        e.Handled = true;
+        try
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            CrashReporter.ReportNonFatal(ex, "Installer.OpenProjectLink");
+            MessageBox.Show(this, e.Uri.AbsoluteUri, InstallerLoc.T("Install_WindowTitle"),
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+    }
+
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        var previous = InstallerWizardRules.GetPreviousStep(_currentStep, _isUpdateMode);
+        if (previous is null)
+            return;
+        _currentStep = previous.Value;
+        UpdateWizardUi();
     }
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -298,6 +326,7 @@ public partial class MainWindow : Window
 
     private void UpdateWizardUi()
     {
+        WelcomePanel.Visibility = _currentStep == InstallerWizardStep.Welcome ? Visibility.Visible : Visibility.Collapsed;
         PolicyPanel.Visibility = _currentStep == InstallerWizardStep.Policy ? Visibility.Visible : Visibility.Collapsed;
         PathPanel.Visibility = _currentStep == InstallerWizardStep.Path ? Visibility.Visible : Visibility.Collapsed;
         InstallPanel.Visibility = _currentStep == InstallerWizardStep.Install ? Visibility.Visible : Visibility.Collapsed;
@@ -313,11 +342,14 @@ public partial class MainWindow : Window
         InstallPathTextBox.IsEnabled = !_isUpdateMode;
         BrowseButton.IsEnabled = !_isUpdateMode;
 
+        BackButton.Visibility = InstallerWizardRules.GetPreviousStep(_currentStep, _isUpdateMode) is null
+            ? Visibility.Collapsed : Visibility.Visible;
         NextButton.Content = _currentStep == InstallerWizardStep.Finish
             ? InstallerLoc.T("Install_Finish")
             : InstallerLoc.T("Install_Next");
         StepTextBlock.Text = _currentStep switch
         {
+            InstallerWizardStep.Welcome => string.Empty,
             InstallerWizardStep.Policy => InstallerLoc.T("Install_StepFmt", 1),
             InstallerWizardStep.Path => InstallerLoc.T("Install_StepFmt", 2),
             InstallerWizardStep.Install => InstallerLoc.T("Install_StepFmt", 3),
@@ -418,6 +450,7 @@ public partial class MainWindow : Window
                 var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
                 var installerExePath = installerExe != null ? Path.GetFullPath(installerExe) : string.Empty;
 
+                InstallerOperations.ValidatePackage(packageSourceDir);
                 Log("Deploying files...");
                 InstallerOperations.CopyDirectoryWithProgress(
                     packageSourceDir,

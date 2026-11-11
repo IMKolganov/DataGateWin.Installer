@@ -44,4 +44,5 @@ Críochnaíonn an ceadúnas ar shárú nó ar dhíshuiteáil. Fanann ailt 6, 9 a
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Glacaim leis an gcomhaontú ceadúnais</sys:String>
+    <sys:String x:Key="Install_Back">Siar</sys:String>
 </ResourceDictionary>

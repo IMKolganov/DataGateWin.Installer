@@ -44,4 +44,5 @@ Licensen ophører ved brud eller afinstallation. Afsnit 6, 9 og 10 består.
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Jeg accepterer licensaftalen</sys:String>
+    <sys:String x:Key="Install_Back">Tilbage</sys:String>
 </ResourceDictionary>

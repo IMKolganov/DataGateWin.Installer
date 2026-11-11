@@ -44,4 +44,5 @@ DataGate खाता चाहिए हो सकता है (Google सा�
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">मैं लाइसेंस समझौते को स्वीकार करता/करती हूँ</sys:String>
+    <sys:String x:Key="Install_Back">वापस</sys:String>
 </ResourceDictionary>

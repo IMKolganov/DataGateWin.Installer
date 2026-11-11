@@ -44,4 +44,5 @@ Licencija baigiasi pažeidus ar pašalinus. 6, 9 ir 10 punktai lieka galioti.
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Sutinku su licencijos sutartimi</sys:String>
+    <sys:String x:Key="Install_Back">Atgal</sys:String>
 </ResourceDictionary>

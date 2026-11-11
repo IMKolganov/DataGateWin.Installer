@@ -39,6 +39,82 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="8,4"/>
         </Style>
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushStrong}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                                BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}" BorderThickness="1" CornerRadius="6"/>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter Margin="10,6,30,6" IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              VerticalAlignment="Center"/>
+                            <Path Data="M 0 0 L 4 4 L 8 0" Stroke="{DynamicResource PrimaryTextBrush}"
+                                  StrokeThickness="1.5" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  Margin="0,0,10,0" IsHitTestVisible="False"/>
+                            <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True" Focusable="False"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}" PopupAnimation="Slide">
+                                <Border Background="{DynamicResource CardBackgroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrushStrong}" BorderThickness="1" CornerRadius="6"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="ProgressBar">
             <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
             <Setter Property="Background" Value="#E5E7EB"/>
@@ -157,6 +233,22 @@
         <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrushStrong}"
                 BorderThickness="1" CornerRadius="10" Padding="20">
             <Grid>
+                <ScrollViewer Name="WelcomePanel" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Install_WelcomeTitle}" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                        <TextBlock Text="{DynamicResource Install_WelcomeBody}" TextWrapping="Wrap" FontSize="14" Margin="0,0,0,20"/>
+                        <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="6" Padding="16">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Install_ProjectLinks}" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                <TextBlock Margin="0,4"><Hyperlink NavigateUri="https://datagateapp.com" RequestNavigate="ProjectLink_RequestNavigate" Foreground="{DynamicResource AccentBrush}">datagateapp.com</Hyperlink></TextBlock>
+                                <TextBlock Margin="0,4"><Hyperlink NavigateUri="https://t.me/datagateapp" RequestNavigate="ProjectLink_RequestNavigate" Foreground="{DynamicResource AccentBrush}">Telegram · @datagateapp</Hyperlink></TextBlock>
+                                <TextBlock Margin="0,4"><Hyperlink NavigateUri="https://t.me/DataGateVPNBot" RequestNavigate="ProjectLink_RequestNavigate" Foreground="{DynamicResource AccentBrush}">Telegram · @DataGateVPNBot</Hyperlink></TextBlock>
+                                <TextBlock Margin="0,4"><Hyperlink NavigateUri="https://github.com/IMKolganov/DataGateWin" RequestNavigate="ProjectLink_RequestNavigate" Foreground="{DynamicResource AccentBrush}">GitHub · IMKolganov/DataGateWin</Hyperlink></TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Text="{DynamicResource Install_WelcomeNext}" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" Margin="0,16,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
                 <StackPanel Name="PolicyPanel" Visibility="Collapsed">
                     <TextBlock Text="{DynamicResource Install_LicenseTitle}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
                     <Border BorderBrush="{DynamicResource BorderBrushStrong}" BorderThickness="1" CornerRadius="6" Padding="12"
@@ -232,13 +324,16 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" Text="{DynamicResource Install_FooterCopyright}"/>
             <Button Grid.Column="1" Name="UninstallButton" Content="{DynamicResource Install_Uninstall}" Width="120" Height="32"
                     Margin="0,0,10,0" Click="UninstallButton_Click" Style="{StaticResource SecondaryButton}"/>
             <Button Grid.Column="2" Name="CancelButton" Content="{DynamicResource Install_Cancel}" Width="120" Height="32"
                     Margin="0,0,10,0" Click="CancelButton_Click" Style="{StaticResource SecondaryButton}"/>
-            <Button Grid.Column="3" Name="NextButton" Width="120" Height="32"
+            <Button Grid.Column="3" Name="BackButton" Content="{DynamicResource Install_Back}" Width="120" Height="32"
+                    Visibility="Collapsed" Margin="0,0,10,0" Click="BackButton_Click" Style="{StaticResource SecondaryButton}"/>
+            <Button Grid.Column="4" Name="NextButton" Width="120" Height="32"
                     Click="NextButton_Click" Style="{StaticResource PrimaryButton}"/>
             </Grid>
         </Grid>

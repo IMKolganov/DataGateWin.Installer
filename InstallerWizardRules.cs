@@ -2,6 +2,7 @@ namespace DataGateWin.Installer;
 
 internal enum InstallerWizardStep
 {
+    Welcome,
     Policy,
     Path,
     Install,
@@ -11,7 +12,15 @@ internal enum InstallerWizardStep
 internal static class InstallerWizardRules
 {
     public static InstallerWizardStep GetInitialStep(bool isUpdateMode) =>
-        isUpdateMode ? InstallerWizardStep.Install : InstallerWizardStep.Policy;
+        isUpdateMode ? InstallerWizardStep.Install : InstallerWizardStep.Welcome;
+
+    public static InstallerWizardStep? GetPreviousStep(InstallerWizardStep step, bool isUpdateMode) =>
+        isUpdateMode ? null : step switch
+        {
+            InstallerWizardStep.Policy => InstallerWizardStep.Welcome,
+            InstallerWizardStep.Path => InstallerWizardStep.Policy,
+            _ => null
+        };
 
     public static bool IsNextEnabled(
         InstallerWizardStep step,
@@ -20,6 +29,7 @@ internal static class InstallerWizardRules
         bool installCompleted) =>
         step switch
         {
+            InstallerWizardStep.Welcome => true,
             InstallerWizardStep.Policy => policyAccepted,
             InstallerWizardStep.Path => !string.IsNullOrWhiteSpace(installPath),
             InstallerWizardStep.Install => installCompleted,

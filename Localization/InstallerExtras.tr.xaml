@@ -44,4 +44,5 @@ Bu lisans ihlalde veya kaldırmada sona erer. 6, 9 ve 10. bölümler yürürlük
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Lisans sözleşmesini kabul ediyorum</sys:String>
+    <sys:String x:Key="Install_Back">Geri</sys:String>
 </ResourceDictionary>

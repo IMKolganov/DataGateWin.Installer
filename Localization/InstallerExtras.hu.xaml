@@ -44,4 +44,5 @@ A licenc megszegés vagy eltávolítás esetén megszűnik. A 6., 9. és 10. pon
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Elfogadom a licencszerződést</sys:String>
+    <sys:String x:Key="Install_Back">Vissza</sys:String>
 </ResourceDictionary>

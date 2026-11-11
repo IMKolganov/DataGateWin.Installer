@@ -44,4 +44,5 @@
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Приемам лицензионното споразумение</sys:String>
+    <sys:String x:Key="Install_Back">Назад</sys:String>
 </ResourceDictionary>

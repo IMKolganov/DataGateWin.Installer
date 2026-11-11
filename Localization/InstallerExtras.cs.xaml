@@ -44,4 +44,5 @@ Licence končí porušením nebo odinstalací. Články 6, 9 a 10 trvají.
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Přijímám licenční smlouvu</sys:String>
+    <sys:String x:Key="Install_Back">Zpět</sys:String>
 </ResourceDictionary>

@@ -44,4 +44,5 @@ Licenca prestaje povredom ili deinstalacijom. Ostaju točke 6, 9 i 10.
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Prihvaćam licencni ugovor</sys:String>
+    <sys:String x:Key="Install_Back">Natrag</sys:String>
 </ResourceDictionary>

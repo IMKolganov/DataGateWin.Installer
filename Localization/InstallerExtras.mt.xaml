@@ -44,4 +44,5 @@ Il-liċenzja tispiċċa f’każ ta’ ksur jew diżinstallazzjoni. Jibqgħu s-s
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Naċċetta l-ftehim tal-liċenzja</sys:String>
+    <sys:String x:Key="Install_Back">Lura</sys:String>
 </ResourceDictionary>

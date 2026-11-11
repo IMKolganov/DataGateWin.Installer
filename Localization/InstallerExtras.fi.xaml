@@ -44,4 +44,5 @@ Lisenssi päättyy rikkomiseen tai poistamiseen. Kohdat 6, 9 ja 10 jäävät voi
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Hyväksyn lisenssisopimuksen</sys:String>
+    <sys:String x:Key="Install_Back">Takaisin</sys:String>
 </ResourceDictionary>

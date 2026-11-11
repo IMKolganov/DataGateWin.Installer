@@ -44,4 +44,5 @@ Diese Lizenz endet bei Verstoß oder Deinstallation. Abschnitte 6, 9 und 10 blei
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Ich akzeptiere die Lizenzvereinbarung</sys:String>
+    <sys:String x:Key="Install_Back">Zurück</sys:String>
 </ResourceDictionary>

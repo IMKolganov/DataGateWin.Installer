@@ -44,4 +44,5 @@ Lisensi berakhir jika dilanggar atau dihapus. Pasal 6, 9, dan 10 tetap berlaku.
 12.
 https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Saya menerima perjanjian lisensi</sys:String>
+    <sys:String x:Key="Install_Back">Kembali</sys:String>
 </ResourceDictionary>

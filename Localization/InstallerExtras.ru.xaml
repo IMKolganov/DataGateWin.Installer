@@ -61,4 +61,9 @@ DataGate и участники проекта не несут ответстве
 Загрузка: https://datagateapp.com/download
 Telegram: https://t.me/datagateapp</sys:String>
     <sys:String x:Key="Install_AcceptPolicy">Я принимаю лицензионное соглашение</sys:String>
+    <sys:String x:Key="Install_WelcomeTitle">О проекте</sys:String>
+    <sys:String x:Key="Install_WelcomeBody">DataGate — VPN-клиент для Windows. Подключайтесь к серверам DataGate и управляйте подключением в одном приложении. Исходный код клиента для Windows опубликован на GitHub.</sys:String>
+    <sys:String x:Key="Install_ProjectLinks">О проекте и полезные ссылки</sys:String>
+    <sys:String x:Key="Install_WelcomeNext">Нажмите «Далее», чтобы прочитать лицензионное соглашение и выбрать папку установки DataGate.</sys:String>
+    <sys:String x:Key="Install_Back">Назад</sys:String>
 </ResourceDictionary>
