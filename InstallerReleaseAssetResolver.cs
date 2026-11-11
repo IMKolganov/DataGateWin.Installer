@@ -9,12 +9,12 @@ internal static class InstallerReleaseAssetResolver
         string assetNamePrefix,
         string assetNameSuffix)
     {
-        if (!root.TryGetProperty("assets", out var assets) || assets.ValueKind != JsonValueKind.Array)
+        if (root.ValueKind != JsonValueKind.Object || !root.TryGetProperty("assets", out var assets) || assets.ValueKind != JsonValueKind.Array)
             throw new InvalidOperationException("GitHub latest release response does not contain assets.");
 
         foreach (var asset in assets.EnumerateArray())
         {
-            if (!asset.TryGetProperty("name", out var nameProp) || nameProp.ValueKind != JsonValueKind.String)
+            if (asset.ValueKind != JsonValueKind.Object || !asset.TryGetProperty("name", out var nameProp) || nameProp.ValueKind != JsonValueKind.String)
                 continue;
 
             var name = nameProp.GetString() ?? string.Empty;
@@ -26,7 +26,7 @@ internal static class InstallerReleaseAssetResolver
                 urlProp.ValueKind == JsonValueKind.String)
             {
                 var url = urlProp.GetString();
-                if (!string.IsNullOrWhiteSpace(url))
+                if (Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Scheme == Uri.UriSchemeHttps)
                     return url;
             }
         }

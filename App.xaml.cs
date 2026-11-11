@@ -39,6 +39,8 @@ public partial class App : System.Windows.Application
                 ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 try
                 {
+                    if (options.IsUpdateMode)
+                        throw new InvalidOperationException("Quiet update is not supported; use the interactive update flow.");
                     var installerExe = Environment.ProcessPath
                         ?? System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
                     var installerDir = Path.GetDirectoryName(installerExe) ?? Environment.CurrentDirectory;

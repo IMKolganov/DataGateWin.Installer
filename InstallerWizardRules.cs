@@ -26,13 +26,14 @@ internal static class InstallerWizardRules
         InstallerWizardStep step,
         bool policyAccepted,
         string? installPath,
-        bool installCompleted) =>
+        bool installCompleted,
+        bool installFailed = false) =>
         step switch
         {
             InstallerWizardStep.Welcome => true,
             InstallerWizardStep.Policy => policyAccepted,
             InstallerWizardStep.Path => !string.IsNullOrWhiteSpace(installPath),
-            InstallerWizardStep.Install => installCompleted,
+            InstallerWizardStep.Install => installCompleted || installFailed,
             InstallerWizardStep.Finish => true,
             _ => false
         };

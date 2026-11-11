@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using DataGateWin.Services.Update;
 using Microsoft.Win32;
 
 namespace DataGateWin.Installer;
@@ -68,7 +68,7 @@ internal static class InstallRegistry
         if (File.Exists(exePath))
             key.SetValue("DisplayIcon", exePath, RegistryValueKind.String);
 
-        var version = GetInstallerVersion();
+        var version = ResolveDisplayVersion(installDir);
         if (!string.IsNullOrWhiteSpace(version))
             key.SetValue("DisplayVersion", version, RegistryValueKind.String);
 
@@ -125,10 +125,10 @@ internal static class InstallRegistry
         }
     }
 
-    static string? GetInstallerVersion()
+    internal static string? ResolveDisplayVersion(string installDirectory)
     {
-        var asm = Assembly.GetExecutingAssembly();
-        var v = asm.GetName().Version;
-        return v?.ToString();
+        var version = InstalledBuild.TryReadVersion(Path.Combine(installDirectory, InstallerConstants.ExeName))
+            ?? InstalledBuild.TryReadVersion(Path.Combine(installDirectory, AppUpdatePolicy.MainDllFileName));
+        return version is null ? null : ReleaseVersionParser.FormatForDisplay(version);
     }
 }
