@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Kasunduan sa lisensya</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Kasunduan sa lisensya
+2026-09-09
+
+Basahin ang kasunduang ito bago i-install ang DataGate para sa Windows. Sa pag-check ng «Tinatanggap ko ang kasunduan sa lisensya» at pag-install o paggamit ng software, tinatanggap mo ang mga tuntunin. Kung hindi ka sang-ayon, kanselahin ang setup at huwag gamitin ang software.
+
+1.
+Saklaw ng kasunduang ito ang DataGate Windows app, ang installer na ito, ang kasamang VPN engine, at iba pang file (sama-sama, ang «Software»). Ang mga account, VPN server, API, website, at Telegram bot ay hiwalay na serbisyo. Maaaring may karagdagang tuntunin sa https://datagateapp.com.
+
+2.
+Binibigyan ka namin ng personal, hindi eksklusibo, hindi naililipat na lisensya na i-install at gamitin ang Software sa mga Windows device na pag-aari o kontrol mo, para lamang sa awtorisadong serbisyo ng DataGate. Hindi mo maaaring ipaupa, ibenta, o i-sublicense ang installer o client bilang sarili mong produkto, o alisin ang mga marka ng DataGate.
+
+3.
+Ang source code ng Windows client ay nasa https://github.com/IMKolganov/DataGateWin. Bahagi ng Software ay nasa open-source na lisensya, kabilang ang GNU GPL v2. Hindi inaalis ng kasunduang ito ang mga karapatan na mayroon ka na sa kaukulang source code.
+
+4.
+Maaaring kailanganin ang DataGate account (Google sign-in at, kung naka-on, authenticator code). Ikaw ang responsable sa mga kredensyal at aktibidad ng account. Ang mga plano, quota, at server ay ibinibigay ng serbisyo ng DataGate.
+
+5.
+Gamitin ang Software at VPN ayon sa batas. Huwag gamitin ang DataGate para sa krimen, malware, pag-atake, pag-iwas sa legal na proseso, o pang-aabuso. Maaaring magbabala ang client kung may tumatakbong torrent client. Responsable ka sa lahat ng VPN traffic, kahit ibang tao ang gumamit ng device o account mo.
+
+6.
+Ikaw lang ang responsable kung sino ang gumagamit ng Software at VPN sa iyong mga device at account, kabilang ang mga bata, pamilya, bisita, at empleyado. Hindi parental control, age rating, o child-safety product ang DataGate. Hindi ito nagsasala ng site, hindi humaharang ng masama o ilegal na nilalaman, hindi tumitingin ng edad, at hindi nagbabantay sa menor de edad. Maaaring mapadali ng VPN ang pagpunta sa mga serbisyong normalmente ay pinaghihigpitan. Maaaring gumamit ng DataGate ang menor de edad sa pahintulot at patuloy na pangangasiwa ng magulang o tagapag-alaga. Tinatanggap mo ang lahat ng panganib, kabilang kung saan pumupunta ang bata at ano ang tinitingnan, dina-download, sinasabi, binibili, o ginagawa sa VPN. Hindi mananagot ang DataGate at mga contributor sa claim, pagkawala, imbestigasyon, multa, o alitan mula sa ganitong paggamit — kabilang ng bata — at hindi partido sa iyong relasyon sa bata, paaralan, ISP, o awtoridad.
+
+7.
+Kailangan ng client ang network. Maaari itong magpadala ng crash report, tseke ng update, at kahilingan sa account/API sa DataGate. Kapag nakakonekta, dumadaan ang VPN traffic sa napiling server. Tingnan ang https://datagateapp.com.
+
+8.
+Maaaring maghanap ang Software ng mas bagong bersyon (kabilang sa GitHub) at ialok ang installer na ito. Maaari kang tumanggi. Maaaring hindi na gumana ang lumang bersyon sa serbisyo.
+
+9.
+IBINIBIGAY ANG SOFTWARE «GAYA NG NASA» WALANG WARRANTY. Hindi namin ginagarantiya na palaging makakonekta ang VPN, magtatago ng pagkakakilanlan, lalampas sa restriksyon, hindi mag-iinterrupt, o magpoprotekta sa iyo, sa bata, o kaninuman mula sa nilalaman, kontak, o legal na kahihinatnan.
+
+10.
+SA PINAKAMALAWAK NA ANTAS NA PINAPAYAGAN NG BATAS, HINDI MANANAGOT ANG DATAGATE AT MGA CONTRIBUTOR SA TUWIRAN O HINDI TUWIRANG PINSALA O SA PAGKAWALA NG DATA, KITA, ACCESS, O REPUTASYON. Kasama ang mga site sa VPN, nilalaman, mensahe, download, gawa mo o ng iba (kabilang ang menor de edad), claim ng third party, imbestigasyon, at multa. Ikaw ang bahala, sa sarili mong gastos, sa anumang claim laban sa DataGate mula sa paggamit mo o ng iyong account o device, kabilang ng bata.
+
+11.
+Nagtatapos ang lisensya sa paglabag o pag-uninstall. Nananatili ang seksyon 6, 9, at 10.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Tinatanggap ko ang kasunduan sa lisensya</sys:String>
+    <sys:String x:Key="Install_Back">Bumalik</sys:String>
+</ResourceDictionary>

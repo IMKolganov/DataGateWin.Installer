@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licenčná zmluva</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licenčná zmluva
+2026-09-09
+
+Pred inštaláciou DataGate pre Windows si prečítajte túto zmluvu. Začiarknutím «Prijímam licenčnú zmluvu» a inštaláciou alebo používaním softvéru tieto podmienky prijímate. Ak nesúhlasíte, inštaláciu zrušte a softvér nepoužívajte.
+
+1.
+Zmluva sa vzťahuje na aplikáciu DataGate pre Windows, tento inštalátor, priložený VPN engine a ďalšie súbory (spoločne «Softvér»). Účty, VPN servery, API, web a Telegram bot sú samostatná služba. Ďalšie podmienky môžu platiť na https://datagateapp.com.
+
+2.
+Udeľujeme vám osobnú, nevýhradnú, neprenosnú licenciu na inštaláciu a používanie Softvéru na zariadeniach Windows, ktoré vlastníte alebo ovládate, len na autorizované služby DataGate. Inštalátor ani klienta nesmiete prenajímať, predávať ani sublicencovať ako vlastný produkt ani odstraňovať ochranné známky DataGate.
+
+3.
+Zdrojový kód klienta Windows je na https://github.com/IMKolganov/DataGateWin. Časti Softvéru sú pod open-source licenciami vrátane GNU GPL v2. Zmluva neodobera práva, ktoré k príslušnému zdrojovému kódu už máte.
+
+4.
+Môže byť potrebný účet DataGate (prihlásenie Google a prípadne kód autentifikátora). Zodpovedáte za prihlasovacie údaje a aktivitu účtu. Tarify, kvóty a servery poskytuje služba DataGate.
+
+5.
+Softvér a VPN musíte používať v súlade s právom. DataGate nepoužívajte na trestné činy, malware, útoky, obchádzanie zákonného postupu ani zneužitie. Klient môže upozorniť, ak beží torrent klient. Zodpovedáte za všetku VPN prevádzku, aj keď ju vytvorí niekto iný na vašom zariadení alebo účte.
+
+6.
+Výlučne vy zodpovedáte za to, kto Softvér a VPN na vašich zariadeniach a účte používa, vrátane detí, rodiny, hostí a zamestnancov. DataGate nie je rodičovská kontrola, vekové hodnotenie ani produkt ochrany detí. Nefiltruje weby, neblokuje škodlivý obsah, neoveruje vek a nedohliada na maloletých. VPN môže uľahčiť prístup k inak obmedzeným službám. Maloletý smie DataGate používať len so súhlasom a priebežným dohľadom rodiča alebo opatrovníka. Nesiiete všetko riziko vrátane toho, kam dieťa ide a čo cez VPN sleduje, sťahuje, hovorí, kupuje alebo robí. DataGate a prispievatelia nenesú zodpovednosť za nároky, straty, vyšetrovania, pokuty ani spory z takéhoto použitia — aj dieťaťom — a nie sú stranou vášho vzťahu k dieťaťu, škole, ISP ani orgánu.
+
+7.
+Klient potrebuje sieť. Môže odosielať hlásenia pádov, kontroly aktualizácií a požiadavky účtu/API na DataGate. Po pripojení ide prevádzka VPN vybraným serverom. Pozri https://datagateapp.com.
+
+8.
+Softvér môže hľadať novšiu verziu (aj cez GitHub) a ponúknuť tento inštalátor. Aktualizáciu môžete odmietnuť. Staršie verzie nemusia so službou ďalej fungovať.
+
+9.
+SOFTVÉR SA POSKYTUJE «AKO STOJÍ A LEŽÍ», BEZ ZÁRUKY. Negarantujeme, že sa VPN vždy pripojí, skryje identitu, obíde obmedzenia, nepreruší sa, ani že ochráni vás, dieťa alebo kohokoľvek pred obsahom, kontaktmi či právnymi následkami.
+
+10.
+V MAXIMÁLNOM ROZSAHU POVOLENOM ZÁKONOM DATAGATE A PRISPIEVATELIA NENESÚ ZODPOVEDNOSŤ ZA PRIAME ANI NEPRIAME ŠKODY ANI ZA STRATU DÁT, ZISKU, PRÍSTUPU ALEBO POVÉSTI. Zahŕňa weby cez VPN, obsah, správy, sťahovanie, činy vás alebo iných (vrátane maloletého), nároky tretích osôb, vyšetrovania a pokuty. Nároky voči DataGate z vášho použitia alebo použitia účtu či zariadení, aj dieťaťom, riešite na vlastné náklady.
+
+11.
+Licencia končí porušením alebo odinštalovaním. Články 6, 9 a 10 trvajú.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Prijímam licenčnú zmluvu</sys:String>
+    <sys:String x:Key="Install_Back">Späť</sys:String>
+</ResourceDictionary>

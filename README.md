@@ -15,14 +15,15 @@
 
 ## What is this?
 
-**DataGate Installer** is a WPF installer for the Windows VPN app **DataGateWin** (DataGate OpenVPN 3). It downloads a release ZIP, extracts it to the selected folder, and registers the app in the system (Start Menu, Apps & Features, App Paths).
+**DataGate Installer** is a WPF installer for the Windows VPN app **DataGateWin** (unpackaged WinUI 3 shell + native `engine\`). It downloads a release ZIP, extracts it to the selected folder, and registers the app in the system (Start Menu, Apps & Features, App Paths).
 
 ## Features
 
 | Feature | Description |
 |--------|-------------|
 | **Wizard flow** | Policy, install path, shortcut options, and progress steps. |
-| **Release download** | Downloads release ZIP by URL and extracts to disk. |
+| **Release download** | Downloads the latest GitHub release ZIP (default). |
+| **Local build folder** | If a folder named `DataGateWinBuild*` (with `DataGateWin.exe`) sits next to the installer or in its parent, that folder is installed and GitHub is skipped. |
 | **Shortcuts** | Optional Start Menu (under **Programs » DataGate**) and **shared (all users) Desktop** shortcuts (both on by default). |
 | **Apps & Features** | Registers under `HKLM\...\Uninstall\DataGate` (older installs used `...\Uninstall\DataGateOpenVPN3`; both removed on uninstall) with `UninstallString` pointing at this installer plus `--uninstall`. |
 | **App Paths** | Run `DataGateWin.exe` via **Win+R**. |
@@ -51,7 +52,7 @@ dotnet build .\DataGateWin.Installer.csproj -c Release
 3. Choose the install path and whether to create Start Menu / Desktop shortcuts (defaults: both enabled). After accepting the policy, if this installer build matches the installed app version, you can launch the app, continue to reinstall files, or exit.
 4. Wait for the installation to finish.
 
-By default, the installer can query GitHub for the latest release and download the asset that matches `DataGateWin.v*.zip`. The ZIP must contain `DataGateWin.exe`. Optionally, it can include `favicon.ico` (used as the shortcut icon).
+By default, the installer can query GitHub for the latest release and download the asset that matches `DataGateWin.v*.zip`. The ZIP must contain `DataGateWin.exe` plus the WinUI unpackaged layout (`DataGateWin.pri`, `Images\`, `engine\`, … — see `docs/WINUI3_PUBLISH_LAYOUT.md`). Shortcuts use `Images\favicon.ico` when present (else the exe icon).
 
 ## Update mode
 

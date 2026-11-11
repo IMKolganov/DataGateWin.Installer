@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licencszerződés</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licencszerződés
+2026-09-09
+
+Olvassa el ezt a szerződést a DataGate Windowsra telepítése előtt. A «Elfogadom a licencszerződést» bejelölésével és a szoftver telepítésével vagy használatával elfogadja a feltételeket. Ha nem ért egyet, szakítsa meg a telepítést, és ne használja a szoftvert.
+
+1.
+A szerződés a DataGate Windows-alkalmazásra, erre a telepítőre, a mellékelt VPN-motorra és egyéb fájlokra vonatkozik (együtt a «Szoftver»). A fiókok, VPN-kiszolgálók, API, webhely és Telegram-bot külön szolgáltatás. További feltételek: https://datagateapp.com.
+
+2.
+Személyes, nem kizárólagos, nem átruházható licencet adunk a Szoftver telepítésére és használatára az Ön tulajdonában vagy ellenőrzése alatt álló Windows-eszközökön, csak engedélyezett DataGate-szolgáltatásokhoz. A telepítőt vagy klienst nem adhatja bérbe, nem adhatja el, nem sublicencelheti saját termékeként, és nem távolíthatja el a DataGate védjegyeket.
+
+3.
+A Windows-kliens forráskódja: https://github.com/IMKolganov/DataGateWin. A Szoftver részei nyílt forráskódú licencek alatt állnak, köztük a GNU GPL v2. A szerződés nem veszi el a megfelelő forráskódhoz már meglévő jogait.
+
+4.
+DataGate-fiók kellhet (Google-bejelentkezés és szükség esetén hitelesítő kód). Ön felel a hitelesítő adatokért és a fióktevékenységért. A csomagokat, kvótákat és kiszolgálókat a DataGate-szolgáltatás adja.
+
+5.
+A Szoftvert és a VPN-t a jogszabályoknak megfelelően kell használni. Ne használja a DataGate-et bűncselekményre, kártevőre, támadásra, jogszerű eljárás megkerülésére vagy visszaélésre. A kliens figyelmeztethet, ha torrentkliens fut. Ön felel a teljes VPN-forgalomért akkor is, ha más használja az eszközét vagy fiókját.
+
+6.
+Kizárólag Ön felel azért, ki használja a Szoftvert és a VPN-t az eszközein és fiókjában, ideértve a gyermekeket, családot, vendégeket és alkalmazottakat. A DataGate nem szülői felügyelet, korhatár-besorolás vagy gyermekvédelmi termék. Nem szűr webhelyeket, nem blokkol káros tartalmat, nem ellenőriz életkort, és nem felügyel kiskorúakat. A VPN megkönnyítheti az egyébként korlátozott szolgáltatások elérését. Kiskorú csak szülő vagy gyám hozzájárulásával és folyamatos felügyeletével használhatja a DataGate-et. Minden kockázatot Ön visel, ideértve, hová megy a gyermek, és mit néz, tölt le, mond, vásárol vagy tesz a VPN-en. A DataGate és a közreműködők nem felelnek az ilyen használatból — gyermek által is — eredő igényekért, veszteségekért, vizsgálatokért, bírságokért vagy vitákért, és nem részesei a gyermekkel, iskolával, ISP-vel vagy hatósággal való viszonyának.
+
+7.
+A kliensnek hálózat kell. Összeomlási jelentéseket, frissítésellenőrzést és fiók-/API-kéréseket küldhet a DataGate-nek. Csatlakozáskor a VPN-forgalom a választott kiszolgálón megy. Lásd https://datagateapp.com.
+
+8.
+A Szoftver újabb kiadást kereshet (GitHubon is), és felajánlhatja ezt a telepítőt. Elutasíthatja. A régi verziók nem feltétlenül működnek tovább a szolgáltatással.
+
+9.
+A SZOFTVER «AHOGY VAN» ÁLLAPOTBAN, GARANCIA NÉLKÜL KERÜL ÁTADÁSRA. Nem szavatoljuk, hogy a VPN mindig csatlakozik, elrejti a személyazonosságot, kikerüli a korlátozásokat, szünet nélkül működik, vagy megvédi Önt, egy gyermeket vagy bárkit a tartalomtól, kapcsolatoktól vagy jogi következményektől.
+
+10.
+A JOG ÁLTAL MEGENGEDETT LEGNAGYOBB MÉRTÉKBEN A DATAGATE ÉS A KÖZREMŰKÖDŐK NEM FELELNEK KÖZVETLEN VAGY KÖZVETETT KÁRÉRT, SEM ADAT-, NYERESÉG-, HOZZÁFÉRÉS- VAGY HÍRNÉVVESZTESÉGÉRT. Ez magában foglalja a VPN-en keresztül látogatott oldalakat, tartalmat, üzeneteket, letöltéseket, az Ön vagy mások (köztük kiskorú) tetteit, harmadik felek igényeit, vizsgálatokat és bírságokat. Saját költségén rendezi a DataGate elleni, az Ön használatából vagy fiókja/eszközei — akár gyermek általi — használatából eredő igényeket.
+
+11.
+A licenc megszegés vagy eltávolítás esetén megszűnik. A 6., 9. és 10. pont fennmarad.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Elfogadom a licencszerződést</sys:String>
+    <sys:String x:Key="Install_Back">Vissza</sys:String>
+</ResourceDictionary>

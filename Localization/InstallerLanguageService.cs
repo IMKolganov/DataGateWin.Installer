@@ -13,6 +13,7 @@ internal static class InstallerLanguageService
     private static ResourceDictionary? _stringsBase;
     private static ResourceDictionary? _stringsOverlay;
     private static ResourceDictionary? _extras;
+    private static ResourceDictionary? _extrasOverlay;
 
     public const string SystemPreference = "system";
 
@@ -51,6 +52,7 @@ internal static class InstallerLanguageService
         Remove(ref _stringsBase, merged);
         Remove(ref _stringsOverlay, merged);
         Remove(ref _extras, merged);
+        Remove(ref _extrasOverlay, merged);
 
         var asmName = Assembly.GetExecutingAssembly().GetName().Name!;
         _stringsBase = LoadDic(asmName, "Localization/Strings.en.xaml");
@@ -71,6 +73,19 @@ internal static class InstallerLanguageService
 
         _extras = LoadDic(asmName, "Localization/InstallerExtras.en.xaml");
         merged.Add(_extras);
+
+        if (!string.Equals(effective, "en", StringComparison.OrdinalIgnoreCase))
+        {
+            try
+            {
+                _extrasOverlay = LoadDic(asmName, $"Localization/InstallerExtras.{effective}.xaml");
+                merged.Add(_extrasOverlay);
+            }
+            catch
+            {
+                _extrasOverlay = null;
+            }
+        }
 
         LanguageChanged?.Invoke(null, EventArgs.Empty);
     }

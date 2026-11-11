@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Umowa licencyjna</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Umowa licencyjna
+2026-09-09
+
+Przeczytaj tę umowę przed instalacją DataGate dla Windows. Zaznaczając «Akceptuję umowę licencyjną» i instalując lub używając oprogramowania, akceptujesz te warunki. Jeśli nie zgadzasz się, anuluj instalację i nie używaj oprogramowania.
+
+1.
+Umowa dotyczy aplikacji DataGate na Windows, tego instalatora, dołączonego silnika VPN i innych plików (łącznie «Oprogramowanie»). Konta, serwery VPN, API, strona i bot Telegram to osobna usługa. Dodatkowe warunki mogą obowiązywać na https://datagateapp.com.
+
+2.
+Udzielamy osobistej, niewyłącznej, niezbywalnej licencji na instalację i używanie Oprogramowania na urządzeniach Windows, które posiadasz lub kontrolujesz, wyłącznie do autoryzowanych usług DataGate. Nie wolno wynajmować, sprzedawać ani sublicencjonować instalatora lub klienta jako własnego produktu ani usuwać znaków DataGate.
+
+3.
+Kod źródłowy klienta Windows jest na https://github.com/IMKolganov/DataGateWin. Części Oprogramowania są na licencjach open source, w tym GNU GPL v2. Umowa nie odbiera praw, które już masz do odpowiedniego kodu źródłowego.
+
+4.
+Może być potrzebne konto DataGate (logowanie Google i ewentualnie kod uwierzytelniający). Odpowiadasz za dane logowania i aktywność konta. Plany, limity i serwery zapewnia usługa DataGate.
+
+5.
+Musisz używać Oprogramowania i VPN zgodnie z prawem. Nie używaj DataGate do przestępstw, złośliwego oprogramowania, ataków, obchodzenia legalnego postępowania ani nadużyć. Klient może ostrzec, gdy działa klient torrent. Odpowiadasz za cały ruch VPN, także gdy ktoś inny używa twojego urządzenia lub konta.
+
+6.
+Wyłącznie ty odpowiadasz za to, kto używa Oprogramowania i VPN na twoich urządzeniach i koncie, w tym dzieci, rodzina, goście i pracownicy. DataGate to nie kontrola rodzicielska, klasyfikacja wiekowa ani produkt ochrony dzieci. Nie filtruje stron, nie blokuje szkodliwych treści, nie weryfikuje wieku i nie nadzoruje małoletnich. VPN może ułatwić dostęp do usług inaczej ograniczonych. Małoletni może używać DataGate tylko za zgodą i stałym nadzorem rodzica lub opiekuna. Przyjmujesz całe ryzyko, w tym dokąd dziecko wchodzi i co ogląda, pobiera, mówi, kupuje lub robi przez VPN. DataGate i współtwórcy nie odpowiadają za roszczenia, straty, postępowania, kary ani spory z takiego użytku — także przez dziecko — i nie są stroną twoich relacji z dzieckiem, szkołą, ISP ani organem.
+
+7.
+Klient potrzebuje sieci. Może wysyłać raporty awarii, sprawdzanie aktualizacji i żądania konta/API do DataGate. Po połączeniu ruch VPN idzie przez wybrany serwer. Zobacz https://datagateapp.com.
+
+8.
+Oprogramowanie może sprawdzać nowszą wersję (także przez GitHub) i proponować ten instalator. Możesz odmówić. Starsze wersje mogą przestać działać z usługą.
+
+9.
+OPROGRAMOWANIE JEST DOSTARCZANE «TAK JAK JEST», BEZ GWARANCJI. Nie gwarantujemy, że VPN zawsze się połączy, ukryje tożsamość, ominie ograniczenia, nie przerwie się ani nie ochroni ciebie, dziecka ani nikogo przed treściami, kontaktami lub skutkami prawnymi.
+
+10.
+W MAKSYMALNYM ZAKRESIE DOZWOLONYM PRAWEM DATAGATE I WSPÓŁTWÓRCY NIE ODPOWIADAJĄ ZA SZKODY BEZPOŚREDNIE ANI POŚREDNIE ANI ZA UTRATĘ DANYCH, ZYSKÓW, DOSTĘPU LUB REPUTACJI. Obejmuje to strony przez VPN, treści, wiadomości, pobrania, działania twoje lub innych (w tym małoletniego), roszczenia osób trzecich, postępowania i kary. Na własny koszt załatwiasz wszelkie roszczenia wobec DataGate wynikające z twojego użytku lub użytku konta albo urządzeń, także przez dziecko.
+
+11.
+Licencja wygasa przy naruszeniu lub odinstalowaniu. Pozostają punkty 6, 9 i 10.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Akceptuję umowę licencyjną</sys:String>
+    <sys:String x:Key="Install_Back">Wstecz</sys:String>
+</ResourceDictionary>

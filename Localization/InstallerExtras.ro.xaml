@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Acord de licență</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Acord de licență
+2026-09-09
+
+Citiți acest acord înainte de a instala DataGate pentru Windows. Bifând «Accept acordul de licență» și instalând sau folosind software-ul, acceptați termenii. Dacă nu sunteți de acord, anulați instalarea și nu folosiți software-ul.
+
+1.
+Acordul se aplică aplicației DataGate pentru Windows, acestui program de instalare, motorului VPN inclus și altor fișiere (împreună «Software-ul»). Conturile, serverele VPN, API-ul, site-ul și botul Telegram sunt un serviciu separat. Termeni suplimentari pot exista pe https://datagateapp.com.
+
+2.
+Vă acordăm o licență personală, neexclusivă, netransferabilă de a instala și folosi Software-ul pe dispozitive Windows pe care le dețineți sau le controlați, numai pentru servicii DataGate autorizate. Nu puteți închiria, vinde sau sublicenția instalatorul sau clientul ca produs propriu, nici îndepărta mărcile DataGate.
+
+3.
+Codul sursă al clientului Windows este la https://github.com/IMKolganov/DataGateWin. Părți din Software sunt sub licențe open source, inclusiv GNU GPL v2. Acest acord nu vă ia drepturile pe care le aveți deja asupra codului sursă corespunzător.
+
+4.
+Poate fi necesar un cont DataGate (autentificare Google și, dacă este activ, cod de autentificator). Sunteți responsabil pentru datele de autentificare și activitatea contului. Planurile, cotele și serverele sunt furnizate de serviciul DataGate.
+
+5.
+Trebuie să folosiți Software-ul și VPN-ul conform legii. Nu folosiți DataGate pentru infracțiuni, malware, atacuri, eludarea unei proceduri legale sau abuz. Clientul poate avertiza dacă rulează un client torrent. Rămâneți responsabil pentru tot traficul VPN, inclusiv dacă altcineva folosește dispozitivul sau contul dvs.
+
+6.
+Sunteți singurul responsabil cine folosește Software-ul și VPN-ul pe dispozitivele și contul dvs., inclusiv copii, familie, oaspeți și angajați. DataGate nu este control parental, clasificare pe vârste sau produs de protecție a copiilor. Nu filtrează site-uri, nu blochează conținut dăunător, nu verifică vârsta și nu supraveghează minorii. Un VPN poate facilita accesul la servicii altfel restricționate. Un minor folosește DataGate doar cu consimțământul și supravegherea continuă a unui părinte sau tutore. Acceptați tot riscul, inclusiv unde merge copilul și ce vede, descarcă, spune, cumpără sau face prin VPN. DataGate și colaboratorii nu răspund pentru pretenții, pierderi, anchete, amenzi sau litigii din astfel de utilizare — inclusiv de către un copil — și nu sunt parte a relației dvs. cu copilul, o școală, un ISP sau o autoritate.
+
+7.
+Clientul are nevoie de rețea. Poate trimite rapoarte de blocare, verificări de actualizare și cereri de cont/API către DataGate. La conectare, traficul VPN trece prin serverul ales. Vezi https://datagateapp.com.
+
+8.
+Software-ul poate căuta o versiune mai nouă (inclusiv pe GitHub) și oferi acest instalator. Puteți refuza. Versiunile vechi pot înceta să funcționeze cu serviciul.
+
+9.
+SOFTWARE-UL ESTE FURNIZAT «CA ATARE», FĂRĂ GARANȚIE. Nu garantăm că VPN-ul se conectează mereu, ascunde identitatea, ocolește restricțiile, rămâne neîntrerupt sau protejează pe dvs., un copil sau pe oricine de conținut, contacte sau consecințe legale.
+
+10.
+ÎN MĂSURA MAXIMĂ PERMISĂ DE LEGE, DATAGATE ȘI COLABORATORII NU RĂSPUND PENTRU DAUNE DIRECTE SAU INDIRECTE, NICI PENTRU PIERDEREA DE DATE, PROFIT, ACCES SAU REPUTAȚIE. Include site-uri prin VPN, conținut, mesaje, descărcări, acte ale dvs. sau ale altora (inclusiv un minor), pretenții ale terților, anchete și amenzi. Tratați pe cheltuiala dvs. orice pretenție împotriva DataGate născută din utilizarea dvs. sau a contului ori dispozitivelor, inclusiv de către un copil.
+
+11.
+Licența încetează la încălcare sau dezinstalare. Articolele 6, 9 și 10 rămân.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Accept acordul de licență</sys:String>
+    <sys:String x:Key="Install_Back">Înapoi</sys:String>
+</ResourceDictionary>

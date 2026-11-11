@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Comhaontú ceadúnais</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Comhaontú ceadúnais
+2026-09-09
+
+Léigh an comhaontú seo sula suiteálann tú DataGate do Windows. Trí «Glacaim leis an gcomhaontú ceadúnais» a thiceáil agus an bogearra a shuiteáil nó a úsáid, glacann tú leis na téarmaí. Mura n-aontaíonn tú, cealaigh an tsuiteáil agus ná húsáid an bogearra.
+
+1.
+Baineann an comhaontú leis an aip DataGate do Windows, leis an suiteálaí seo, leis an inneall VPN agus le comhaid eile (le chéile, an «Bogearra»). Is seirbhís ar leith iad cuntais, freastalaithe VPN, API, suíomh agus bot Telegram. D’fhéadfadh téarmaí breise a bheith ag https://datagateapp.com.
+
+2.
+Bronnaimid ceadúnas pearsanta, neamheisiach, neamh-inaistrithe ort an Bogearra a shuiteáil agus a úsáid ar ghléasanna Windows atá agat nó faoi do smacht, le haghaidh seirbhísí DataGate údaraithe amháin. Ní féidir an suiteálaí ná an cliant a ligean ar cíos, a dhíol ná a fhochomhcheadúnú mar do tháirge féin, ná trádmharcanna DataGate a bhaint.
+
+3.
+Tá cód foinse an chliaint Windows ag https://github.com/IMKolganov/DataGateWin. Tá codanna den Bhogearra faoi cheadúnais foinse oscailte, GNU GPL v2 ina measc. Ní bhaineann an comhaontú seo cearta atá agat cheana ar an gcód foinse comhfhreagrach.
+
+4.
+D’fhéadfadh cuntas DataGate a bheith ag teastáil (sínigh isteach le Google agus, más gníomhach, cód fíordheimhnitheora). Tá tú freagrach as dintiúir agus as gníomhaíocht an chuntais. Soláthraíonn seirbhís DataGate pleananna, cuótaí agus freastalaithe.
+
+5.
+Caithfidh tú an Bogearra agus an VPN a úsáid de réir an dlí. Ná húsáid DataGate le haghaidh coireanna, malware, ionsaithe, seachaint próisis dhlíthiúil ná mí-úsáid. Féadfaidh an cliant rabhadh a thabhairt má tá cliant torrent ar siúl. Tá tú freagrach as an trácht VPN ar fad, fiú má úsáideann duine eile do ghléas nó do chuntas.
+
+6.
+Tá tú amháin freagrach as cé a úsáideann an Bogearra agus an VPN ar do ghléasanna agus do chuntas, lena n-áirítear leanaí, teaghlach, aíonna agus fostaithe. Ní rialú tuismitheoirí, rátáil aoise ná táirge sábháilteachta leanaí é DataGate. Ní scagann sé suímh, ní chuireann sé bac ar ábhar díobhálach, ní fhíoraíonn sé aois agus ní dhéanann sé maoirseacht ar mhionaoisigh. Féadfaidh VPN rochtain a éascú ar sheirbhísí a bheadh srianta murach sin. Ní féidir le mionaoiseach DataGate a úsáid ach le toiliú agus maoirseacht leanúnach tuismitheora nó caomhnóra. Glacann tú leis an riosca ar fad, lena n-áirítear cá dtéann an leanbh agus cad a fheiceann, a íoslódálann, a deir, a cheannaíonn nó a dhéanann sé tríd an VPN. Níl DataGate ná rannpháirtithe dlite as éilimh, caillteanais, imscrúduithe, fíneálacha ná aighnis as úsáid den sórt sin — fiú ag leanbh — agus níl siad ina bpáirtí i do chaidreamh leis an leanbh, scoil, ISP ná údarás.
+
+7.
+Teastaíonn líonra ón gcliant. Féadfaidh sé tuairiscí tuairte, seiceálacha nuashonraithe agus iarratais chuntais/API a sheoladh chuig DataGate. Nuair a nascann tú, téann trácht VPN tríd an bhfreastalaí roghnaithe. Féach https://datagateapp.com.
+
+8.
+Féadfaidh an Bogearra leagan níos nuaí a lorg (GitHub san áireamh) agus an suiteálaí seo a thairiscint. Is féidir diúltú. Ní gá go n-oibreodh leaganacha níos sine leis an tseirbhís i gcónaí.
+
+9.
+SOLÁTHRAÍTEAR AN BOGEARRA «MAR ATÁ», GAN RÁTHAÍOCHT. Ní ráthaímid go nascfaidh an VPN i gcónaí, go gcuirfidh sé céannacht i bhfolach, go seachnóidh sé srianta, nach gcuirfear isteach air, ná go gcosnóidh sé tusa, leanbh ná aon duine ó ábhar, teagmhálacha ná iarmhairtí dlíthiúla.
+
+10.
+A MHÉID IS CEADAITHE DE RÉIR DLÍ, NÍL DATAGATE NÁ RANNPHÁIRTITHE DLITE AS DAMÁISTE DÍREACH NÁ INDÍREACH NÁ AS CAILLTEANAS SONRAÍ, BRABAIGH, ROCHTANA NÁ CLÚ. Áirítear suímh tríd an VPN, ábhar, teachtaireachtaí, íoslódálacha, gníomhartha uaitse nó ó dhaoine eile (mionaoiseach san áireamh), éilimh tríú páirtí, imscrúduithe agus fíneálacha. Láimhseálann tú ar do chostas féin aon éileamh in aghaidh DataGate a éiríonn as d’úsáid nó as úsáid do chuntais nó do ghléasanna, leanbh san áireamh.
+
+11.
+Críochnaíonn an ceadúnas ar shárú nó ar dhíshuiteáil. Fanann ailt 6, 9 agus 10.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Glacaim leis an gcomhaontú ceadúnais</sys:String>
+    <sys:String x:Key="Install_Back">Siar</sys:String>
+</ResourceDictionary>

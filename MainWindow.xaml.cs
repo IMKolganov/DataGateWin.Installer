@@ -232,6 +232,10 @@ public partial class MainWindow : Window
     {
         switch (_currentStep)
         {
+            case InstallerWizardStep.Welcome:
+                _currentStep = InstallerWizardStep.Policy;
+                UpdateWizardUi();
+                break;
             case InstallerWizardStep.Policy:
                 if (PolicyCheckBox.IsChecked != true)
                     return;
@@ -262,6 +266,30 @@ public partial class MainWindow : Window
                 Close();
                 break;
         }
+    }
+
+    private void ProjectLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+    {
+        e.Handled = true;
+        try
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            CrashReporter.ReportNonFatal(ex, "Installer.OpenProjectLink");
+            MessageBox.Show(this, e.Uri.AbsoluteUri, InstallerLoc.T("Install_WindowTitle"),
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+    }
+
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        var previous = InstallerWizardRules.GetPreviousStep(_currentStep, _isUpdateMode);
+        if (previous is null)
+            return;
+        _currentStep = previous.Value;
+        UpdateWizardUi();
     }
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -298,6 +326,7 @@ public partial class MainWindow : Window
 
     private void UpdateWizardUi()
     {
+        WelcomePanel.Visibility = _currentStep == InstallerWizardStep.Welcome ? Visibility.Visible : Visibility.Collapsed;
         PolicyPanel.Visibility = _currentStep == InstallerWizardStep.Policy ? Visibility.Visible : Visibility.Collapsed;
         PathPanel.Visibility = _currentStep == InstallerWizardStep.Path ? Visibility.Visible : Visibility.Collapsed;
         InstallPanel.Visibility = _currentStep == InstallerWizardStep.Install ? Visibility.Visible : Visibility.Collapsed;
@@ -313,11 +342,14 @@ public partial class MainWindow : Window
         InstallPathTextBox.IsEnabled = !_isUpdateMode;
         BrowseButton.IsEnabled = !_isUpdateMode;
 
+        BackButton.Visibility = InstallerWizardRules.GetPreviousStep(_currentStep, _isUpdateMode) is null
+            ? Visibility.Collapsed : Visibility.Visible;
         NextButton.Content = _currentStep == InstallerWizardStep.Finish
             ? InstallerLoc.T("Install_Finish")
             : InstallerLoc.T("Install_Next");
         StepTextBlock.Text = _currentStep switch
         {
+            InstallerWizardStep.Welcome => string.Empty,
             InstallerWizardStep.Policy => InstallerLoc.T("Install_StepFmt", 1),
             InstallerWizardStep.Path => InstallerLoc.T("Install_StepFmt", 2),
             InstallerWizardStep.Install => InstallerLoc.T("Install_StepFmt", 3),
@@ -350,11 +382,30 @@ public partial class MainWindow : Window
         _cts = new CancellationTokenSource();
 
         string? url = null;
+        string? localBuildDir = null;
         try
         {
-            url = await ResolveLatestReleaseZipUrlAsync(_cts.Token);
-            UrlTextBox.Text = url;
-            Log($"Using release asset: {url}");
+            // Update-from-ProgramFiles must NEVER use LocalBuildPackage.
+            // Installer lives in {InstallRoot}\Installer\; LocalBuildPackage also searches the parent
+            // (the live install). A leftover DataGateWinBuild* there (or a mismatched offline layout)
+            // would "update" by copying the same/old bits → app version unchanged → prompt forever.
+            if (!isUpdate)
+                localBuildDir = LocalBuildPackage.TryFind(_installerDir);
+
+            if (localBuildDir is not null)
+            {
+                UrlTextBox.Text = localBuildDir;
+                Log($"Using local build folder (skip download): {localBuildDir}");
+                SetDownloadProgress(100);
+            }
+            else
+            {
+                url = await ResolveLatestReleaseZipUrlAsync(_cts.Token);
+                UrlTextBox.Text = url;
+                Log(isUpdate
+                    ? $"Update mode: downloading release asset (local DataGateWinBuild* ignored): {url}"
+                    : $"Using release asset: {url}");
+            }
 
             var installDir = isUpdate ? _installerDir : InstallPathTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(installDir))
@@ -379,19 +430,30 @@ public partial class MainWindow : Window
 
             try
             {
-                await DownloadFileAsync(url, zipPath, new Progress<double>(p => SetDownloadProgress(p)), _cts.Token);
+                string packageSourceDir;
+                if (localBuildDir is not null)
+                {
+                    packageSourceDir = localBuildDir;
+                    ReportInstallProgress(10);
+                }
+                else
+                {
+                    await DownloadFileAsync(url!, zipPath, new Progress<double>(p => SetDownloadProgress(p)), _cts.Token);
 
-                Log("Extracting zip...");
-                Directory.CreateDirectory(extractDir);
-                ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true);
-                ReportInstallProgress(10);
+                    Log("Extracting zip...");
+                    Directory.CreateDirectory(extractDir);
+                    ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true);
+                    ReportInstallProgress(10);
+                    packageSourceDir = extractDir;
+                }
 
                 var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
                 var installerExePath = installerExe != null ? Path.GetFullPath(installerExe) : string.Empty;
 
+                InstallerOperations.ValidatePackage(packageSourceDir);
                 Log("Deploying files...");
                 InstallerOperations.CopyDirectoryWithProgress(
-                    extractDir,
+                    packageSourceDir,
                     installDir,
                     dest => !string.IsNullOrWhiteSpace(installerExePath) &&
                             string.Equals(Path.GetFullPath(dest), installerExePath, StringComparison.OrdinalIgnoreCase),
@@ -453,6 +515,8 @@ public partial class MainWindow : Window
 
             if (!string.IsNullOrWhiteSpace(url))
                 Log($"ERROR: failed to download from: {url}");
+            else if (!string.IsNullOrWhiteSpace(localBuildDir))
+                Log($"ERROR: failed to install from local build: {localBuildDir}");
             Log($"ERROR: {ex.Message}");
             MessageBox.Show(
                 ex.ToString(),

@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Perjanjian lisensi</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Perjanjian lisensi
+2026-09-09
+
+Baca perjanjian ini sebelum memasang DataGate untuk Windows. Dengan mencentang «Saya menerima perjanjian lisensi» serta memasang atau memakai perangkat lunak, Anda menyetujui syarat ini. Jika tidak setuju, batalkan pemasangan dan jangan gunakan perangkat lunak.
+
+1.
+Perjanjian ini berlaku untuk aplikasi DataGate Windows, pemasang ini, mesin VPN yang disertakan, dan berkas lain (bersama «Perangkat Lunak»). Akun, server VPN, API, situs, dan bot Telegram adalah layanan terpisah. Syarat tambahan dapat berlaku di https://datagateapp.com.
+
+2.
+Kami memberi Anda lisensi pribadi, non-eksklusif, tidak dapat dipindahtangankan untuk memasang dan memakai Perangkat Lunak pada perangkat Windows yang Anda miliki atau kendalikan, hanya untuk layanan DataGate yang diizinkan. Anda tidak boleh menyewakan, menjual, atau mensublisensikan pemasang atau klien sebagai produk Anda sendiri, atau menghapus merek DataGate.
+
+3.
+Kode sumber klien Windows ada di https://github.com/IMKolganov/DataGateWin. Bagian Perangkat Lunak berada di bawah lisensi sumber terbuka, termasuk GNU GPL v2. Perjanjian ini tidak mencabut hak yang sudah Anda miliki atas kode sumber yang sesuai.
+
+4.
+Anda mungkin memerlukan akun DataGate (masuk Google dan, jika aktif, kode autentikator). Anda bertanggung jawab atas kredensial dan aktivitas akun. Paket, kuota, dan server disediakan layanan DataGate.
+
+5.
+Anda harus memakai Perangkat Lunak dan VPN sesuai hukum. Jangan gunakan DataGate untuk kejahatan, malware, serangan, menghindari proses hukum, atau penyalahgunaan. Klien dapat memperingatkan jika klien torrent berjalan. Anda tetap bertanggung jawab atas semua lalu lintas VPN, termasuk jika orang lain memakai perangkat atau akun Anda.
+
+6.
+Hanya Anda yang bertanggung jawab siapa memakai Perangkat Lunak dan VPN di perangkat dan akun Anda, termasuk anak, keluarga, tamu, dan karyawan. DataGate bukan kontrol orang tua, klasifikasi usia, atau produk perlindungan anak. Ia tidak menyaring situs, tidak memblokir konten berbahaya, tidak memverifikasi usia, dan tidak mengawasi anak di bawah umur. VPN dapat memudahkan akses ke layanan yang seharusnya dibatasi. Anak di bawah umur hanya memakai DataGate dengan persetujuan dan pengawasan terus-menerus dari orang tua atau wali. Anda menanggung semua risiko, termasuk ke mana anak pergi dan apa yang dilihat, diunduh, dikatakan, dibeli, atau dilakukan melalui VPN. DataGate dan kontributor tidak bertanggung jawab atas klaim, kerugian, penyelidikan, denda, atau sengketa dari penggunaan itu — termasuk oleh anak — dan bukan pihak dalam hubungan Anda dengan anak, sekolah, ISP, atau otoritas.
+
+7.
+Klien membutuhkan jaringan. Ia dapat mengirim laporan crash, pemeriksaan pembaruan, dan permintaan akun/API ke DataGate. Saat terhubung, lalu lintas VPN melewati server yang dipilih. Lihat https://datagateapp.com.
+
+8.
+Perangkat Lunak dapat memeriksa rilis yang lebih baru (termasuk lewat GitHub) dan menawarkan pemasang ini. Anda dapat menolak. Versi lama mungkin berhenti bekerja dengan layanan.
+
+9.
+PERANGKAT LUNAK DISEDIAKAN «SEBAGAIMANA ADANYA», TANPA JAMINAN. Kami tidak menjamin VPN selalu terhubung, menyembunyikan identitas, melewati pembatasan, tidak terputus, atau melindungi Anda, anak, atau siapa pun dari konten, kontak, atau akibat hukum.
+
+10.
+SEJAUH DIIZINKAN HUKUM, DATAGATE DAN KONTRIBUTOR TIDAK BERTANGGUNG JAWAB ATAS KERUGIAN LANGSUNG ATAU TIDAK LANGSUNG MAUPUN HILANGNYA DATA, LABA, AKSES, ATAU REPUTASI. Ini mencakup situs lewat VPN, konten, pesan, unduhan, tindakan Anda atau orang lain (termasuk anak di bawah umur), klaim pihak ketiga, penyelidikan, dan denda. Anda menangani atas biaya sendiri setiap klaim terhadap DataGate yang timbul dari penggunaan Anda atau penggunaan akun atau perangkat, termasuk oleh anak.
+
+11.
+Lisensi berakhir jika dilanggar atau dihapus. Pasal 6, 9, dan 10 tetap berlaku.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Saya menerima perjanjian lisensi</sys:String>
+    <sys:String x:Key="Install_Back">Kembali</sys:String>
+</ResourceDictionary>

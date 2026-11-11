@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licentieovereenkomst</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licentieovereenkomst
+2026-09-09
+
+Lees deze overeenkomst voordat u DataGate voor Windows installeert. Door «Ik accepteer de licentieovereenkomst» aan te vinken en de software te installeren of te gebruiken, gaat u akkoord. Zo niet, annuleer de installatie en gebruik de software niet.
+
+1.
+Deze overeenkomst geldt voor de DataGate-Windows-app, dit installatieprogramma, de meegeleverde VPN-engine en andere bestanden (samen de «Software»). Accounts, VPN-servers, API, website en Telegram-bot zijn een aparte dienst. Extra voorwaarden kunnen gelden op https://datagateapp.com.
+
+2.
+Wij verlenen u een persoonlijke, niet-exclusieve, niet-overdraagbare licentie om de Software te installeren en te gebruiken op Windows-apparaten die u bezit of beheert, alleen voor gemachtigde DataGate-diensten. U mag het installatieprogramma of de client niet verhuren, verkopen of sublicentiëren als eigen product, noch merken van DataGate verwijderen.
+
+3.
+De broncode van de Windows-client staat op https://github.com/IMKolganov/DataGateWin. Delen van de Software vallen onder open-sourcelicenties, waaronder GNU GPL v2. Deze overeenkomst ontneemt u geen rechten die u al hebt op de bijbehorende broncode.
+
+4.
+Er kan een DataGate-account nodig zijn (Google-aanmelding en eventueel een authenticatorcode). U bent verantwoordelijk voor inloggegevens en accountactiviteit. Abonnementen, quota en servers levert de DataGate-dienst.
+
+5.
+U moet Software en VPN gebruiken volgens het toepasselijke recht. Gebruik DataGate niet voor misdrijven, malware, aanvallen, het omzeilen van een wettelijke procedure of misbruik. De client kan waarschuwen als een torrentclient draait. U blijft verantwoordelijk voor alle VPN-verkeer, ook als iemand anders uw apparaat of account gebruikt.
+
+6.
+U bent als enige verantwoordelijk voor wie Software en VPN op uw apparaten en account gebruikt, inclusief kinderen, gezin, gasten en medewerkers. DataGate is geen ouderlijk toezicht, leeftijdsclassificatie of kinderveiligheidsproduct. Het filtert geen sites, blokkeert geen schadelijke of illegale inhoud, controleert geen leeftijd en houdt geen toezicht op minderjarigen. Een VPN kan toegang tot anders beperkte diensten vergemakkelijken. Een minderjarige gebruikt DataGate alleen met toestemming en doorlopend toezicht van een ouder of voogd. U aanvaardt al het risico, inclusief waar het kind naartoe gaat en wat het via de VPN ziet, downloadt, zegt, koopt of doet. DataGate en bijdragers zijn niet aansprakelijk voor claims, verlies, onderzoeken, boetes of geschillen door dergelijk gebruik — ook door een kind — en zijn geen partij in uw relatie met het kind, een school, een ISP of een overheid.
+
+7.
+De client heeft netwerktoegang nodig. Hij kan crashrapporten, updatecontroles en account-/API-verzoeken naar DataGate sturen. Bij verbinding loopt VPN-verkeer via de gekozen server. Zie https://datagateapp.com.
+
+8.
+De Software kan naar een nieuwere versie zoeken (ook via GitHub) en dit installatieprogramma aanbieden. U kunt weigeren. Oudere clients hoeven niet met de dienst te blijven werken.
+
+9.
+DE SOFTWARE WORDT «AS IS» GELEVERD, ZONDER GARANTIE. Wij garanderen niet dat de VPN altijd verbindt, identiteit verbergt, restricties omzeilt, ononderbroken blijft, of u, een kind of iemand anders beschermt tegen inhoud, contacten of juridische gevolgen.
+
+10.
+VOOR ZOVER WETTELIJK TOEGESTAAN ZIJN DATAGATE EN BIJDRAGERS NIET AANSPRAKELIJK VOOR DIRECTE OF INDIRECTE SCHADE OF VERLIES VAN GEGEVENS, WINST, TOEGANG OF REPUTATIE. Dit omvat sites via de VPN, bekeken inhoud, berichten, downloads, handelingen van u of anderen (inclusief een minderjarige), claims van derden, onderzoeken en boetes. U behandelt op eigen kosten elke vordering tegen DataGate die voortkomt uit uw gebruik of dat van uw account of apparaten, ook door een kind.
+
+11.
+Deze licentie eindigt bij schending of de-installatie. Artikelen 6, 9 en 10 blijven gelden.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Ik accepteer de licentieovereenkomst</sys:String>
+    <sys:String x:Key="Install_Back">Terug</sys:String>
+</ResourceDictionary>

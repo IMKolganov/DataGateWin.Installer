@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Lisenssisopimus</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Lisenssisopimus
+2026-09-09
+
+Lue tämä sopimus ennen DataGaten asentamista Windowsiin. Merkitsemällä «Hyväksyn lisenssisopimuksen» ja asentamalla tai käyttämällä ohjelmistoa hyväksyt ehdot. Jos et hyväksy, peruuta asennus äläkä käytä ohjelmistoa.
+
+1.
+Sopimus koskee DataGaten Windows-sovellusta, tätä asennusohjelmaa, mukana tulevaa VPN-moottoria ja muita tiedostoja (yhdessä «Ohjelmisto»). Tilit, VPN-palvelimet, API, sivusto ja Telegram-botti ovat erillinen palvelu. Lisäehdot voivat olla osoitteessa https://datagateapp.com.
+
+2.
+Myönnämme henkilökohtaisen, ei-yksinomaisen, siirtokelvottoman lisenssin asentaa ja käyttää Ohjelmistoa Windows-laitteilla, jotka omistat tai joita hallitset, vain valtuutettuihin DataGate-palveluihin. Et saa vuokrata, myydä tai alilisensoida asennusohjelmaa tai asiakasta omana tuotteena etkä poistaa DataGaten tavaramerkkejä.
+
+3.
+Windows-asiakkaan lähdekoodi on osoitteessa https://github.com/IMKolganov/DataGateWin. Osa Ohjelmistosta on avoimen lähdekoodin lisensseillä, mukaan lukien GNU GPL v2. Sopimus ei vie oikeuksia, jotka sinulla jo on vastaavaan lähdekoodiin.
+
+4.
+DataGate-tili voi olla tarpeen (Google-kirjautuminen ja tarvittaessa tunnistussovelluksen koodi). Vastaat tunnuksista ja tilin toiminnasta. Paketit, kiintiöt ja palvelimet tarjoaa DataGate-palvelu.
+
+5.
+Ohjelmistoa ja VPN:ää on käytettävä lain mukaisesti. Älä käytä DataGatea rikoksiin, haittaohjelmiin, hyökkäyksiin, laillisen menettelyn kiertämiseen tai väärinkäyttöön. Asiakas voi varoittaa, jos torrent-asiakas on käynnissä. Vastaat kaikesta VPN-liikenteestä, myös jos joku muu käyttää laitettasi tai tiliäsi.
+
+6.
+Olet yksin vastuussa siitä, kuka käyttää Ohjelmistoa ja VPN:ää laitteillasi ja tililläsi, mukaan lukien lapset, perhe, vieraat ja työntekijät. DataGate ei ole vanhempien valvonta, ikäraja eikä lastensuojelutuote. Se ei suodata sivustoja, ei estä haitallista sisältöä, ei tarkista ikää eikä valvo alaikäisiä. VPN voi helpottaa pääsyä muuten rajoitettuihin palveluihin. Alaikäinen saa käyttää DataGatea vain vanhemman tai huoltajan suostumuksella ja jatkuvalla valvonnalla. Hyväksyt kaiken riskin, mukaan lukien minne lapsi menee ja mitä hän näkee, lataa, sanoo, ostaa tai tekee VPN:n kautta. DataGate ja avustajat eivät vastaa vaatimuksista, menetyksistä, tutkimuksista, sakoista tai riidoista tällaisesta käytöstä — myös lapsen — eivätkä ole osapuolia suhteessasi lapseen, kouluun, ISP:hen tai viranomaiseen.
+
+7.
+Asiakas tarvitsee verkon. Se voi lähettää kaatumisraportteja, päivitystarkistuksia ja tili-/API-pyyntöjä DataGateen. Yhdistettäessä VPN-liikenne kulkee valitun palvelimen kautta. Katso https://datagateapp.com.
+
+8.
+Ohjelmisto voi etsiä uudempaa versiota (myös GitHubin kautta) ja tarjota tätä asennusohjelmaa. Voit kieltäytyä. Vanhemmat versiot eivät välttämättä toimi palvelun kanssa.
+
+9.
+OHJELMISTO TOIMITETAAN «SELLAISENAAN», ILMAN TAKUUTA. Emme takaa, että VPN aina yhdistyy, piilottaa identiteetin, kiertää rajoituksia, toimii keskeytyksettä tai suojaa sinua, lasta tai ketään sisällöltä, yhteyksiltä tai oikeudellisilta seurauksilta.
+
+10.
+LAIN SALLIMASSA ENIMMÄISMÄÄRIN DATAGATE JA AVUSTAJAT EIVÄT VASTAA SUORISTA TAI EPÄSUORISTA VAHINGOISTA EIVÄTKÄ TIETOJEN, VOITON, PÄÄSYN TAI MAINEEN MENETYKSESTÄ. Tämä kattaa sivustot VPN:n kautta, sisällön, viestit, lataukset, sinun tai muiden (myös alaikäisen) teot, kolmansien vaatimukset, tutkimukset ja sakot. Hoidat omalla kustannuksellasi kaikki DataGatea vastaan esitetyt vaatimukset, jotka johtuvat käytöstäsi tai tilisi tai laitteidesi käytöstä, myös lapsen toimesta.
+
+11.
+Lisenssi päättyy rikkomiseen tai poistamiseen. Kohdat 6, 9 ja 10 jäävät voimaan.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Hyväksyn lisenssisopimuksen</sys:String>
+    <sys:String x:Key="Install_Back">Takaisin</sys:String>
+</ResourceDictionary>

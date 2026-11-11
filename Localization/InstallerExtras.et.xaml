@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Litsentsileping</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Litsentsileping
+2026-09-09
+
+Lugege see leping enne DataGate Windowsi installimist. Märkides «Nõustun litsentsilepinguga» ning installides või kasutades tarkvara, nõustute tingimustega. Kui ei nõustu, tühistage installimine ja ärge tarkvara kasutage.
+
+1.
+Leping kehtib DataGate Windowsi rakendusele, sellele paigaldajale, kaasasolevale VPN-mootorile ja muudele failidele (koos «Tarkvara»). Kontod, VPN-serverid, API, veebisait ja Telegrami bot on eraldi teenus. Lisatingimused võivad olla aadressil https://datagateapp.com.
+
+2.
+Anname isikliku, mitteainuõigusliku, mitteülekantava litsentsi Tarkvara installimiseks ja kasutamiseks Windowsi seadmetes, mida omate või kontrollite, ainult volitatud DataGate teenustele. Te ei tohi paigaldajat ega klienti rentida, müüa ega all-litsentsida oma tootena ega eemaldada DataGate kaubamärke.
+
+3.
+Windowsi kliendi lähtekood on aadressil https://github.com/IMKolganov/DataGateWin. Osa Tarkvarast on avatud lähtekoodiga litsentside all, sh GNU GPL v2. Leping ei võta ära õigusi, mis teil vastava lähtekoodi suhtes juba on.
+
+4.
+Võib vaja minna DataGate kontot (Google’i sisselogimine ja vajadusel autentimiskood). Vastutate mandaatide ja konto tegevuse eest. Paketid, kvoodid ja serverid pakub DataGate teenus.
+
+5.
+Tarkvara ja VPN-i tuleb kasutada kooskõlas seadusega. Ärge kasutage DataGate’i kuritegudeks, ründetarkvaraks, rünnakuteks, seadusliku menetluse vältimiseks ega väärkasutuseks. Klient võib hoiatada, kui töötab torrent-klient. Vastutate kogu VPN-liikluse eest, ka siis kui keegi teine kasutab teie seadet või kontot.
+
+6.
+Teie üksi vastutate, kes kasutab Tarkvara ja VPN-i teie seadmetes ja kontol, sh lapsed, pere, külalised ja töötajad. DataGate ei ole vanemlik kontroll, vanusepiirang ega lastekaitsetoode. See ei filtreeri saite, ei blokeeri kahjulikku sisu, ei kontrolli vanust ega järelevalveta alaealisi. VPN võib hõlbustada juurdepääsu muidu piiratud teenustele. Alaealine tohib DataGate’i kasutada ainult vanema või eestkostja nõusolekul ja pideval järelevalvel. Kannate kogu riski, sh kuhu laps läheb ja mida ta VPN-i kaudu vaatab, laadib, ütleb, ostab või teeb. DataGate ja kaastöötajad ei vastuta nõuete, kahjude, uurimiste, trahvide ega vaidluste eest sellisest kasutusest — ka lapse poolt — ega ole osapool teie suhtes lapse, kooli, ISP või asutusega.
+
+7.
+Klient vajab võrku. See võib saata krahhiaruandeid, uuenduste kontrolle ja konto-/API-päringuid DataGate’ile. Ühendamisel käib VPN-liiklus valitud serveri kaudu. Vt https://datagateapp.com.
+
+8.
+Tarkvara võib otsida uuemat versiooni (ka GitHubi kaudu) ja pakkuda seda paigaldajat. Võite keelduda. Vanemad versioonid ei pruugi teenusega edasi töötada.
+
+9.
+TARKVARA ANTAKSE «NAGU ON», ILMA GARANTIITA. Me ei garanteeri, et VPN alati ühendub, peidab identiteedi, möödub piirangutest, töötab katkestusteta või kaitseb teid, last või kedagi sisu, kontaktide või õiguslike tagajärgede eest.
+
+10.
+SEADUSEGA LUBATUD MAKSIMAALSELT EI VASTUTA DATAGATE JA KAASTÖÖTAJAD OTSESTE EGA KAUDSETE KAHJUDE EGA ANDMETE, KASUMI, JUURDEPÄÄSU VÕI MAINE KAOTUSE EEST. See hõlmab saite VPN-i kaudu, sisu, sõnumeid, allalaadimisi, teie või teiste (sh alaealise) tegusid, kolmandate isikute nõudeid, uurimisi ja trahve. Tegelete omal kulul kõigi DataGate’i vastu esitatud nõuetega, mis tulenevad teie kasutusest või konto või seadmete kasutusest, sh lapse poolt.
+
+11.
+Litsents lõpeb rikkumisel või eemaldamisel. Punktid 6, 9 ja 10 jäävad kehtima.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Nõustun litsentsilepinguga</sys:String>
+    <sys:String x:Key="Install_Back">Tagasi</sys:String>
+</ResourceDictionary>

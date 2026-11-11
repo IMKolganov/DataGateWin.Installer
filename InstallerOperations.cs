@@ -4,6 +4,13 @@ namespace DataGateWin.Installer;
 
 internal static class InstallerOperations
 {
+    public static void ValidatePackage(string sourceDirectory)
+    {
+        var executable = Path.Combine(sourceDirectory, InstallerConstants.ExeName);
+        if (!File.Exists(executable) || new FileInfo(executable).Length == 0)
+            throw new InvalidDataException("Installation package is missing a nonempty main executable.");
+    }
+
     public static string ResolveUpdateInstallDir(
         string startDir,
         string exeName,
@@ -54,6 +61,11 @@ internal static class InstallerOperations
         foreach (var file in files)
         {
             var relative = Path.GetRelativePath(sourceDir, file);
+            // Offline local packages live as DataGateWinBuild* beside the installer — never nest them.
+            var segments = relative.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (segments.Any(LocalBuildPackage.IsLocalBuildDirectoryName))
+                continue;
+
             var destFile = Path.Combine(destinationDir, relative);
 
             if (skipDestination?.Invoke(destFile) == true)

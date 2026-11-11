@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licenčna pogodba</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licenčna pogodba
+2026-09-09
+
+Pred namestitvijo DataGate za Windows preberite to pogodbo. Z označitvijo «Sprejemam licenčno pogodbo» ter namestitvijo ali uporabo programske opreme sprejemate pogoje. Če se ne strinjate, prekinite namestitev in programske opreme ne uporabljajte.
+
+1.
+Pogodba velja za aplikacijo DataGate za Windows, ta namestitveni program, priloženi VPN pogon in druge datoteke (skupaj »Programska oprema«). Računi, VPN strežniki, API, spletno mesto in Telegram bot so ločena storitev. Dodatni pogoji so lahko na https://datagateapp.com.
+
+2.
+Podeljujemo vam osebno, neizključno, neprenosljivo licenco za namestitev in uporabo Programske opreme na napravah Windows, ki jih imate ali nadzorujete, samo za pooblaščene storitve DataGate. Namestitvenega programa ali odjemalca ne smete najemati, prodajati ali podlicencirati kot lastni izdelek niti odstranjevati znamk DataGate.
+
+3.
+Izvorna koda odjemalca Windows je na https://github.com/IMKolganov/DataGateWin. Deli Programske opreme so pod odprtokodnimi licencami, vključno z GNU GPL v2. Pogodba ne odvzema pravic, ki jih že imate do ustrezne izvorne kode.
+
+4.
+Morda potrebujete račun DataGate (prijava z Googlom in po potrebi koda avtentikatorja). Odgovarjate za poverilnice in dejavnost računa. Pakete, kvote in strežnike zagotavlja storitev DataGate.
+
+5.
+Programsko opremo in VPN morate uporabljati v skladu z zakonom. DataGate ne uporabljajte za kazniva dejanja, zlonamerno programje, napade, izogibanje zakonitemu postopku ali zlorabo. Odjemalec lahko opozori, če teče torrent odjemalec. Odgovarjate za ves VPN promet, tudi če ga ustvari kdo drug na vaši napravi ali računu.
+
+6.
+Izključno vi odgovarjate, kdo uporablja Programsko opremo in VPN na vaših napravah in računu, vključno z otroki, družino, gosti in zaposlenimi. DataGate ni starševski nadzor, starostna oznaka niti izdelek za zaščito otrok. Ne filtrira strani, ne blokira škodljive vsebine, ne preverja starosti in ne nadzira mladoletnikov. VPN lahko olajša dostop do sicer omejenih storitev. Mladoletnik sme DataGate uporabljati le s privolitvijo in stalnim nadzorom starša ali skrbnika. Sprejemate vse tveganje, vključno kam gre otrok in kaj prek VPN gleda, prenaša, govori, kupuje ali počne. DataGate in sodelavci niso odgovorni za zahtevke, izgube, preiskave, globe ali spore zaradi take uporabe — tudi s strani otroka — in niso stranka vašega odnosa z otrokom, šolo, ISP ali organom.
+
+7.
+Odjemalec potrebuje omrežje. Lahko pošilja poročila o sesutjih, preverjanja posodobitev in zahteve računa/API DataGateu. Ob povezavi VPN promet poteka prek izbranega strežnika. Glej https://datagateapp.com.
+
+8.
+Programska oprema lahko išče novejšo različico (tudi prek GitHuba) in ponudi ta namestitveni program. Posodobitev lahko zavrnete. Starejše različice morda ne bodo več delovale s storitvijo.
+
+9.
+PROGRAMSKA OPREMA JE DANA »KOT JE«, BREZ JAMSTVA. Ne jamčimo, da se VPN vedno poveže, skrije identiteto, obide omejitve, deluje brez prekinitev ali zaščiti vas, otroka ali kogarkoli pred vsebino, stiki ali pravnimi posledicami.
+
+10.
+V NAJVEČJEM ZAKONITO DOVOLJENEM OBSEGU DATAGATE IN SODELAVCI NISO ODGOVORNI ZA NEPOSREDNO ALI POSREDNO ŠKODO NITI ZA IZGUBO PODATKOV, DOBIČKA, DOSTOPA ALI UGLEDA. Vključuje strani prek VPN, vsebino, sporočila, prenose, dejanja vas ali drugih (vključno z mladoletnikom), zahtevke tretjih, preiskave in globe. Na lastne stroške rešujete zahtevke proti DataGateu iz vaše uporabe ali uporabe računa ali naprav, tudi s strani otroka.
+
+11.
+Licenca preneha ob kršitvi ali odstranitvi. Ostanejo točke 6, 9 in 10.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Sprejemam licenčno pogodbo</sys:String>
+    <sys:String x:Key="Install_Back">Nazaj</sys:String>
+</ResourceDictionary>

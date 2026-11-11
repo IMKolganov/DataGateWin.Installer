@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Ftehim tal-liċenzja</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Ftehim tal-liċenzja
+2026-09-09
+
+Aqra dan il-ftehim qabel tinstalla DataGate għal Windows. Billi timmarka «Naċċetta l-ftehim tal-liċenzja» u tinstalla jew tuża s-softwer, taċċetta dawn it-termini. Jekk ma taqbilx, ikkanċella l-installazzjoni u tużax is-softwer.
+
+1.
+Dan il-ftehim japplika għall-app DataGate għal Windows, dan l-installatur, il-magna VPN u fajls oħra (flimkien, is-«Softwer»). Il-kontijiet, is-servers VPN, l-API, is-sit u l-bot Telegram huma servizz separat. Termini oħra jistgħu japplikaw fuq https://datagateapp.com.
+
+2.
+Nagħtuk liċenzja personali, mhux esklussiva u mhux trasferibbli biex tinstalla u tuża s-Softwer fuq apparati Windows li għandek jew tikkontrolla, biss għal servizzi DataGate awtorizzati. Ma tistax tikri, tbiegħ jew tisublicenzja l-installatur jew il-klijent bħala prodott tiegħek, u lanqas tneħħi l-marki DataGate.
+
+3.
+Il-kodiċi sors tal-klijent Windows jinsab fuq https://github.com/IMKolganov/DataGateWin. Partijiet mis-Softwer huma taħt liċenzji open source, inkluża GNU GPL v2. Dan il-ftehim ma jneħħix drittijiet li diġà għandek fuq il-kodiċi sors korrispondenti.
+
+4.
+Jista’ jkun hemm bżonn ta’ kont DataGate (login Google u, jekk attiv, kodiċi tal-awtentikatur). Inti responsabbli għall-kredenzjali u l-attività tal-kont. Il-pjanijiet, il-kwoti u s-servers jingħataw mis-servizz DataGate.
+
+5.
+Trid tuża s-Softwer u l-VPN skont il-liġi. Tużax DataGate għal reati, malware, attakki, biex tevita proċess legali jew abbuż. Il-klijent jista’ javża jekk ikun qed jaħdem klijent torrent. Tibqa’ responsabbli għat-traffiku VPN kollu, anke jekk ħaddieħor juża l-apparat jew il-kont tiegħek.
+
+6.
+Inti biss responsabbli minn min juża s-Softwer u l-VPN fuq l-apparati u l-kont tiegħek, inklużi tfal, familja, mistiedna u impjegati. DataGate mhux kontroll tal-ġenituri, klassifikazzjoni tal-età jew prodott ta’ protezzjoni tat-tfal. Ma jiffiltax siti, ma jimblokkax kontenut ta’ ħsara, ma jivverifikax l-età u ma jissorveljax minuri. VPN jista’ jiffaċilita aċċess għal servizzi li kienu jkunu ristretti. Minorenni jista’ juża DataGate biss bil-kunsens u s-superviżjoni kontinwa ta’ ġenitur jew gwardjan. Taċċetta r-riskju kollu, inkluż fejn imur it-tifel/tifla u x’jara, jniżżel, jgħid, jixtri jew jagħmel mill-VPN. DataGate u l-kontributuri mhumiex responsabbli għal pretensjonijiet, telf, investigazzjonijiet, multi jew tilwim minn tali użu — anke minn tifel — u mhumiex parti mir-relazzjoni tiegħek mat-tifel, skola, ISP jew awtorità.
+
+7.
+Il-klijent jeħtieġ netwerk. Jista’ jibgħat rapporti ta’ ħabtiet, kontrolli ta’ aġġornament u talbiet ta’ kont/API lil DataGate. Meta tkun konness, it-traffiku VPN jgħaddi mis-server magħżul. Ara https://datagateapp.com.
+
+8.
+Is-Softwer jista’ jfitttex verżjoni aktar ġdida (inkluż fuq GitHub) u joffri dan l-installatur. Tista’ tirrifjuta. Verżjonijiet qodma jistgħu jieqfu jaħdmu mas-servizz.
+
+9.
+IS-SOFTWER JIĠI MOGĦTI «KIF INHU», MINGĦAJR GARANZIJA. Ma niggarantux li l-VPN dejjem jikkonnettja, jaħbi l-identità, jaqbeż ir-restrizzjonijiet, jibqa’ mingħajr interruzzjoni, jew jipproteġi lilek, tifel jew lil ħaddieħor minn kontenut, kuntatti jew konsegwenzi legali.
+
+10.
+SA L-AMMONT MASSIMU PERMESS MILL-LIĠI, DATAGATE U L-KONTRIBUTURI MHUMIEX RESPONSABBLI GĦAL DANNI DIRETTI JEW INDIRETTI JEW GĦAT-TLF TA’ DEJTA, PROFITT, AĊĊESS JEW REPUTAZZJONI. Dan jinkludi siti mill-VPN, kontenut, messaġġi, downloads, atti tiegħek jew ta’ oħrajn (inkluż minorenni), pretensjonijiet ta’ terzi, investigazzjonijiet u multi. Tindirizza bi spejjeż tiegħek kwalunkwe pretensjoni kontra DataGate li toħroġ mill-użu tiegħek jew mill-użu tal-kont jew apparati, anke minn tifel.
+
+11.
+Il-liċenzja tispiċċa f’każ ta’ ksur jew diżinstallazzjoni. Jibqgħu s-sezzjonijiet 6, 9 u 10.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Naċċetta l-ftehim tal-liċenzja</sys:String>
+    <sys:String x:Key="Install_Back">Lura</sys:String>
+</ResourceDictionary>

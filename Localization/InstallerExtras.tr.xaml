@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Lisans sözleşmesi</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Lisans sözleşmesi
+2026-09-09
+
+DataGate’i Windows’a kurmadan önce bu sözleşmeyi okuyun. «Lisans sözleşmesini kabul ediyorum» kutusunu işaretleyip yazılımı kurar veya kullanırsanız bu şartları kabul etmiş olursunuz. Kabul etmiyorsanız kurulumu iptal edin ve yazılımı kullanmayın.
+
+1.
+Bu sözleşme DataGate Windows uygulaması, bu kurulum programı, birlikte gelen VPN motoru ve diğer dosyalar için geçerlidir (birlikte «Yazılım»). Hesaplar, VPN sunucuları, API, site ve Telegram botu ayrı bir hizmettir. Ek şartlar https://datagateapp.com adresinde olabilir.
+
+2.
+Size, sahip olduğunuz veya denetlediğiniz Windows aygıtlarında, yalnızca yetkili DataGate hizmetlerine erişmek üzere kişisel, münhasır olmayan, devredilemez bir lisans veriyoruz. Kurulumu veya istemciyi kendi ürününüz gibi kiralayamaz, satamaz, alt lisanslayamaz veya DataGate markalarını kaldıramazsınız.
+
+3.
+Windows istemcisinin kaynak kodu https://github.com/IMKolganov/DataGateWin adresindedir. Yazılımın bazı bölümleri GNU GPL v2 dahil açık kaynak lisansları altındadır. Bu sözleşme, ilgili kaynak kodunda zaten sahip olduğunuz hakları kaldırmaz.
+
+4.
+DataGate hesabı gerekebilir (Google ile giriş ve varsa kimlik doğrulayıcı kodu). Kimlik bilgilerinizden ve hesaptaki etkinlikten siz sorumlusunuz. Planlar, kotalar ve sunucular DataGate hizmeti tarafından sağlanır.
+
+5.
+Yazılımı ve VPN’i yürürlükteki hukuka uygun kullanmalısınız. DataGate’i suç, kötü amaçlı yazılım, saldırı, yasal sürecin dolanılması veya kötüye kullanım için kullanmayın. İstemci bir torrent istemcisi çalışıyorsa uyarabilir. VPN üzerindeki tüm trafikten, cihazınızı veya hesabınızı başkası kullansa bile siz sorumlusunuz.
+
+6.
+Cihazlarınızda ve hesabınızda Yazılımı ve VPN’i kimin kullandığından yalnızca siz sorumlusunuz; çocuklar, aile, konuklar ve çalışanlar dahil. DataGate ebeveyn denetimi, yaş derecelendirmesi veya çocuk koruma ürünü değildir. Siteleri süzmez, zararlı içeriği engellemez, yaş doğrulamaz ve küçükleri denetlemez. VPN, aksi halde kısıtlı hizmetlere erişimi kolaylaştırabilir. Bir küçük ancak ebeveyn veya vasinin onayı ve sürekli gözetimiyle DataGate kullanabilir. Tüm riski siz üstlenirsiniz; çocuğun nereye gittiği ve VPN üzerinden ne izlediği, indirdiği, söylediği, satın aldığı veya yaptığı dahil. DataGate ve katkıda bulunanlar bu kullanımdan doğan talep, kayıp, soruşturma, ceza veya uyuşmazlıklardan — bir çocuk tarafından olsa bile — sorumlu değildir ve çocuğunuz, okul, ISS veya makamlarla ilişkinizin tarafı değildir.
+
+7.
+İstemcinin ağa ihtiyacı vardır. DataGate’e çökme raporları, güncelleme denetimleri ve hesap/API istekleri gönderebilir. Bağlandığınızda VPN trafiği seçilen sunucudan geçer. Bkz. https://datagateapp.com.
+
+8.
+Yazılım daha yeni bir sürümü (GitHub dahil) arayıp bu kurulumu önerebilir. Güncellemeyi reddedebilirsiniz. Eski sürümler hizmetle çalışmayı sürdürmeyebilir.
+
+9.
+YAZILIM «OLDUĞU GİBİ», GARANTİSİZ SAĞLANIR. VPN’in her zaman bağlanacağını, kimliği gizleyeceğini, kısıtlamaları aşacağını, kesintisiz kalacağını veya sizi, bir çocuğu veya başkasını içerik, kişiler veya hukuki sonuçlardan koruyacağını garanti etmeyiz.
+
+10.
+YASANIN İZİN VERDİĞİ AZAMİ ÖLÇÜDE DATAGATE VE KATKIDA BULUNANLAR DOĞRUDAN VEYA DOLAYLI ZARARLARDAN YA DA VERİ, KÂR, ERİŞİM VEYA İTİBAR KAYBINDAN SORUMLU DEĞİLDİR. Buna VPN üzerinden ziyaret edilen siteler, içerik, iletiler, indirmeler, sizin veya başkalarının (küçükler dahil) işlemleri, üçüncü kişi talepleri, soruşturmalar ve cezalar dahildir. Hesabınızın veya cihazlarınızın — bir çocuk tarafından bile — kullanımından doğan DataGate’e yönelik talepleri kendi masrafınızla siz çözersiniz.
+
+11.
+Bu lisans ihlalde veya kaldırmada sona erer. 6, 9 ve 10. bölümler yürürlükte kalır.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Lisans sözleşmesini kabul ediyorum</sys:String>
+    <sys:String x:Key="Install_Back">Geri</sys:String>
+</ResourceDictionary>

@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">라이선스 계약</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+라이선스 계약
+2026-09-09
+
+Windows용 DataGate를 설치하기 전에 이 계약을 읽으십시오. 「라이선스 계약에 동의합니다」를 선택하고 소프트웨어를 설치하거나 사용하면 이 조건에 동의하는 것입니다. 동의하지 않으면 설치를 취소하고 사용하지 마십시오.
+
+1.
+이 계약은 DataGate Windows 앱, 이 설치 프로그램, 포함된 VPN 엔진 및 기타 파일(총칭 「소프트웨어」)에 적용됩니다. 계정, VPN 서버, API, 웹사이트, Telegram 봇은 별도 서비스입니다. 추가 약관은 https://datagateapp.com 에 있을 수 있습니다.
+
+2.
+귀하가 소유하거나 관리하는 Windows 장치에서 허가된 DataGate 서비스에 접근하기 위한 개인적, 비독점적, 양도 불가 라이선스를 부여합니다. 설치 프로그램이나 클라이언트를 자신의 제품으로 임대·판매·재라이선스하거나 DataGate 상표를 제거해서는 안 됩니다.
+
+3.
+Windows 클라이언트 소스 코드는 https://github.com/IMKolganov/DataGateWin 에 공개되어 있습니다. 소프트웨어의 일부는 GNU GPL v2를 포함한 오픈 소스 라이선스입니다. 이 계약은 해당 소스 코드에 대해 이미 가진 권리를 빼앗지 않습니다.
+
+4.
+DataGate 계정(Google 로그인 및 사용 시 인증 앱 코드)이 필요할 수 있습니다. 자격 증명과 계정 활동은 귀하의 책임입니다. 요금제, 트래픽 할당량, 서버는 DataGate 서비스가 제공합니다.
+
+5.
+소프트웨어와 VPN은 적용 법령에 따라 사용해야 합니다. 범죄, 악성코드, 공격, 적법 절차 회피, 남용에 DataGate를 사용하지 마십시오. 토렌트 클라이언트가 실행 중이면 경고할 수 있습니다. 다른 사람이 기기나 계정을 사용한 경우에도 VPN 트래픽 전부에 대한 책임은 귀하에게 있습니다.
+
+6.
+자녀, 가족, 손님, 직원을 포함해 귀하의 기기와 계정에서 소프트웨어와 VPN을 누가 쓰는지에 대한 책임은 전적으로 귀하에게 있습니다. DataGate는 자녀 보호, 연령 등급, 아동 안전 제품이 아닙니다. 사이트를 필터하지 않고, 유해·불법 콘텐츠를 차단하지 않으며, 나이를 확인하거나 미성년자를 감독하지 않습니다. VPN은 원래 제한된 서비스에 더 쉽게 접근하게 할 수 있습니다. 미성년자는 부모 또는 후견인의 동의와 지속적 감독 아래에서만 DataGate를 사용할 수 있습니다. 아이가 어디로 가는지, VPN으로 무엇을 보고·받고·말하고·사고·하는지 포함해 모든 위험은 귀하가 집니다. DataGate와 기여자는 아이 사용을 포함해 그러한 사용으로 인한 청구, 손실, 조사, 벌금, 분쟁에 책임이 없으며, 아이·학교·ISP·당국과의 관계의 당사자가 아닙니다.
+
+7.
+클라이언트는 네트워크가 필요합니다. 충돌 보고, 업데이트 확인, 계정/API 요청을 DataGate에 보낼 수 있습니다. 연결하면 VPN 트래픽은 선택한 서버를 통과합니다. https://datagateapp.com 을 참고하십시오.
+
+8.
+소프트웨어는 새 버전(GitHub 포함)을 확인하고 이 설치 프로그램을 제안할 수 있습니다. 업데이트를 거절할 수 있습니다. 이전 버전이 서비스와 계속 동작한다고 보장하지 않습니다.
+
+9.
+소프트웨어는 「있는 그대로」 무보증으로 제공됩니다. VPN이 항상 연결되거나, 신원을 숨기거나, 제한을 우회하거나, 중단되지 않거나, 귀하·아이·타인을 콘텐츠·연락·법적 결과로부터 보호한다고 보증하지 않습니다.
+
+10.
+법이 허용하는 최대 한도에서 DATAGATE와 기여자는 직접·간접 손해 및 데이터·이익·접근·평판 손실에 책임지지 않습니다. VPN으로 방문한 사이트, 콘텐츠, 메시지, 다운로드, 귀하 또는 타인(미성년자 포함)의 행위, 제3자 청구, 조사, 벌금을 포함합니다. 귀하의 사용 또는 계정·기기의 사용(아이 포함)으로 DataGate에 제기된 청구는 귀하의 비용으로 처리합니다.
+
+11.
+이 라이선스는 위반 또는 제거 시 종료됩니다. 제6·9·10항은 존속합니다.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">라이선스 계약에 동의합니다</sys:String>
+    <sys:String x:Key="Install_Back">뒤로</sys:String>
+</ResourceDictionary>

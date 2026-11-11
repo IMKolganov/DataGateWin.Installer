@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <sys:String x:Key="Install_LicenseTitle">Licences līgums</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATAGATE
+Licences līgums
+2026-09-09
+
+Pirms DataGate instalēšanas sistēmā Windows izlasiet šo līgumu. Atzīmējot «Es piekrītu licences līgumam» un instalējot vai lietojot programmatūru, jūs piekrītat noteikumiem. Ja nepiekrītat, atceliet instalēšanu un nelietojiet programmatūru.
+
+1.
+Līgums attiecas uz DataGate Windows lietotni, šo instalētāju, pievienoto VPN dzinēju un citiem failiem (kopā «Programmatūra»). Konti, VPN serveri, API, vietne un Telegram bots ir atsevišķs pakalpojums. Papildu noteikumi var būt vietnē https://datagateapp.com.
+
+2.
+Mēs piešķiram personisku, neekskluzīvu, netransferējamu licenci instalēt un lietot Programmatūru Windows ierīcēs, kuras jums pieder vai kuras kontrolējat, tikai atļautiem DataGate pakalpojumiem. Nedrīkst iznomāt, pārdot vai sublicencēt instalētāju vai klientu kā savu produktu, kā arī noņemt DataGate preču zīmes.
+
+3.
+Windows klienta pirmkods ir https://github.com/IMKolganov/DataGateWin. Daļa Programmatūras ir atvērtā pirmkoda licencēs, tostarp GNU GPL v2. Līgums neatņem tiesības, kas jums jau ir uz atbilstošo pirmkodu.
+
+4.
+Var būt nepieciešams DataGate konts (Google pieteikšanās un, ja iespējots, autentifikatora kods). Jūs atbildat par akreditācijas datiem un konta darbību. Plānus, kvotas un serverus nodrošina DataGate pakalpojums.
+
+5.
+Programmatūra un VPN jālieto saskaņā ar tiesībām. Nelietojiet DataGate noziegumiem, ļaunprātīgai programmatūrai, uzbrukumiem, likumīga procesa apiešanai vai ļaunprātīgai izmantošanai. Klients var brīdināt, ja darbojas torentu klients. Jūs atbildat par visu VPN satiksmi, arī ja to rada kāds cits jūsu ierīcē vai kontā.
+
+6.
+Tikai jūs atbildat, kurš lieto Programmatūru un VPN jūsu ierīcēs un kontā, tostarp bērni, ģimene, viesi un darbinieki. DataGate nav vecāku kontrole, vecuma marķējums vai bērnu aizsardzības produkts. Tas nefiltrē vietnes, nebloķē kaitīgu saturu, nepārbauda vecumu un nepārrauga nepilngadīgos. VPN var atvieglot piekļuvi citādi ierobežotiem pakalpojumiem. Nepilngadīgais DataGate drīkst lietot tikai ar vecāka vai aizbildņa piekrišanu un pastāvīgu uzraudzību. Jūs uzņematies visu risku, tostarp kur bērns iet un ko viņš VPN redz, lejupielādē, saka, pērk vai dara. DataGate un ieguldītāji nav atbildīgi par prasībām, zaudējumiem, izmeklēšanām, sodiem vai strīdiem no šādas lietošanas — arī no bērna — un nav puse jūsu attiecībās ar bērnu, skolu, ISP vai iestādi.
+
+7.
+Klientam nepieciešams tīkls. Tas var sūtīt avāriju ziņojumus, atjauninājumu pārbaudes un konta/API pieprasījumus DataGate. Savienojoties VPN satiksme iet caur izvēlēto serveri. Skatīt https://datagateapp.com.
+
+8.
+Programmatūra var meklēt jaunāku versiju (arī GitHub) un piedāvāt šo instalētāju. Varat atteikties. Vecākas versijas var pārstāt darboties ar pakalpojumu.
+
+9.
+PROGRAMMATŪRA TIEK NODROŠINĀTA «KĀDĀ TĀ IR», BEZ GARANTIJAS. Mēs negarantējam, ka VPN vienmēr savienojas, slēpj identitāti, apej ierobežojumus, darbojas bez pārtraukuma vai aizsargā jūs, bērnu vai kādu no satura, kontaktiem vai juridiskām sekām.
+
+10.
+MAKSIMĀLI LIKUMĀ ATĻAUTAJĀ APJOMĀ DATAGATE UN IEGULDĪTĀJI NAV ATBILDĪGI PAR TIEŠIEM VAI NETIEŠIEM ZAUDĒJUMIEM, NE ARĪ PAR DATU, PEĻŅAS, PIEEJAS VAI REPUTĀCIJAS ZAUDĒJUMU. Tas ietver vietnes caur VPN, saturu, ziņojumus, lejupielādes, jūsu vai citu (tostarp nepilngadīga) darbības, trešo personu prasības, izmeklēšanas un sodus. Par saviem līdzekļiem kārtojat jebkuru prasību pret DataGate no jūsu lietošanas vai konta vai ierīču lietošanas, arī no bērna.
+
+11.
+Licence beidzas pārkāpuma vai atinstalēšanas gadījumā. Paliek 6., 9. un 10. punkts.
+
+12.
+https://datagateapp.com  https://datagateapp.com/download  https://t.me/datagateapp  https://github.com/IMKolganov/DataGateWin</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">Es piekrītu licences līgumam</sys:String>
+    <sys:String x:Key="Install_Back">Atpakaļ</sys:String>
+</ResourceDictionary>

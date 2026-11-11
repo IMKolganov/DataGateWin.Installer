@@ -26,29 +26,43 @@ internal static class InstallerDownloader
         var total = response.Content.Headers.ContentLength;
 
         await using var input = await response.Content.ReadAsStreamAsync(cancellationToken);
-        await using var output = File.Create(destinationPath);
-
-        var buffer = new byte[81920];
-        long readTotal = 0;
-
-        while (true)
+        var temporaryPath = destinationPath + "." + Guid.NewGuid().ToString("N") + ".partial";
+        try
         {
-            var read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), cancellationToken);
-            if (read == 0)
-                break;
-
-            await output.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
-            readTotal += read;
-
-            if (total.HasValue && total.Value > 0)
+            await using (var output = File.Create(temporaryPath))
             {
-                var pct = (double)readTotal / total.Value * 100.0;
-                progress.Report(Math.Min(100.0, pct));
-            }
-        }
+                var buffer = new byte[81920];
+                long readTotal = 0;
 
-        if (!total.HasValue)
+                while (true)
+                {
+                    var read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), cancellationToken);
+                    if (read == 0)
+                        break;
+
+                    await output.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
+                    readTotal += read;
+
+                    if (total.HasValue && total.Value > 0)
+                    {
+                        var pct = (double)readTotal / total.Value * 100.0;
+                        progress.Report(Math.Min(100.0, pct));
+                    }
+                }
+
+                if (total.HasValue && readTotal != total.Value)
+                    throw new IOException("Downloaded file length does not match Content-Length.");
+                await output.FlushAsync(cancellationToken);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            File.Move(temporaryPath, destinationPath, overwrite: true);
             progress.Report(100.0);
+        }
+        finally
+        {
+            if (File.Exists(temporaryPath))
+                File.Delete(temporaryPath);
+        }
     }
 
     public static async Task<string> ResolveLatestReleaseZipUrlAsync(

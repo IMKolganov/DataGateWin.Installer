@@ -17,8 +17,64 @@
     <sys:String x:Key="Install_ThemeLight">Light</sys:String>
     <sys:String x:Key="Install_ThemeDark">Dark</sys:String>
     <sys:String x:Key="Install_LicenseTitle">License Agreement</sys:String>
-    <sys:String x:Key="Install_PolicyBody">By installing and using DataGateWin, you agree to the terms of this software policy. The software is provided &quot;as is&quot;, without warranty of any kind. You are responsible for ensuring compliance with applicable laws and regulations. If you do not agree to these terms, do not install or use this software.</sys:String>
-    <sys:String x:Key="Install_AcceptPolicy">I accept the policy</sys:String>
+    <sys:String x:Key="Install_PolicyBody" xml:space="preserve">DATA GATE
+Windows Client — End User License Agreement
+Last updated: 9 September 2026
+
+Please read this agreement before installing DataGate for Windows. By checking “I accept the license agreement” and installing or using the software, you agree to these terms. If you do not agree, cancel setup and do not use the software.
+
+1. What this covers
+This agreement applies to the DataGate Windows application, this installer, the bundled VPN engine, and other files we ship with them (together, the “Software”). DataGate accounts, VPN servers, the API, the website, and the Telegram bot are a separate service. Additional service terms may apply at https://datagateapp.com. If those terms conflict with this agreement for use of the service, the service terms apply to the service.
+
+2. License
+We grant you a personal, non-exclusive, non-transferable license to install and use the Software on Windows devices that you own or control, only to access DataGate services you are authorized to use.
+
+You may not rent, sell, or sublicense the prebuilt installer or client as your own product, or remove DataGate trademarks from the Software.
+
+3. Source code and third-party components
+The Windows client source is published at https://github.com/IMKolganov/DataGateWin. Parts of the Software are available under open-source licenses, including GNU GPL v2 for this client repository, and other licenses for bundled components (for example the VPN engine and OpenVPN-related code). This agreement does not take away rights you already have under those licenses for the corresponding source code.
+
+4. Account and access
+You may need a DataGate account (including Google sign-in and, where enabled, an authenticator code) to use the client. You are responsible for your credentials and for activity on your account. Plans, traffic quotas, and which servers you can use are provided by the DataGate service and may change according to your plan.
+
+5. Acceptable use
+You must use the Software and any VPN connection in accordance with applicable law. You must not use DataGate to commit crimes, distribute malware, attack other systems, evade lawful process, or abuse the service or other users.
+
+The client may warn you if a torrent client is running. You remain responsible for all traffic sent through the VPN, whether you generated it yourself or someone else used your device or account.
+
+6. Your devices, other people, and minors
+You are solely responsible for who uses the Software and the VPN on your devices and under your account, including children, family members, guests, employees, and anyone else you allow to use the computer.
+
+DataGate is not a parental-control, age-rating, or child-safety product. It does not filter websites, block harmful or illegal content, verify a user’s age, or supervise minors. A VPN can make it easier to reach sites and services that would otherwise be restricted on your network.
+
+If a minor uses DataGate, that is only with the consent and ongoing supervision of a parent or legal guardian. You accept all risk for that use, including where they go online and what they view, download, say, purchase, or do through the VPN.
+
+DataGate and its contributors are not liable for any claim, loss, complaint, investigation, fine, or dispute arising from such use — including use by a child — and are not a party to your relationship with the child, a school, an ISP, other users, or any authority.
+
+7. Privacy
+The client needs network access. It may send crash reports, update checks, and account or API requests to DataGate. When you connect, your VPN traffic is sent through the server you select. See https://datagateapp.com for product and privacy information.
+
+8. Updates
+The Software may check for a newer release (including via GitHub) and offer to run this installer to update files on your computer. You can decline an update. We do not guarantee that older client versions will keep working with the service.
+
+9. No warranty
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. We do not warrant that the VPN will always connect, hide your identity, bypass network restrictions, remain uninterrupted, or protect you, a child, or anyone else from content, contacts, or legal consequences online.
+
+10. Limitation of liability
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, DATAGATE AND ITS CONTRIBUTORS ARE NOT LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, OR FOR LOST DATA, PROFITS, ACCESS, REPUTATION, OR BUSINESS, ARISING FROM THE SOFTWARE OR A VPN CONNECTION.
+
+This includes, without limitation: websites or services visited through the VPN; content viewed or shared; communications sent; files downloaded; actions by you or by anyone using your device or account (including a minor); claims by third parties; and any investigation, fine, or proceeding related to that use.
+
+You agree to handle, at your own cost, any claim against DataGate that arises from your use or from use of your account or devices, including use by a child.
+
+11. Termination
+This license ends if you breach it or uninstall the Software. We may suspend or end service access according to your account and plan. Sections 6, 9, and 10 survive termination.
+
+12. Contact
+Website: https://datagateapp.com
+Download: https://datagateapp.com/download
+Telegram: https://t.me/datagateapp</sys:String>
+    <sys:String x:Key="Install_AcceptPolicy">I accept the license agreement</sys:String>
     <sys:String x:Key="Install_ChooseLocationTitle">Choose Install Location</sys:String>
     <sys:String x:Key="Install_ChooseLocationHint">Select where DataGateWin should be installed.</sys:String>
     <sys:String x:Key="Install_FolderLabel">Install folder:</sys:String>
@@ -44,4 +100,9 @@
     <sys:String x:Key="Install_SelectFolderTitle">Select installation folder</sys:String>
     <sys:String x:Key="Install_LanguageLabel">Installer language</sys:String>
     <sys:String x:Key="Install_LanguageHint">Uses the same list as the DataGate app. Default follows Windows.</sys:String>
+    <sys:String x:Key="Install_WelcomeTitle">About the project</sys:String>
+    <sys:String x:Key="Install_WelcomeBody">DataGate is a VPN client for Windows. Connect to DataGate servers and manage your connection in one app. The Windows client source code is available on GitHub.</sys:String>
+    <sys:String x:Key="Install_ProjectLinks">Explore the project</sys:String>
+    <sys:String x:Key="Install_WelcomeNext">Select Next to read the license agreement and choose where to install DataGate.</sys:String>
+    <sys:String x:Key="Install_Back">Back</sys:String>
 </ResourceDictionary>
