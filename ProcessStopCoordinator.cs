@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using MessageBox = System.Windows.MessageBox;
@@ -9,7 +10,7 @@ internal static class ProcessStopCoordinator
 {
     private const uint SnapshotProcess = 0x00000002;
 
-    public static async Task EnsureAppProcessesStoppedAsync(bool interactivePrompts, Action<string>? log)
+    public static async Task EnsureAppProcessesStoppedAsync(bool interactivePrompts, Action<string>? log, string? installDirectory = null)
     {
         void L(string m) => log?.Invoke(m);
 
@@ -21,7 +22,7 @@ internal static class ProcessStopCoordinator
             ("engine", "engine.exe"),
         };
 
-        using var runningScope = CollectProcesses(processes, L);
+        using var runningScope = CollectProcesses(processes, L, installDirectory);
         var running = runningScope.Processes;
         if (running.Count == 0)
             return;
@@ -63,7 +64,7 @@ internal static class ProcessStopCoordinator
         }
 
         await Task.Delay(500).ConfigureAwait(false);
-        using var stillRunningScope = CollectProcesses(processes, L);
+        using var stillRunningScope = CollectProcesses(processes, L, installDirectory);
         var stillRunning = stillRunningScope.Processes;
         if (stillRunning.Count == 0)
             return;
@@ -71,7 +72,7 @@ internal static class ProcessStopCoordinator
         if (parentProcess != null && stillRunning.Any(p => p.Id == parentProcess.Id))
         {
             await Task.Delay(1500).ConfigureAwait(false);
-            using var refreshedScope = CollectProcesses(processes, L);
+            using var refreshedScope = CollectProcesses(processes, L, installDirectory);
             stillRunning = refreshedScope.Processes;
             var parentStillRunning = stillRunning.Any(p => p.Id == parentProcess.Id);
             if (parentStillRunning)
@@ -107,7 +108,7 @@ internal static class ProcessStopCoordinator
                 }
 
                 await Task.Delay(300).ConfigureAwait(false);
-                using var finalScope = CollectProcesses(processes, null);
+                using var finalScope = CollectProcesses(processes, null, installDirectory);
                 stillRunning = finalScope.Processes;
 
                 if (stillRunning.Count > 0)
@@ -130,14 +131,26 @@ internal static class ProcessStopCoordinator
 
     private static ProcessScope CollectProcesses(
         (string ProcessName, string FileName)[] processes,
-        Action<string>? log)
+        Action<string>? log,
+        string? installDirectory)
     {
         var running = new List<Process>();
-        foreach (var (processName, _) in processes)
+        foreach (var (processName, fileName) in processes)
         {
             try
             {
-                running.AddRange(Process.GetProcessesByName(processName));
+                foreach (var process in Process.GetProcessesByName(processName))
+                {
+                    var keep = false;
+                    try
+                    {
+                        keep = installDirectory is null || IsTargetProcessPath(
+                            process.MainModule?.FileName, installDirectory, fileName);
+                        if (keep) running.Add(process);
+                    }
+                    catch (Exception ex) { log?.Invoke($"WARN: cannot inspect process {process.Id}: {ex.Message}"); }
+                    finally { if (!keep) process.Dispose(); }
+                }
             }
             catch (Exception ex)
             {
@@ -146,6 +159,15 @@ internal static class ProcessStopCoordinator
         }
 
         return new ProcessScope(running);
+    }
+
+    internal static bool IsTargetProcessPath(string? executablePath, string installDirectory, string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(executablePath)) return false;
+        var relative = fileName.Equals("engine.exe", StringComparison.OrdinalIgnoreCase)
+            ? Path.Combine("engine", fileName) : fileName;
+        return string.Equals(Path.GetFullPath(executablePath),
+            Path.GetFullPath(Path.Combine(installDirectory, relative)), StringComparison.OrdinalIgnoreCase);
     }
 
     private static MessageBoxResult PromptCloseProcesses(string names)

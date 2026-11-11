@@ -25,6 +25,8 @@ public partial class MainWindow : Window
     private readonly string _installerDir;
     private InstallerWizardStep _currentStep;
     private bool _installCompleted;
+    private bool _installFailed;
+    private bool _updateStarted;
     private string? _lastInstalledExePath;
     private readonly bool _suppressThemeChange;
     private bool _suppressInstallerLanguageCombo;
@@ -177,8 +179,9 @@ public partial class MainWindow : Window
     {
         base.OnContentRendered(e);
 
-        if (!_isUpdateMode)
+        if (!_isUpdateMode || _updateStarted)
             return;
+        _updateStarted = true;
 
         try
         {
@@ -230,6 +233,7 @@ public partial class MainWindow : Window
 
     private async void NextButton_Click(object sender, RoutedEventArgs e)
     {
+        if (_cts is not null) return;
         switch (_currentStep)
         {
             case InstallerWizardStep.Welcome:
@@ -252,6 +256,11 @@ public partial class MainWindow : Window
                 await StartInstallAsync(isUpdate: false);
                 break;
             case InstallerWizardStep.Install:
+                if (_installFailed)
+                {
+                    await StartInstallAsync(_isUpdateMode);
+                    break;
+                }
                 if (!_installCompleted)
                     return;
                 _currentStep = InstallerWizardStep.Finish;
@@ -292,8 +301,16 @@ public partial class MainWindow : Window
         UpdateWizardUi();
     }
 
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        // Do not terminate the process halfway through deployment or rollback.
+        if (_cts is not null) e.Cancel = true;
+        base.OnClosing(e);
+    }
+
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
+        if (_cts is not null) return;
         var result = MessageBox.Show(
             InstallerLoc.T("Install_CancelSetupPrompt"),
             InstallerLoc.T("Install_WindowTitle"),
@@ -344,7 +361,9 @@ public partial class MainWindow : Window
 
         BackButton.Visibility = InstallerWizardRules.GetPreviousStep(_currentStep, _isUpdateMode) is null
             ? Visibility.Collapsed : Visibility.Visible;
-        NextButton.Content = _currentStep == InstallerWizardStep.Finish
+        NextButton.Content = _installFailed
+            ? InstallerLoc.T("Install_Retry")
+            : _currentStep == InstallerWizardStep.Finish
             ? InstallerLoc.T("Install_Finish")
             : InstallerLoc.T("Install_Next");
         StepTextBlock.Text = _currentStep switch
@@ -365,13 +384,16 @@ public partial class MainWindow : Window
             _currentStep,
             PolicyCheckBox.IsChecked == true,
             InstallPathTextBox.Text,
-            _installCompleted);
+            _installCompleted,
+            _installFailed);
     }
 
     private async Task StartInstallAsync(bool isUpdate)
     {
         _installCompleted = false;
+        _installFailed = false;
         UpdateNextButtonState();
+        CloseButton.IsEnabled = false;
         CancelButton.IsEnabled = false;
         UninstallButton.IsEnabled = false;
 
@@ -411,8 +433,6 @@ public partial class MainWindow : Window
             if (string.IsNullOrWhiteSpace(installDir))
                 throw new InvalidOperationException("Install folder is empty.");
 
-            await ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(true, Log).ConfigureAwait(true);
-
             if (isUpdate)
             {
                 installDir = InstallerOperations.ResolveUpdateInstallDir(installDir, InstallerConstants.ExeName, Log);
@@ -451,6 +471,9 @@ public partial class MainWindow : Window
                 var installerExePath = installerExe != null ? Path.GetFullPath(installerExe) : string.Empty;
 
                 InstallerOperations.ValidatePackage(packageSourceDir);
+                if (isUpdate)
+                    InstalledBuild.RequireNewerUpdate(packageSourceDir, installDir);
+                await ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(true, Log, installDir).ConfigureAwait(true);
                 Log("Deploying files...");
                 InstallerOperations.CopyDirectoryWithProgress(
                     packageSourceDir,
@@ -511,6 +534,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
+            _installFailed = true;
             CrashReporter.ReportNonFatal(ex, isUpdate ? "Installer.UpdateFailed" : "Installer.InstallFailed");
 
             if (!string.IsNullOrWhiteSpace(url))
@@ -526,10 +550,12 @@ public partial class MainWindow : Window
         }
         finally
         {
+            CloseButton.IsEnabled = true;
             CancelButton.IsEnabled = true;
             UninstallButton.IsEnabled = true;
             _cts?.Dispose();
             _cts = null;
+            UpdateWizardUi();
         }
     }
 

@@ -105,4 +105,5 @@ Telegram: https://t.me/datagateapp</sys:String>
     <sys:String x:Key="Install_ProjectLinks">Explore the project</sys:String>
     <sys:String x:Key="Install_WelcomeNext">Select Next to read the license agreement and choose where to install DataGate.</sys:String>
     <sys:String x:Key="Install_Back">Back</sys:String>
+    <sys:String x:Key="Install_Retry">Retry</sys:String>
 </ResourceDictionary>

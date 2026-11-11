@@ -16,21 +16,27 @@ internal static class InstalledBuild
     /// <summary>Test seam: compare on-disk FileVersion to an explicit installer version.</summary>
     public static bool IsSameAsInstaller(string installedExePath, Version? installerAssemblyVersion)
     {
-        if (string.IsNullOrWhiteSpace(installedExePath) || !File.Exists(installedExePath))
-            return false;
+        return AppUpdatePolicy.IsSameBuild(TryReadVersion(installedExePath), installerAssemblyVersion);
+    }
 
-        Version? onDisk;
+    public static Version? TryReadVersion(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+            return null;
         try
         {
-            var fvi = FileVersionInfo.GetVersionInfo(installedExePath);
-            onDisk = AppUpdatePolicy.TryParseVersion(fvi.FileVersion)
-                     ?? AppUpdatePolicy.TryParseVersion(fvi.ProductVersion);
+            var info = FileVersionInfo.GetVersionInfo(path);
+            return AppUpdatePolicy.TryParseVersion(info.FileVersion)
+                ?? AppUpdatePolicy.TryParseVersion(info.ProductVersion);
         }
-        catch
-        {
-            return false;
-        }
+        catch { return null; }
+    }
 
-        return AppUpdatePolicy.IsSameBuild(onDisk, installerAssemblyVersion);
+    public static void RequireNewerUpdate(string packageDirectory, string installDirectory)
+    {
+        var packageVersion = TryReadVersion(Path.Combine(packageDirectory, InstallerConstants.ExeName));
+        var installedVersion = TryReadVersion(Path.Combine(installDirectory, InstallerConstants.ExeName));
+        if (!AppUpdatePolicy.ShouldOfferUpgrade(packageVersion, installedVersion))
+            throw new InvalidOperationException($"Update package ({packageVersion}) must be newer than installed build ({installedVersion}).");
     }
 }

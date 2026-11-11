@@ -24,13 +24,15 @@ internal static class QuietLocalInstallRunner
         if (!File.Exists(exeInPackage))
             throw new FileNotFoundException("Local build package has no main exe.", exeInPackage);
 
+        InstallerOperations.ValidatePackage(packageDirectory);
+
         if (string.IsNullOrWhiteSpace(installDirectory))
             throw new InvalidOperationException("Install folder is empty.");
 
         L($"Using local build folder (skip download): {packageDirectory}");
         L($"Installing to: {installDirectory}");
 
-        await ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(interactivePrompts: false, log: L);
+        await ProcessStopCoordinator.EnsureAppProcessesStoppedAsync(interactivePrompts: false, log: L, installDirectory: installDirectory);
         Directory.CreateDirectory(installDirectory);
 
         var installerExe = Process.GetCurrentProcess().MainModule?.FileName;
